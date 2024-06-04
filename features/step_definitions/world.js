@@ -17,10 +17,10 @@ class World {
             cleanup: true,
             deleteIndividualRecords: true,
             poolConfig: {
-                user: '',
-                host: '',
+                user: 'root',
+                host: 'localhost',
                 database: 'rvig_haalcentraal_testdata',
-                password: '',
+                password: 'root',
                 port: 5432,
                 allowExitOnIdle: true
             }
@@ -71,6 +71,9 @@ class World {
         if(this.context.parameters?.client !== undefined) {
             this.context.oAuth.clients[0].clientId = this.context.parameters.client.clientId; 
             this.context.oAuth.clients[0].clientSecret = this.context.parameters.client.clientSecret; 
+        }
+        if(this.context.parameters?.enableOAuth !== undefined) {
+            this.context.oAuth.enable = this.context.parameters.enableOAuth === 'true';
         }
     }
 }
