@@ -171,7 +171,7 @@ async function sendRequest(config) {
 async function sendBevragenRequest(baseUrl, url, extraHeaders, dataTable, httpMethod) {
     const config = {
         method: httpMethod,
-        url: `/${url}`,
+        url: url ? `/${url}` : '',
         baseURL: baseUrl,
         data: createRequestBody(dataTable),
         headers: createHeaders(dataTable, extraHeaders)
