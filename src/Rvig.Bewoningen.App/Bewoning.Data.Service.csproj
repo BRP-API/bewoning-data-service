@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>Rvig.Bewoningen.App</RootNamespace>
+    <RootNamespace>Bewoning.Data.Service</RootNamespace>
     <Nullable>enable</Nullable>
     <UserSecretsId>caf32bce-cb0b-4c54-bc7b-c165686bdcd1</UserSecretsId>
 	<Version>2.0.20+$([System.DateTime]::UtcNow.ToString(yyyyMMddHH))</Version>
+	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

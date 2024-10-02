@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rvig.Data.Bewoningen", "Rvi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rvig.Base.App", "Rvig.Base.App\Rvig.Base.App.csproj", "{8EA7DB47-6784-4C68-9056-3AC6F08A17BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rvig.Bewoningen.App", "Rvig.Bewoningen.App\Rvig.Bewoningen.App.csproj", "{CADC5C85-1BB2-4E15-B516-2A88DD079FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bewoning.Data.Service", "Rvig.Bewoningen.App\Bewoning.Data.Service.csproj", "{CADC5C85-1BB2-4E15-B516-2A88DD079FAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A3D983C3-795F-403C-8DC1-A55995D867C7}"
 EndProject
