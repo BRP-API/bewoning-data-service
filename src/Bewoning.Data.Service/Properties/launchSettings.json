@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Rvig.HaalCentraalApi": {
+    "Bewoning.Data.Service": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
