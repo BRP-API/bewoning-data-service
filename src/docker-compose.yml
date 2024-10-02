@@ -1,0 +1,7 @@
+services:
+  bewoning-data-service:
+    image: ghcr.io/brp-api/bewoning-data-service:latest
+    build:
+      context: .
+      dockerfile: Bewoning.Data.Service/Dockerfile
+      
