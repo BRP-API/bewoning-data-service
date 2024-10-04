@@ -1,0 +1,37 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/haalcentraal/api/brp/personen",
+      "DownstreamPathTemplate": "/haalcentraal/api/brp/personen",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "referentie-api",
+          "Port": "5010"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/haalcentraal/api/reisdocumenten/reisdocumenten",
+      "DownstreamPathTemplate": "/haalcentraal/api/reisdocumenten/reisdocumenten",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "referentie-api",
+          "Port": "5010"
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/haalcentraal/api/brphistorie/verblijfplaatshistorie",
+      "DownstreamPathTemplate": "/haalcentraal/api/brphistorie/verblijfplaatshistorie",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "referentie-api",
+          "Port": "5010"
+        }
+      ]
+    }
+  ]
+}
