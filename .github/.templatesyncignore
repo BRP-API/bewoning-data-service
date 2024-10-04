@@ -1,0 +1,8 @@
+:!package.json
+:!package-lock.json
+:!.github/actions/*.*
+:!features/docs/*.*
+:!features/step_definitions/*.*
+:!src/Brp.Shared.Infrastructure/*.*
+:!src/Serilog.Sinks.PersistentFile/*.*
+*
