@@ -19,7 +19,7 @@ on:
 
 env:
   NODE_VERSION: '20'
-  DOTNET_SOLUTION_FILE_PATH: src/PersonenDataService.sln
+  DOTNET_SOLUTION_FILE_PATH: src/BewoningDataService.sln
   APP_PROJECT_PATH: ./src/Bewoning.Data.Service
   APP_CSPROJ_FILE_PATH: ./src/Bewoning.Data.Service/Bewoning.Data.Service.csproj
   APP_CONTAINER_IMAGE: ghcr.io/brp-api/bewoning-data-service
