@@ -25,7 +25,7 @@ env:
   APP_CONTAINER_IMAGE: ghcr.io/brp-api/bewoning-data-service
 
 jobs:
-  validate:
+  continuous-integration:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo

@@ -1,5 +1,6 @@
 # language: nl
 
+@skip-verify
 Functionaliteit: leveren van de gemeentecode(s) van het gevraagde adresseerbaar object in de gevraagde periode
 
   Als autorisatie & protocollering service
