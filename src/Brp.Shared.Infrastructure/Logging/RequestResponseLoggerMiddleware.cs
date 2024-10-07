@@ -1,7 +1,8 @@
 ﻿using Brp.Shared.Infrastructure.Http;
+using Brp.Shared.Infrastructure.Json;
+using Brp.Shared.Infrastructure.ProblemDetails;
 using Brp.Shared.Infrastructure.Stream;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
 using Serilog;
 using Serilog.Context;
 
@@ -25,7 +26,7 @@ internal class RequestResponseLoggerMiddleware
     public async Task Invoke(HttpContext context)
     {
         context.Items.Add(MapToEcsKeys.EcsRequestContentType, context.Request.ContentType);
-        _diagnosticContext.Set("RequestHeaders", context.Request.Headers);
+        context.Items.Add(LogConstants.RequestHeaders, context.Request.Headers);
 
         var requestBody = await context.Request.ReadBodyAsync();
         context.Items.Add(MapToEcsKeys.EcsRequestBody, requestBody);
@@ -39,20 +40,38 @@ internal class RequestResponseLoggerMiddleware
 
         using(LogContext.PushProperty("CorrelationId", correlationId))
         {
-            await _next(context);
+            try
+            {
+                await _next(context);
+            }
+            catch(Exception ex)
+            {
+                if (ex.GetType().Name == "AutoMapperMappingException")
+                {
+                    _diagnosticContext.SetException(new NotImplementedException(ex.ToString()));
+                }
+                else
+                {
+                    _diagnosticContext.SetException(ex);
+                }
+
+                context.Response.Body = newBodyStream;
+
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+                await context.HandleInternalServerError();
+            }
         }
 
         var responseBody = context.Response.Body.CanRead
             ? await context.Response.ReadBodyAsync()
             : await newBodyStream.ReadAsync(context.Response.UseGzip());
 
-        _diagnosticContext.Set("ResponseHeaders", context.Response.Headers);
+        context.Items.Add(LogConstants.ResponseHeaders, context.Response.Headers);
 
         if(context.Response.StatusCode >= StatusCodes.Status400BadRequest)
         {
             context.Items.Add(MapToEcsKeys.EcsResponseBody, responseBody);
-
-            _diagnosticContext.Set("ResponseBody", JObject.Parse(responseBody), true);
         }
 
         using var bodyStream = responseBody.ToMemoryStream(context.Response.UseGzip());
