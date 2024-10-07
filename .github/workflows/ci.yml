@@ -3,12 +3,26 @@ name: continuous integration
 on:
   push:
     paths:
+      - src/**
       - features/**
       - .github/workflows/ci.yml
   workflow_dispatch:
+    inputs:
+      publishType:
+        description: wat moet worden gereleased?
+        required: true
+        default: 'ci-only'
+        type: choice
+        options:
+          - ci-only
+          - app
 
 env:
   NODE_VERSION: '20'
+  DOTNET_SOLUTION_FILE_PATH: src/PersonenDataService.sln
+  APP_PROJECT_PATH: ./src/Bewoning.Data.Service
+  APP_CSPROJ_FILE_PATH: ./src/Bewoning.Data.Service/Bewoning.Data.Service.csproj
+  APP_CONTAINER_IMAGE: ghcr.io/brp-api/bewoning-data-service
 
 jobs:
   validate:
@@ -16,6 +30,23 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Genereer build run identifier
+        id: build-run-id
+        uses: ./.github/actions/genereer-build-run-identifier
+
+      - name: Zet versie met build run in App csproj
+        uses: ./.github/actions/zet-versie-met-build-run-in-csproj
+        id: app-version
+        with:
+          path-csproj-file: ${{ env.APP_CSPROJ_FILE_PATH }}
+          build-run: ${{ steps.build-run-id.outputs.build-run }}
+
+      - name: Valideer .NET solution
+        uses: ./.github/actions/valideer-dotnet-solution
+        with:
+          path-solution-file: ${{ env.DOTNET_SOLUTION_FILE_PATH }} 
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -23,19 +54,43 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Zet run permissions op script folder
+        uses: ./.github/actions/zet-run-bash-scripts-permission
+        with:
+          path-bash-file-or-folder: ./scripts/*
+
+      - name: Build container images
+        run: |
+          ./scripts/containers-build.sh
+
+      - name: Start containers
+        run: |
+          ./scripts/containers-start.sh ci
+      - name: Wait for DB restart
+        run: sleep 5s
+        shell: bash
+  
       - name: Run unit tests
         run: |
           ./scripts/unit-tests-verify.sh
-      - name: Validate Step Definitions
+      - name: Valideer functionele specs
         run: |
           ./scripts/specs-verify.sh
+
+      - name: Stop containers
+        if: always()
+        run: |
+          ./scripts/containers-stop.sh ci
+
       - name: Genereer test rapportage
         if: always()
         run: |
-          node ./scripts/generate-cucumber-reports.js
+          node ./scripts/generate-cucumber-reports.js ${{ steps.app-version.outputs.version }} ${{ steps.build-run-id.outputs.build-run }} ${{ github.ref_name }}
       - name: Upload test rapportage
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Reports
-          path: test-reports
+          path: |
+            test-reports
+            test-data/logs
