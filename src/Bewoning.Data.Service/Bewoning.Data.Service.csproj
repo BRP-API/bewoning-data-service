@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Bewoning.Data.Service</RootNamespace>
     <Nullable>enable</Nullable>
     <UserSecretsId>caf32bce-cb0b-4c54-bc7b-c165686bdcd1</UserSecretsId>
-	<Version>2.0.20</Version>
+  	<Version>2.0.20</Version>
 	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
