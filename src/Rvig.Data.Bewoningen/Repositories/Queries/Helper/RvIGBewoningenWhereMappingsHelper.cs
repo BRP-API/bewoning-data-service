@@ -21,10 +21,10 @@ public class RvIGBewoningenWhereMappingsHelper : RvIGBaseWhereMappingsHelper
 		["vb.aangifte_adreshouding_oms as vb_aangifte_adreshouding_oms"] = nameof(bewoning_bewoner.vb_aangifte_adreshouding_oms),
 		["vb.adres_functie as vb_adres_functie"] = nameof(bewoning_bewoner.vb_adres_functie),
 		["COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum) as huidig_start_adres_datum"] = nameof(bewoning_bewoner.vb_adreshouding_start_datum),
-		["lead(COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum)) over (PARTITION BY vb.pl_id order by vb.pl_id) as vorige_start_adres_datum"] = nameof(bewoning_bewoner.vorige_start_adres_datum),
-		["lag(COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum)) over (PARTITION BY vb.pl_id order by vb.pl_id) as volgende_start_adres_datum"] = nameof(bewoning_bewoner.volgende_start_adres_datum),
+		//["lead(COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum)) over (PARTITION BY vb.pl_id order by vb.pl_id) as vorige_start_adres_datum"] = nameof(bewoning_bewoner.vorige_start_adres_datum),
+		//["lag(COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum)) over (PARTITION BY vb.pl_id order by vb.pl_id) as volgende_start_adres_datum"] = nameof(bewoning_bewoner.volgende_start_adres_datum),
 		["adres.verblijf_plaats_ident_code as adres_verblijf_plaats_ident_code"] = nameof(bewoning_bewoner.adres_verblijf_plaats_ident_code),
-		["lead(adres.verblijf_plaats_ident_code) over (PARTITION BY vb.pl_id order by vb.pl_id) as vorige_adres_verblijf_plaats_ident_code"] = nameof(bewoning_bewoner.vorige_adres_verblijf_plaats_ident_code),
+		//["lead(adres.verblijf_plaats_ident_code) over (PARTITION BY vb.pl_id order by vb.pl_id) as vorige_adres_verblijf_plaats_ident_code"] = nameof(bewoning_bewoner.vorige_adres_verblijf_plaats_ident_code),
 		["adres.nummer_aand_ident_code as adres_nummer_aand_ident_code"] = nameof(bewoning_bewoner.adres_nummer_aand_ident_code),
 	};
 

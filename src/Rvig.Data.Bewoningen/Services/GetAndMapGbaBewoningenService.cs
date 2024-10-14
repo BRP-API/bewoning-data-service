@@ -55,7 +55,15 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 	/// <param name="getBewoningDataObjectFunc"></param>
 	/// <param name="getMappedBewoningObjectFunc"></param>
 	/// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
-	private async Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)> GetMappedBewoningen(string identificatie, bool checkAuthorization, Func<string, Task<DbBewoningWrapper?>> getBewoningDataObjectFunc, Func<List<(bewoning_bewoner, long)>, List<(bewoning_bewoner, long)>, string?, DateTime?, DateTime?, DateTime?, GbaBewoning?> getMappedBewoningObjectFunc, DateTime? peildatum = null, DateTime? van = null, DateTime? tot = null)
+	private async Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)> GetMappedBewoningen(
+		string identificatie, 
+		bool checkAuthorization, 
+		Func<string, Task<DbBewoningWrapper?>> getBewoningDataObjectFunc, 
+		Func<List<(bewoning_bewoner, long)>, List<(bewoning_bewoner, long)>, string?, DateTime?, DateTime?, DateTime?,GbaBewoning?> getMappedBewoningObjectFunc, 
+		DateTime? peildatum = null,
+		DateTime? van = null,
+		DateTime? tot = null
+		)
 	{
 		Afnemer afnemer = new();
 		if (checkAuthorization)

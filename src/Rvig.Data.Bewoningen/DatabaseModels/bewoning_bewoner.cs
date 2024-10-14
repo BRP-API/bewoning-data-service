@@ -18,7 +18,8 @@ public record bewoning_bewoner
 	[RubriekCategory(8), RubriekElement("83.30")] public int? vb_onderzoek_eind_datum { get; set; }
 	[RubriekCategory(8), RubriekElement("11.80")] public string? adres_verblijf_plaats_ident_code { get; set; }
 	[RubriekCategory(8), RubriekElement("11.80")] public string? vorige_adres_verblijf_plaats_ident_code { get; set; }
-	[RubriekCategory(8), RubriekElement("11.90")] public string? adres_nummer_aand_ident_code { get; set; }
+    [RubriekCategory(8), RubriekElement("11.80")] public string? volgende_adres_verblijf_plaats_ident_code { get; set; }
+    [RubriekCategory(8), RubriekElement("11.90")] public string? adres_nummer_aand_ident_code { get; set; }
 	[RubriekCategory(8), RubriekElement("72.10")] public string? vb_aangifte_adreshouding_oms { get; set; }
 	[AlwaysAuthorized] public short vb_volg_nr { get; set; }
 }

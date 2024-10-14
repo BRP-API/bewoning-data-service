@@ -53,7 +53,14 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 	/// <param name="identificatie"></param>
 	/// <param name="getBewoningenFunc"></param>
 	/// <returns></returns>
-	private static async Task<(GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode)> GetBewoningenMedebewonersBase(string? identificatie, Func<string, bool, DateTime?, DateTime?, DateTime?, Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)>> getBewoningenFunc, bool checkAuthorization, DateTime? peildatum = null, DateTime? van = null, DateTime? tot = null)
+	private static async Task<(GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode)> GetBewoningenMedebewonersBase(
+		string? identificatie, 
+		Func<string, bool, DateTime?, DateTime?, DateTime?, Task<(IEnumerable<GbaBewoning> bewoningen, 
+		int afnemerCode)>> getBewoningenFunc, 
+		bool checkAuthorization, 
+		DateTime? peildatum = null, 
+		DateTime? van = null, 
+		DateTime? tot = null)
 	{
 		// Validation
 		if (string.IsNullOrEmpty(identificatie))

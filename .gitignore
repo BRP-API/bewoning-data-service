@@ -3,6 +3,9 @@ node_modules
 
 test-reports
 
+# Ignore test-data/logs
+test-data/logs
+
 c*.suo
 *.user
 
