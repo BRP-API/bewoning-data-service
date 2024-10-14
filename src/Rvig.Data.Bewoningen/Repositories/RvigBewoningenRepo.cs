@@ -50,7 +50,7 @@ public class RvigBewoningenRepo : RvigRepoPostgresBase<bewoning_bewoner>, IRvigB
 
         foreach (var group in groupedBewoningen)
         {
-			var orderedBewoningen = group.OrderBy(r => r.vb_adreshouding_start_datum).ToList();
+			var orderedBewoningen = group.OrderByDescending(r => r.vb_volg_nr).ToList();
 
             for (int i = 0; i < orderedBewoningen.Count; i++)
             {
