@@ -33,8 +33,8 @@ public class RvigBewoningenRepo : RvigRepoPostgresBase<bewoning_bewoner>, IRvigB
 	{
 		(string where, NpgsqlParameter parameter) = BewoningenQueryHelper.CreateAdresseerbaarObjectIdentificatieWhere(adresseerbaarObjectIdentificatie);
 
-		var dynamicParameters = new DynamicParameters();
-		dynamicParameters.Add(parameter.ParameterName, parameter.Value);
+		//var dynamicParameters = new DynamicParameters();
+		//dynamicParameters.Add(parameter.ParameterName, parameter.Value);
 
 		var query = string.Format(BewoningenQueryHelper.BewonersByAoIdQuery, WhereMappings.Select(o => o.Key).Aggregate((i, j) => i + "," + j), where);
 		var command = new NpgsqlCommand(query);

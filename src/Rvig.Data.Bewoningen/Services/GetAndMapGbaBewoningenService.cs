@@ -68,9 +68,9 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 		if (dbBewoningWrapper != null && !string.IsNullOrWhiteSpace(dbBewoningWrapper.verblijf_plaats_ident_code))
 		{
 			List<(bewoning_bewoner dbBewoner, long plId)> allDbBewonersPlIds = dbBewoningWrapper.Bewoners
-																							.Where(bewonerPlId => bewonerPlId.adres_verblijf_plaats_ident_code?.Equals(identificatie) == true)
-																							.Select(bewoner => (dbBewoner: bewoner, plId: bewoner.pl_id))
-																							.ToList();
+				.Where(bewonerPlId => bewonerPlId.adres_verblijf_plaats_ident_code?.Equals(identificatie) == true)
+				.Select(bewoner => (dbBewoner: bewoner, plId: bewoner.pl_id))
+				.ToList();
 
 			if (peildatum.HasValue && !van.HasValue && !tot.HasValue)
 			{
@@ -131,9 +131,9 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 			});
 
 			dates = dates.Distinct()
-							.Where(date => date.HasValue && date >= int.Parse(van.Value.ToString("yyyyMMdd")) && date <= int.Parse(tot.Value.ToString("yyyyMMdd")))
-							.OrderBy(date => date)
-							.ToList();
+				.Where(date => date.HasValue && date >= int.Parse(van.Value.ToString("yyyyMMdd")) && date <= int.Parse(tot.Value.ToString("yyyyMMdd")))
+				.OrderBy(date => date)
+				.ToList();
 
 			int lastIndex = dates.FindIndex(date => date.Equals(dates[^1]));
 			List<(List<(bewoning_bewoner dbBewoner, long plId)> bewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> mogelijkeBewonersPlIds, DateTime startDateTime, DateTime? endDateTime)> bewonerFilteringResultsWithPeriods = new();
@@ -166,7 +166,7 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 				}
 			});
 
-			if (bewoningen.Count > 1 && bewoningen.All(bewoning => bewoning.IndicatieVeelBewoners == true))
+            if (bewoningen.Count > 1 && bewoningen.TrueForAll(bewoning => bewoning.IndicatieVeelBewoners == true))
 			{
 				var bewoning = bewoningen[0];
 				bewoning.Periode = new Periode
