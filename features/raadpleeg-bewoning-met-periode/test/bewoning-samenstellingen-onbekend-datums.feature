@@ -38,7 +38,7 @@ Functionaliteit: gebeurtenissen met meerdere bewoners in periode met geheel of g
       En de persoon is vervolgens ingeschreven op adres 'volgende' met de volgende gegevens
       | gemeente van inschrijving (09.10) | datum aanvang adreshouding (10.30) |
       | 0800                              | 20230730                           |
-      Als bewoningenen wordt gezocht met de volgende parameters
+      Als bewoningen wordt gezocht met de volgende parameters
       | naam                             | waarde             |
       | type                             | BewoningMetPeriode |
       | datumVan                         | 2020-12-01         |
