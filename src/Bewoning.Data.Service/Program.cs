@@ -6,7 +6,6 @@ using Rvig.Data.Bewoningen.Mappers;
 using Rvig.Data.Bewoningen.Repositories;
 using Rvig.Data.Bewoningen.Services;
 using Rvig.HaalCentraalApi.Bewoningen.Interfaces;
-using Rvig.HaalCentraalApi.Bewoning.Validation.RequestModelValidators;
 using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 using Microsoft.AspNetCore.Builder;
 
