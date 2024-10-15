@@ -141,3 +141,4 @@ jobs:
             ${{ env.APP_CONTAINER_IMAGE }}:latest
             ${{ env.APP_CONTAINER_IMAGE }}:${{ steps.app-version.outputs.version }}-latest
             ${{ env.APP_CONTAINER_IMAGE }}:${{ steps.app-version.outputs.version }}-${{ steps.build-run-id.outputs.build-run }}
+            ${{ env.APP_CONTAINER_IMAGE }}:${{ github.sha }}
