@@ -14,6 +14,8 @@ using Rvig.HaalCentraalApi.Shared.Util;
 using System.Globalization;
 using Rvig.Data.Base.Postgres.Helpers;
 using Rvig.Data.Base.Services;
+using Rvig.HaalCentraalApi.Bewoningen.RequestModels.Bewoning;
+using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 
 namespace Rvig.Data.Bewoningen.Services;
 public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMapGbaBewoningenService
@@ -32,16 +34,43 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 		_domeinTabellenHelper = domeinTabellenHelper;
 	}
 
-	/// <summary>
-	/// This method is a base class for both GetBewoningen and GetMedebewoners. They both use strings in a data get action but the strings are different so the given func is unique to the operation.
-	/// The result however is the same as well as the mapping.
-	/// </summary>
-	public Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)> GetBewoningen(string adresseerbaarObjectIdentificatie, bool checkAuthorization, DateTime? peildatum = null, DateTime? van = null, DateTime? tot = null)
-	{
-		return GetMappedBewoningen(adresseerbaarObjectIdentificatie, checkAuthorization, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, peildatum, van, tot);
-	}
+    /// <summary>
+    /// This method is a base class for both GetBewoningen and GetMedebewoners.
+    /// </summary>
+	/// <param name="query"></param>
+	/// <param name="checkAuthorization"></param>
+	/// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
+    public async Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)> GetBewoningen(BewoningenQuery query, bool checkAuthorization)
+    {
+		string identificatie;
+		DateTime? peildatum;
+		DateTime? van;
+		DateTime? tot;
 
-	public async Task<GbaBewoningenQueryResponse> GetMedebewoners(string burgerservicenummer, DateTime? peildatum = null, DateTime? van = null, DateTime? tot = null)
+		(IEnumerable<GbaBewoning> bewoningen, int afnemerCode) mappedBewoningen;
+
+        switch (query)
+        {
+            case BewoningMetPeildatum peildatumModel:
+				identificatie = peildatumModel.adresseerbaarObjectIdentificatie!;
+				peildatum = DatumValidator.ValidateAndParseDate(peildatumModel.peildatum, nameof(peildatumModel.peildatum));
+				mappedBewoningen = await GetMappedBewoningen(identificatie, checkAuthorization, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, peildatum, null, null);
+				break;
+			case BewoningMetPeriode periodeModel:
+                identificatie = periodeModel.adresseerbaarObjectIdentificatie!;
+                van = DatumValidator.ValidateAndParseDate(periodeModel.datumVan, nameof(periodeModel.datumVan));
+                tot = DatumValidator.ValidateAndParseDate(periodeModel.datumTot, nameof(periodeModel.datumTot));
+                mappedBewoningen = await GetMappedBewoningen(identificatie, checkAuthorization, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, null, van, tot);
+                break;
+            default:
+                throw new ArgumentException("Onbekend type query.");
+        }
+
+		return mappedBewoningen;
+
+    }
+
+    public async Task<GbaBewoningenQueryResponse> GetMedebewoners(string burgerservicenummer, DateTime? peildatum = null, DateTime? van = null, DateTime? tot = null)
 	{
 		var mappedObjects = await GetMappedBewoningenWithMedeBewoners(burgerservicenummer, _dbBewoningenRepo.GetMedebewoners, _bewoningenMapper.MapMedebewoner);
 
@@ -375,4 +404,6 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 		// It is impossible to have an empty or null array of bsns because the API request models already validate this and reject all non valid values.
 		return historyObjects.Where(x => x != null);
 	}
+
+    
 }
