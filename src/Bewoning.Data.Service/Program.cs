@@ -18,7 +18,9 @@ var servicesDictionary = new Dictionary<Type, Type>
 	{ typeof(IGetAndMapGbaBewoningenService), typeof(GetAndMapGbaBewoningenService) },
 
 	// API
-	{ typeof(IGbaBewoningenApiService), typeof(GbaBewoningenApiService) }
+	{ typeof(IGbaBewoningenApiService), typeof(GbaBewoningenApiService) },
+	{ typeof(IValidatieService), typeof(ValidatieService) },
+	{ typeof(IFilterService), typeof(FilterService) }
 };
 
 var validatorList = new List<Type>
