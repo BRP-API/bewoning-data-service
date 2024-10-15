@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Rvig.HaalCentraalApi.Bewoningen.RequestModels.Bewoning;
 
-namespace Rvig.HaalCentraalApi.Bewoning.Validation.RequestModelValidators;
+namespace Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 
 public class BewoningMetPeildatumValidator : HaalCentraalBewoningBaseValidator<BewoningMetPeildatum>
 {
@@ -15,6 +15,7 @@ public class BewoningMetPeildatumValidator : HaalCentraalBewoningBaseValidator<B
 		RuleFor(x => x.peildatum)
 			.Cascade(CascadeMode.Stop)
 			.NotEmpty().WithMessage(_requiredErrorMessage)
+            .Must((model, peildatum) => DatumValidator.ValidateAndParseDate(peildatum, "peildatum") != null)
 			.Matches(_datePattern).WithMessage(_dateErrorMessage);
 	}
 }

@@ -10,7 +10,7 @@ using Rvig.HaalCentraalApi.Shared.Exceptions;
 using Rvig.HaalCentraalApi.Shared.ApiModels.Universal;
 using Microsoft.Extensions.Options;
 using Rvig.HaalCentraalApi.Shared.Options;
-using System.Globalization;
+using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 
 namespace Rvig.HaalCentraalApi.Bewoningen.Services;
 public interface IGbaBewoningenApiService
@@ -20,14 +20,14 @@ public interface IGbaBewoningenApiService
 
 public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthorization, IGbaBewoningenApiService
 {
-	protected IGetAndMapGbaBewoningenService _getAndMapBewoningenService;
+	protected IGetAndMapGbaBewoningenService _bewoningenService;
 
 	protected override BewoningenFieldsSettings _fieldsSettings => new();
 
 	public GbaBewoningenApiService(IGetAndMapGbaBewoningenService getAndMapBewoningenService, IDomeinTabellenRepo domeinTabellenRepo, IProtocolleringService protocolleringService, ILoggingHelper loggingHelper, IOptions<ProtocolleringAuthorizationOptions> protocolleringAuthorizationOptions)
 		: base(domeinTabellenRepo, protocolleringService, loggingHelper, protocolleringAuthorizationOptions)
 	{
-		_getAndMapBewoningenService = getAndMapBewoningenService;
+        _bewoningenService = getAndMapBewoningenService;
 	}
 
 	/// <summary>
@@ -40,8 +40,8 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 	{
 		return model switch
 		{
-			BewoningMetPeildatum bewoningMetPeildatum => await GetBewoningen(bewoningMetPeildatum),
-			BewoningMetPeriode bewoningMetPeriode => await GetBewoningen(bewoningMetPeriode),
+			BewoningMetPeildatum bewoningMetPeildatum => await GetBewoningen(nameof(BewoningMetPeildatum), bewoningMetPeildatum),
+			BewoningMetPeriode bewoningMetPeriode => await GetBewoningen(nameof(BewoningMetPeriode), bewoningMetPeriode),
 			_ => throw new CustomInvalidOperationException($"Onbekend type query: {model}"),
 		};
 	}
@@ -90,40 +90,82 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 		return (bewoningenResponse, afnemerCode);
 	}
 
-	private async Task<(GbaBewoningenQueryResponse bewoningenResponse, List<long>? plIds)> GetBewoningen(BewoningMetPeildatum model)
+    private async Task<(GbaBewoningenQueryResponse bewoningenResponse, List<long>? plIds)> GetBewoningen(string modelType, BewoningenQuery model)
     {
-        ValidatePeildatum(model, out var peildatumDateTime);
+        string? adresseerbaarObjectIdentificatie = null;
+        DateTime? peildatum = null;
+        DateTime? datumVan = null;
+        DateTime? datumTot = null;
 
-		(GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode) = await GetGbaBewoningen(model, peildatumDateTime);
+        switch (modelType)
+        {
+            case nameof(BewoningMetPeildatum):
+                var bewoningMetPeildatum = (BewoningMetPeildatum)model;
+
+                var peildatumValidator = new BewoningMetPeildatumValidator();
+                var peildatumValidationResult = peildatumValidator.Validate(bewoningMetPeildatum);
+
+                if (!peildatumValidationResult.IsValid)
+                {
+                    throw new InvalidParamsException(peildatumValidationResult.Errors.Select(e => new InvalidParams { Code = "validation", Name = e.PropertyName, Reason = e.ErrorMessage }).ToList());
+                }
+
+                peildatum = DatumValidator.ValidateAndParseDate(bewoningMetPeildatum.peildatum, "peildatum");
+                adresseerbaarObjectIdentificatie = bewoningMetPeildatum.adresseerbaarObjectIdentificatie;
+                break;
+
+            case nameof(BewoningMetPeriode):
+                var bewoningMetPeriode = (BewoningMetPeriode)model;
+
+                var periodeValidator = new BewoningMetPeriodeValidator();
+                var periodeValidationResult = periodeValidator.Validate(bewoningMetPeriode);
+
+                if (!periodeValidationResult.IsValid)
+                {
+                    throw new InvalidParamsException(periodeValidationResult.Errors.Select(e => new InvalidParams { Code = "validation", Name = e.PropertyName, Reason = e.ErrorMessage }).ToList());
+                }
+
+                datumVan = DatumValidator.ValidateAndParseDate(bewoningMetPeriode.datumVan, "datumVan");
+                datumTot = DatumValidator.ValidateAndParseDate(bewoningMetPeriode.datumTot, "datumTot");
+                adresseerbaarObjectIdentificatie = bewoningMetPeriode.adresseerbaarObjectIdentificatie;
+                break;
+
+            default:
+                throw new ArgumentException("Onbekend type query");
+        }
+
+        (GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode) = await GetGbaBewoningen(adresseerbaarObjectIdentificatie, peildatum, datumVan, datumTot);
 
         var plIds = new List<long>();
 
         if (bewoningenResponse?.Bewoningen?.Any() == true)
         {
-            FilterResponseByPeildatumAndFields(peildatumDateTime, bewoningenResponse);
+            if (peildatum.HasValue)
+            {
+                FilterResponseByPeildatumAndFields(peildatum.Value, bewoningenResponse);
+            }
+            else if (datumVan.HasValue && datumTot.HasValue)
+            {
+                FilterResponseByDateAndFields(datumVan.Value, datumTot.Value, bewoningenResponse);
+            }
+
             plIds = await LogAllBewoningenForProtocollering(bewoningenResponse, afnemerCode);
         }
 
         return (bewoningenResponse ?? new GbaBewoningenQueryResponse { Bewoningen = new List<GbaBewoning>() }, plIds);
     }
 
-
-    private async Task<(GbaBewoningenQueryResponse bewoningenResponse, List<long>? plIds)> GetBewoningen(BewoningMetPeriode model)
-	{
-		ValidatePeriode(model, out var datumVanDateTime, out var datumTotDateTime);
-
-		(GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode) = await GetGbaBewoningen(model, datumVanDateTime, datumTotDateTime);
-
-		var plIds = new List<long>();
-
-		if (bewoningenResponse?.Bewoningen?.Any() == true)
-        {
-            FilterResponseByDateAndFields(datumVanDateTime, datumTotDateTime, bewoningenResponse);
-            plIds = await LogAllBewoningenForProtocollering(bewoningenResponse, afnemerCode);
-        }
-
-        return (bewoningenResponse ?? new GbaBewoningenQueryResponse { Bewoningen = new List<GbaBewoning>() }, plIds);
-	}
+    private async Task<(GbaBewoningenQueryResponse, int)> GetGbaBewoningen(string? identificatie, DateTime? peildatum, DateTime? datumVan, DateTime? datumTot)
+    {
+        return await GetBewoningenMedebewonersBase(
+            identificatie,
+            _bewoningenService.GetBewoningen,
+            _protocolleringAuthorizationOptions.Value.UseAuthorizationChecks,
+            peildatum,
+            datumVan,
+            datumTot
+        );
+    }
 
     private async Task<List<long>?> LogAllBewoningenForProtocollering(GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode)
     {
@@ -170,48 +212,5 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 			bewoningenResponse.Bewoningen!, 
 			$"{nameof(GbaBewoning.Periode)}.{nameof(Periode.DatumVan)}", 
 			$"{nameof(GbaBewoning.Periode)}.{nameof(Periode.DatumTot)}");
-    }
-
-    private async Task<(GbaBewoningenQueryResponse, int)> GetGbaBewoningen(BewoningMetPeriode model, DateTime datumVanDateTime, DateTime datumTotDateTime)
-	{
-		return await GetBewoningenMedebewonersBase(model.adresseerbaarObjectIdentificatie,
-						_getAndMapBewoningenService.GetBewoningen,
-						_protocolleringAuthorizationOptions.Value.UseAuthorizationChecks,
-						null,
-						datumVanDateTime,
-						datumTotDateTime);
-	}
-
-    private async Task<(GbaBewoningenQueryResponse, int)> GetGbaBewoningen(BewoningMetPeildatum model, DateTime peildatumDateTime)
-    {
-        return await GetBewoningenMedebewonersBase(model.adresseerbaarObjectIdentificatie,
-                        _getAndMapBewoningenService.GetBewoningen,
-                        _protocolleringAuthorizationOptions.Value.UseAuthorizationChecks,
-                        peildatumDateTime,
-                        null,
-                        null);
-    }
-
-    private static void ValidatePeriode(BewoningMetPeriode model, out DateTime datumVanDateTime, out DateTime datumTotDateTime)
-	{
-		if (!DateTime.TryParse(model.datumVan, CultureInfo.CurrentCulture, DateTimeStyles.None, out datumVanDateTime))
-		{
-			throw new InvalidParamsException(new List<InvalidParams> { new() { Code = "date", Name = "datumVan", Reason = "Waarde is geen geldige datum." } });
-		}
-		else if (!DateTime.TryParse(model.datumTot, CultureInfo.CurrentCulture, DateTimeStyles.None, out datumTotDateTime))
-		{
-			throw new InvalidParamsException(new List<InvalidParams> { new() { Code = "date", Name = "datumTot", Reason = "Waarde is geen geldige datum." } });
-		}
-		else if (datumVanDateTime >= datumTotDateTime)
-		{
-			throw new InvalidParamsException(new List<InvalidParams> { new() { Code = "date", Name = "datumTot", Reason = "datumTot moet na datumVan liggen." } });
-		}
-	}
-    private static void ValidatePeildatum(BewoningMetPeildatum model, out DateTime peildatumDateTime)
-    {
-        if (!DateTime.TryParse(model.peildatum, CultureInfo.CurrentCulture, DateTimeStyles.None, out peildatumDateTime))
-        {
-            throw new InvalidParamsException(new List<InvalidParams> { new() { Code = "date", Name = "peildatum", Reason = "Waarde is geen geldige datum." } });
-        }
     }
 }

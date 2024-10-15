@@ -2,7 +2,7 @@
 using Rvig.HaalCentraalApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.HaalCentraalApi.Shared.Validation.RequestModelValidators;
 
-namespace Rvig.HaalCentraalApi.Bewoning.Validation.RequestModelValidators;
+namespace Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 
 public class HaalCentraalBewoningBaseValidator<T> : HaalCentraalBaseValidator<T> where T : BewoningenQuery
 {
