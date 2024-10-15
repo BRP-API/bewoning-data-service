@@ -13,9 +13,9 @@ namespace Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators
                 return dateValue;
             }
             throw new InvalidParamsException(new List<InvalidParams>
-        {
-            new() { Code = "date", Name = fieldName, Reason = "Waarde is geen geldige datum." }
-        });
+            {
+                new() { Code = "date", Name = fieldName, Reason = "Waarde is geen geldige datum." }
+            });
         }
     }
 }
