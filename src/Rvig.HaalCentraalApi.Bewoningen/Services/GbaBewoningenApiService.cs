@@ -49,41 +49,17 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
         _validatieService.ValideerModel(model);
 
         var plIds = new List<long>();
-        var useAuthorizationChecks = _protocolleringAuthorizationOptions.Value.UseAuthorizationChecks;
-        var useProtocollering = _protocolleringAuthorizationOptions.Value.UseProtocollering;
 
-        (var bewoningen, int afnemerCode) = await _bewoningenService.GetBewoningen(model, useAuthorizationChecks);
+        var bewoningen = await _bewoningenService.GetBewoningen(model);
 
         var response = new GbaBewoningenQueryResponse { Bewoningen = bewoningen.ToList() };
 
-        if(useProtocollering)
-        {
-            plIds = await LogAllBewoningenForProtocollering(response, afnemerCode);
-        }
-
         _filterService.FilterResponse(model, response);
 
-        return (response, plIds);
-    }
-
-    private async Task<List<long>?> LogAllBewoningenForProtocollering(GbaBewoningenQueryResponse bewoningenResponse, int afnemerCode)
-    {
-        List<long>? plIds;
-        IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(bewoningenResponse);
+        IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(response);
         plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
 
-        if (_protocolleringAuthorizationOptions.Value.UseProtocollering)
-        {
-            await LogProtocolleringInDb(afnemerCode,
-                allBewonersForProtocollering?
-                .Select(x => x.plId)
-                .Distinct()
-                .ToList(),
-                new List<string> { "081030", "081180", "081320" },
-                new List<string> { "010120" });
-        }
-
-        return plIds;
+        return (response, plIds);
     }
 
     private static IEnumerable<(GbaBewoner gbaBewoner, long plId)>? GetAllBewonersForProtocollering(GbaBewoningenQueryResponse bewoningenResponse)

@@ -12,8 +12,6 @@ using Rvig.HaalCentraalApi.Shared.Exceptions;
 using Rvig.HaalCentraalApi.Shared.Interfaces;
 using Rvig.HaalCentraalApi.Shared.Util;
 using System.Globalization;
-using Rvig.Data.Base.Postgres.Helpers;
-using Rvig.Data.Base.Services;
 using Rvig.HaalCentraalApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 
@@ -22,16 +20,17 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 {
 	private readonly IRvigBewoningenRepo _dbBewoningenRepo;
 	private readonly IRvIGDataBewoningenMapper _bewoningenMapper;
-	private readonly IDomeinTabellenHelper _domeinTabellenHelper;
 
-	public GetAndMapGbaBewoningenService(IAutorisationRepo autorisationRepo, IRvigBewoningenRepo dbPersoonRepo, IRvIGDataBewoningenMapper bewoningenMapper,
-		IHttpContextAccessor httpContextAccessor, IProtocolleringService protocolleringService, IDomeinTabellenHelper domeinTabellenHelper
-		)
+	public GetAndMapGbaBewoningenService(
+		IAutorisationRepo autorisationRepo, 
+		IRvigBewoningenRepo dbPersoonRepo, 
+		IRvIGDataBewoningenMapper bewoningenMapper,
+		IHttpContextAccessor httpContextAccessor,
+		IProtocolleringService protocolleringService)
 		: base(httpContextAccessor, autorisationRepo, protocolleringService)
 	{
 		_dbBewoningenRepo = dbPersoonRepo;
 		_bewoningenMapper = bewoningenMapper;
-		_domeinTabellenHelper = domeinTabellenHelper;
 	}
 
     /// <summary>
@@ -40,27 +39,27 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 	/// <param name="query"></param>
 	/// <param name="checkAuthorization"></param>
 	/// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
-    public async Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)> GetBewoningen(BewoningenQuery query, bool checkAuthorization)
+    public async Task<IEnumerable<GbaBewoning>> GetBewoningen(BewoningenQuery query)
     {
 		string identificatie;
 		DateTime? peildatum;
 		DateTime? van;
 		DateTime? tot;
 
-		(IEnumerable<GbaBewoning> bewoningen, int afnemerCode) mappedBewoningen;
+		IEnumerable<GbaBewoning> mappedBewoningen;
 
         switch (query)
         {
             case BewoningMetPeildatum peildatumModel:
 				identificatie = peildatumModel.adresseerbaarObjectIdentificatie!;
 				peildatum = DatumValidator.ValidateAndParseDate(peildatumModel.peildatum, nameof(peildatumModel.peildatum));
-				mappedBewoningen = await GetMappedBewoningen(identificatie, checkAuthorization, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, peildatum, null, null);
+				mappedBewoningen = await GetMappedBewoningen(identificatie, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, peildatum, null, null);
 				break;
 			case BewoningMetPeriode periodeModel:
                 identificatie = periodeModel.adresseerbaarObjectIdentificatie!;
                 van = DatumValidator.ValidateAndParseDate(periodeModel.datumVan, nameof(periodeModel.datumVan));
                 tot = DatumValidator.ValidateAndParseDate(periodeModel.datumTot, nameof(periodeModel.datumTot));
-                mappedBewoningen = await GetMappedBewoningen(identificatie, checkAuthorization, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, null, van, tot);
+                mappedBewoningen = await GetMappedBewoningen(identificatie, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, null, van, tot);
                 break;
             default:
                 throw new ArgumentException("Onbekend type query.");
@@ -84,9 +83,8 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 	/// <param name="getBewoningDataObjectFunc"></param>
 	/// <param name="getMappedBewoningObjectFunc"></param>
 	/// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
-	private async Task<(IEnumerable<GbaBewoning> bewoningen, int afnemerCode)> GetMappedBewoningen(
+	private async Task<IEnumerable<GbaBewoning>> GetMappedBewoningen(
 		string identificatie, 
-		bool checkAuthorization, 
 		Func<string, Task<DbBewoningWrapper?>> getBewoningDataObjectFunc, 
 		Func<List<(bewoning_bewoner, long)>, List<(bewoning_bewoner, long)>, string?, DateTime?, DateTime?, DateTime?,GbaBewoning?> getMappedBewoningObjectFunc, 
 		DateTime? peildatum = null,
@@ -94,11 +92,6 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 		DateTime? tot = null
 		)
 	{
-		Afnemer afnemer = new();
-		if (checkAuthorization)
-		{
-			afnemer = GetAfnemer();
-		}
 		List<GbaBewoning> bewoningen = new();
 		var dbBewoningWrapper = await getBewoningDataObjectFunc(identificatie);
 
@@ -121,7 +114,6 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 				int.Parse(tot!.Value.ToString("yyyyMMdd"))
 			};
 
-			// Filter away all previous iterations of the same address because of date period collection. These bewoners will still be necessary for usage for authorisation.
 			var allDbBewonersPlIdsFiltered = allDbBewonersPlIds
 				.GroupBy(bewonerPlId => bewonerPlId.dbBewoner.pl_id)
 				.SelectMany(bewonerPlIdGroup =>
@@ -185,12 +177,8 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
 					allDbBewonersPlIds = RemoveBewonersWithActiveSpecificInOnderzoek(allDbBewonersPlIds, startDateTime, endDateTime);
 
-					// peildatum are null here most likely.
 					(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) = GetBewonersAndMogelijkeBewoners(allDbBewonersPlIds, peildatum, startDateTime, endDateTime);
-					if (checkAuthorization)
-					{
-						await ThrowUnauthorizedExceptionIfNotAuthorized(dbBewonersPlIds.Select(bewonerPlId => bewonerPlId.dbBewoner).Concat(dbMogelijkeBewonersPlIds.Select(bewonerPlId => bewonerPlId.dbBewoner)).Distinct().ToList(), afnemer);
-					}
+					
 					bewonerFilteringResultsWithPeriods.Add((bewonersPlIds: dbBewonersPlIds, mogelijkeBewonersPlIds: dbMogelijkeBewonersPlIds, startDateTime, endDateTime));
 				}
 			}
@@ -216,9 +204,10 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
 			bewoningen = MergeDuplicateBewoningenWithCoincidingPeriods(bewoningen);
 
-			return (bewoningen.Distinct(), afnemer.Afnemerscode);
+			return bewoningen.Distinct();
 		}
-		return new();
+		
+		return bewoningen;
 	}
 
 	/// <summary>
@@ -244,84 +233,58 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 	}
 
 	private static List<GbaBewoning> MergeDuplicateBewoningenWithCoincidingPeriods(List<GbaBewoning> bewoningen)
-	{
-		// Sort the list by the start date of the periods in ascending order.
-		bewoningen = bewoningen.OrderBy(item => item.Periode?.DatumVan).ToList();
+    {
+        // Sort the list by the start date of the periods in ascending order.
+        bewoningen = bewoningen.OrderBy(item => item.Periode?.DatumVan).ToList();
 
-		List<GbaBewoning> mergedList = new();
-		GbaBewoning? current = null;
+        List<GbaBewoning> mergedList = new();
+        GbaBewoning? current = null;
 
-		bewoningen.ForEach(item =>
-		{
-			if (current == null)
-			{
-				current = item;
-			}
-			else if (current.Bewoners != null && item.Bewoners != null && current.Bewoners.SequenceEqual(item.Bewoners)
-			&& current.MogelijkeBewoners != null && item.MogelijkeBewoners != null && current.MogelijkeBewoners.SequenceEqual(item.MogelijkeBewoners)
-			&& current.Periode?.DatumTot == item.Periode?.DatumVan)
-			{
-				// Merge the periods by updating the end date.
-				if (current.Periode != null)
-				{
-					current.Periode.DatumTot = item.Periode?.DatumTot;
-				}
-				else
-				{
-					current.Periode = new Periode
-					{
-						DatumTot = item.Periode?.DatumTot
-					};
-				}
-			}
-			else
-			{
-				// Add the current item to the merged list and update the current item.
-				mergedList.Add(current);
-				current = item;
-			}
-		});
+        bewoningen.ForEach(item =>
+        {
+            if (current == null)
+            {
+                current = item;
+            }
+            else if (current.Bewoners != null && item.Bewoners != null && current.Bewoners.SequenceEqual(item.Bewoners)
+            && current.MogelijkeBewoners != null && item.MogelijkeBewoners != null && current.MogelijkeBewoners.SequenceEqual(item.MogelijkeBewoners)
+            && current.Periode?.DatumTot == item.Periode?.DatumVan)
+            {
+                // Merge the periods by updating the end date.
+                if (current.Periode != null)
+                {
+                    current.Periode.DatumTot = item.Periode?.DatumTot;
+                }
+                else
+                {
+                    current.Periode = new Periode
+                    {
+                        DatumTot = item.Periode?.DatumTot
+                    };
+                }
+            }
+            else
+            {
+                // Add the current item to the merged list and update the current item.
+                mergedList.Add(current);
+                current = item;
+            }
+        });
 
-		// Add the last item to the merged list.
-		if (current != null)
-		{
-			mergedList.Add(current);
-		}
+		if (current is null) return mergedList;
+        mergedList.Add(current);
+        return mergedList;
+    }
 
-		return mergedList;
-	}
-
-	private async Task ThrowUnauthorizedExceptionIfNotAuthorized(List<bewoning_bewoner> bewoners, Afnemer afnemer)
-	{
-		List<(bewoning_bewoner dbBewoner, short? nieuwGemeenteCode)> dbBewonersNewCodes = new();
-
-		foreach (var bewoner in bewoners)
-		{
-			var nieuweGemeenteCodeDbBewonerPlId = await _domeinTabellenHelper.GetNewGemeenteCode(bewoner.vb_inschrijving_gemeente_code);
-			short? nieuweGemeenteCodeAsShort = null;
-			if (nieuweGemeenteCodeDbBewonerPlId.HasValue)
-			{
-				nieuweGemeenteCodeAsShort = (short)nieuweGemeenteCodeDbBewonerPlId;
-			}
-			dbBewonersNewCodes.Add((dbBewoner: bewoner, nieuwGemeenteCode: nieuweGemeenteCodeAsShort));
-		}
-
-		// Rule 1: Een gemeente als afnemer is geautoriseerd voor het vragen van bewoning waarbij voor elke gevonden verblijfplaats op gevraagde adresseerbaar object identificatie en binnen gevraagde periode de gemeente van inschrijving gelijk is aan de gemeentecode in de 'claim' uit de token
-		// Rule 2: Een gemeente als afnemer is geautoriseerd voor bewoning, wanneer de gemeente van inschrijving van een gevonden verblijfplaats ongelijk is aan gemeentecode in de token, maar deze gemeente van inschrijving heeft in de gemeententabel nieuwe gemeentecode (92.12) gelijk aan de gemeentecode in de token
-		if (!dbBewonersNewCodes.All(bewonerPlId => bewonerPlId.dbBewoner.vb_inschrijving_gemeente_code.Equals(afnemer.Gemeentecode) || bewonerPlId.nieuwGemeenteCode.Equals(afnemer.Gemeentecode)))
-		{
-			throw new UnauthorizedException("U bent niet geautoriseerd voor deze vraag.", "Je mag alleen bewoning van adresseerbare objecten binnen de eigen gemeente raadplegen.");
-		}
-	}
-
-	private static (DateTime startOnzekerheidsPeriodeDateTime, DateTime endOnzekerheidsPeriodeDateTime) CreateOnzekerheidsPeriodeDateTimes(DatumOnvolledig current)
+    private static (DateTime startOnzekerheidsPeriodeDateTime, DateTime endOnzekerheidsPeriodeDateTime) CreateOnzekerheidsPeriodeDateTimes(DatumOnvolledig current)
 	{
 		DateTime startOnzekerheidPeriodeDateTime;
 		DateTime endOnzekerheidPeriodeDateTime;
 		if (!current.IsOnvolledig())
 		{
-			startOnzekerheidPeriodeDateTime = DateTime.Parse(current.Datum!);
-			endOnzekerheidPeriodeDateTime = DateTime.Parse(current.Datum!).AddDays(1);
+			DateTime.TryParse(current.Datum, CultureInfo.CurrentCulture, DateTimeStyles.None, out startOnzekerheidPeriodeDateTime);
+            DateTime.TryParse(current.Datum, CultureInfo.CurrentCulture, DateTimeStyles.None, out endOnzekerheidPeriodeDateTime);
+			endOnzekerheidPeriodeDateTime.AddDays(1);
 		}
 		else if (current.IsCompleteOnvolledig())
 		{
@@ -332,32 +295,28 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 		{
 			var startOnzekerheidPeriode = $"{current.Jaar!.Value}-01-01";
 			var endOnzekerheidPeriode = $"{current.Jaar!.Value + 1}-01-01";
-
-			startOnzekerheidPeriodeDateTime = DateTime.Parse(startOnzekerheidPeriode);
-			endOnzekerheidPeriodeDateTime = DateTime.Parse(endOnzekerheidPeriode);
-		}
+            DateTime.TryParse(startOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out startOnzekerheidPeriodeDateTime);
+            DateTime.TryParse(endOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out endOnzekerheidPeriodeDateTime);
+        }
 		else
 		{
 			var startOnzekerheidPeriode = $"{current.Jaar!.Value}-{current.Maand!.Value}-01";
 			var endOnzekerheidPeriode = $"{(current.Maand!.Value == 12 ? current.Jaar!.Value + 1 : current.Jaar!.Value)}-{(current.Maand!.Value == 12 ? 1 : current.Maand!.Value + 1)}-01";
-
-			startOnzekerheidPeriodeDateTime = DateTime.Parse(startOnzekerheidPeriode);
-			endOnzekerheidPeriodeDateTime = DateTime.Parse(endOnzekerheidPeriode);
-		}
+            DateTime.TryParse(startOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out startOnzekerheidPeriodeDateTime);
+            DateTime.TryParse(endOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out endOnzekerheidPeriodeDateTime);
+        }
 
 		return (startOnzekerheidPeriodeDateTime, endOnzekerheidPeriodeDateTime);
 	}
 
 	private (List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) GetBewonersAndMogelijkeBewoners(List<(bewoning_bewoner dbBewoner, long plId)> bewonersPlIds, DateTime? peildatum, DateTime? van, DateTime? tot)
 	{
-		foreach (var bewonerPlId in bewonersPlIds)
-		{
-			if (bewonerPlId.dbBewoner.vb_onderzoek_eind_datum.HasValue && !(bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand == 89999 || bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand == 589999))
-			{
-				bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand = null;
-			}
-		}
-		List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds;
+        foreach (var bewonerPlId in bewonersPlIds.Where(bewonerPlId => bewonerPlId.dbBewoner.vb_onderzoek_eind_datum.HasValue && !(bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand == 89999 || bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand == 589999)))
+        {
+            bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand = null;
+        }
+
+        List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds;
 		List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds;
 		if (peildatum.HasValue)
 		{
