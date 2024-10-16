@@ -26,14 +26,13 @@ namespace Rvig.Base.App;
 
 public static class RvigBaseApp
 {
-	private static string? _currentAuthenticationType;
-	/// <summary>
-	/// Init app
-	/// </summary>
-	/// <param name="servicesToConfigure">Services to add as singletons. Key is interface, value is implementation.</param>
-	/// <param name="validatorsToConfigure">Validator types of specific child app. Used for validation of post request objects.</param>
-	/// <param name="controllerAssemblies">Controller resolving in other assemblies. E.g. typeof(EntitiesController).Assembly</param>
-	public static void Init(IDictionary<Type, Type> servicesToConfigure, List<Type> validatorsToConfigure, Func<WebApplicationBuilder, bool> useAuthorizationLayerFunc, string apiName, IEnumerable<Assembly>? controllerAssemblies = null)
+    /// <summary>
+    /// Init app
+    /// </summary>
+    /// <param name="servicesToConfigure">Services to add as singletons. Key is interface, value is implementation.</param>
+    /// <param name="validatorsToConfigure">Validator types of specific child app. Used for validation of post request objects.</param>
+    /// <param name="controllerAssemblies">Controller resolving in other assemblies. E.g. typeof(EntitiesController).Assembly</param>
+    public static void Init(IDictionary<Type, Type> servicesToConfigure, List<Type> validatorsToConfigure, string apiName, IEnumerable<Assembly>? controllerAssemblies = null)
 	{
 		Log.Logger = SerilogHelpers.SetupSerilogBootstrapLogger();
 
@@ -43,7 +42,7 @@ public static class RvigBaseApp
 
 			builder.SetupSerilog(Log.Logger);
 
-			var appsettingsJsonFileName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower()?.Equals("development") == true
+			var appsettingsJsonFileName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower().Equals("development") == true
 				? "appsettings.Development.json"
 				: "appsettings.json";
 
@@ -68,18 +67,7 @@ public static class RvigBaseApp
 			// Loading validators from child app.
 			validatorsToConfigure.ForEach(validator => builder.Services.AddValidatorsFromAssemblyContaining(validator));
 
-		bool useAuthorizationChecks = true;
-		if (useAuthorizationLayerFunc != null)
-		{
-			useAuthorizationChecks = useAuthorizationLayerFunc(builder);
-		}
-
-			var authnTypes = !string.IsNullOrWhiteSpace(builder.Configuration["AuthenticationTypes"])
-				? builder.Configuration["AuthenticationTypes"]!.Split(",")
-				: new List<string>().ToArray();
-			string[] authenticationTypes = useAuthorizationChecks
-				?  authnTypes
-				: new List<string>().ToArray();
+			string[] authenticationTypes = new List<string>().ToArray();
 			builder = ConfigureAuth(builder, authenticationTypes);
 
 			// Add services to the container.
@@ -111,17 +99,6 @@ public static class RvigBaseApp
 			app.UseHsts();
 
 			app.UseRouting();
-
-			if (useAuthorizationChecks)
-			{
-				app.UseAuthentication();
-				app.UseAuthorization();
-
-				if (_currentAuthenticationType?.Equals("jwtbearer") == true)
-				{
-					app.UseMiddleware<JwtBearerWwwAuthenticateMiddleware>();
-				}
-			}
 
 			// So we can grab the POST body to validate for unknown params. See ValidateUnusableQueryParamsAttribute.cs
 			app.UseMiddleware<EnableRequestBodyBufferingMiddleware>();
@@ -164,7 +141,7 @@ public static class RvigBaseApp
 		{
 			throw new CustomInvalidOperationException("More than one authentication type was defined.");
 		}
-		_currentAuthenticationType = authenticationTypes.Single().ToLower();
+		var _currentAuthenticationType = authenticationTypes.Single().ToLower();
 
 		return _currentAuthenticationType switch
 		{
