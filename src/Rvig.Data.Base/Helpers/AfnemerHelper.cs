@@ -12,7 +12,7 @@ namespace Rvig.Data.Base.Helpers
 		{
 			int afnemerCode;
 			short gemeenteCode = 0;
-			if (AppSettingsManager.Configuration?.GetValue<string>("AuthenticationTypes")?.ToLower()?.Equals("basic") == true)
+			if (AppSettingsManager.Configuration?.GetValue<string>("AuthenticationTypes")?.ToLower().Equals("basic") == true)
 			{
 				var username = httpContextAccessor.HttpContext?.User.Identity?.Name;
 				if (username == null)
@@ -42,8 +42,8 @@ namespace Rvig.Data.Base.Helpers
 					return new Afnemer { Afnemerscode = afnemerCode };
 				}
 			}
-			else if (AppSettingsManager.Configuration?.GetValue<string>("AuthenticationTypes")?.ToLower()?.Equals("jwtbearer") == true
-				|| AppSettingsManager.Configuration?.GetValue<string>("AuthenticationTypes")?.ToLower()?.Equals("openidconnect") == true)
+			else if (AppSettingsManager.Configuration?.GetValue<string>("AuthenticationTypes")?.ToLower().Equals("jwtbearer") == true
+				|| AppSettingsManager.Configuration?.GetValue<string>("AuthenticationTypes")?.ToLower().Equals("openidconnect") == true)
 			{
 				if (!int.TryParse(httpContextAccessor.HttpContext?.User.Identity?.Name, out afnemerCode))
 				{
@@ -55,7 +55,7 @@ namespace Rvig.Data.Base.Helpers
 				// Explicit null checks is because there is different logic for the lack of a gemeenteCode.
 				// This check will validate that if there is a value then it has to be an integer.
 				if (gemeenteCodeClaim != null && !string.IsNullOrWhiteSpace(gemeenteCodeClaim.Value)
-					&& !short.TryParse(gemeenteCodeClaim?.Value?.Replace("gemeenteCode=", ""), out gemeenteCode))
+					&& !short.TryParse(gemeenteCodeClaim.Value?.Replace("gemeenteCode=", ""), out gemeenteCode))
 				{
 					throw new AuthenticationException("Integer verwacht voor gemeenteCode.");
 				}
