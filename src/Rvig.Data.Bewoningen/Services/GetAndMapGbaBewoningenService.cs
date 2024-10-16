@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Http;
 using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Base.Postgres.Repositories;
 using Rvig.Data.Base.Postgres.Services;
@@ -11,7 +12,6 @@ using Rvig.HaalCentraalApi.Bewoningen.ResponseModels.Bewoning;
 using Rvig.HaalCentraalApi.Shared.Exceptions;
 using Rvig.HaalCentraalApi.Shared.Interfaces;
 using Rvig.HaalCentraalApi.Shared.Util;
-using System.Globalization;
 using Rvig.HaalCentraalApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
 
@@ -278,38 +278,39 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
     private static (DateTime startOnzekerheidsPeriodeDateTime, DateTime endOnzekerheidsPeriodeDateTime) CreateOnzekerheidsPeriodeDateTimes(DatumOnvolledig current)
 	{
-		DateTime startOnzekerheidPeriodeDateTime;
-		DateTime endOnzekerheidPeriodeDateTime;
-		if (!current.IsOnvolledig())
-		{
-			DateTime.TryParse(current.Datum, CultureInfo.CurrentCulture, DateTimeStyles.None, out startOnzekerheidPeriodeDateTime);
-            DateTime.TryParse(current.Datum, CultureInfo.CurrentCulture, DateTimeStyles.None, out endOnzekerheidPeriodeDateTime);
-			endOnzekerheidPeriodeDateTime.AddDays(1);
-		}
-		else if (current.IsCompleteOnvolledig())
-		{
-			startOnzekerheidPeriodeDateTime = DateTime.MinValue;
-			endOnzekerheidPeriodeDateTime = DateTime.MaxValue;
-		}
-		else if (!current.Maand.HasValue)
-		{
-			var startOnzekerheidPeriode = $"{current.Jaar!.Value}-01-01";
-			var endOnzekerheidPeriode = $"{current.Jaar!.Value + 1}-01-01";
-            DateTime.TryParse(startOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out startOnzekerheidPeriodeDateTime);
-            DateTime.TryParse(endOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out endOnzekerheidPeriodeDateTime);
+        DateTime startOnzekerheidPeriodeDateTime;
+        DateTime endOnzekerheidPeriodeDateTime;
+        if (!current.IsOnvolledig())
+        {
+            startOnzekerheidPeriodeDateTime = DateTime.Parse(current.Datum!, CultureInfo.CurrentCulture);
+            endOnzekerheidPeriodeDateTime = DateTime.Parse(current.Datum!, CultureInfo.CurrentCulture).AddDays(1);
         }
-		else
-		{
-			var startOnzekerheidPeriode = $"{current.Jaar!.Value}-{current.Maand!.Value}-01";
-			var endOnzekerheidPeriode = $"{(current.Maand!.Value == 12 ? current.Jaar!.Value + 1 : current.Jaar!.Value)}-{(current.Maand!.Value == 12 ? 1 : current.Maand!.Value + 1)}-01";
-            DateTime.TryParse(startOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out startOnzekerheidPeriodeDateTime);
-            DateTime.TryParse(endOnzekerheidPeriode, CultureInfo.CurrentCulture, DateTimeStyles.None, out endOnzekerheidPeriodeDateTime);
+        else if (current.IsCompleteOnvolledig())
+        {
+            startOnzekerheidPeriodeDateTime = DateTime.MinValue;
+            endOnzekerheidPeriodeDateTime = DateTime.MaxValue;
+        }
+        else if (!current.Maand.HasValue)
+        {
+            var startOnzekerheidPeriode = $"{current.Jaar!.Value}-01-01";
+            var endOnzekerheidPeriode = $"{current.Jaar!.Value + 1}-01-01";
+
+            startOnzekerheidPeriodeDateTime = DateTime.Parse(startOnzekerheidPeriode, CultureInfo.CurrentCulture);
+            endOnzekerheidPeriodeDateTime = DateTime.Parse(endOnzekerheidPeriode, CultureInfo.CurrentCulture);
+        }
+        else
+        {
+            var startOnzekerheidPeriode = $"{current.Jaar!.Value}-{current.Maand!.Value}-01";
+            var endOnzekerheidPeriode = $"{(current.Maand!.Value == 12 ? current.Jaar!.Value + 1 : current.Jaar!.Value)}-{(current.Maand!.Value == 12 ? 1 : current.Maand!.Value + 1)}-01";
+
+            startOnzekerheidPeriodeDateTime = DateTime.Parse(startOnzekerheidPeriode, CultureInfo.CurrentCulture);
+            endOnzekerheidPeriodeDateTime = DateTime.Parse(endOnzekerheidPeriode, CultureInfo.CurrentCulture);
         }
 
-		return (startOnzekerheidPeriodeDateTime, endOnzekerheidPeriodeDateTime);
-	}
+        return (startOnzekerheidPeriodeDateTime, endOnzekerheidPeriodeDateTime);
+    }
 
-	private (List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) GetBewonersAndMogelijkeBewoners(List<(bewoning_bewoner dbBewoner, long plId)> bewonersPlIds, DateTime? peildatum, DateTime? van, DateTime? tot)
+    private (List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) GetBewonersAndMogelijkeBewoners(List<(bewoning_bewoner dbBewoner, long plId)> bewonersPlIds, DateTime? peildatum, DateTime? van, DateTime? tot)
 	{
         foreach (var bewonerPlId in bewonersPlIds.Where(bewonerPlId => bewonerPlId.dbBewoner.vb_onderzoek_eind_datum.HasValue && !(bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand == 89999 || bewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand == 589999)))
         {
