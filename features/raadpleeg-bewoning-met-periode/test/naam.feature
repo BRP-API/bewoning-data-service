@@ -55,10 +55,10 @@
       | burgerservicenummer |
       | 000000024           |
       En heeft de bewoner de volgende 'naam' gegevens
-      | naam                                 | waarde    |
-      | voornamen                            | Carolina  |
-      | adellijkeTitelPredicaat.code         | BR        |
-      | adellijkeTitelPredicaat.omschrijving | barones   |
-      | adellijkeTitelPredicaat.soort        | predicaat |
-      | voorvoegsel                          | Van       |
-      | geslachtsnaam                        | Naersen   |
+      | naam                                 | waarde   |
+      | voornamen                            | Carolina |
+      | adellijkeTitelPredicaat.code         | BS       |
+      | adellijkeTitelPredicaat.omschrijving | barones  |
+      | adellijkeTitelPredicaat.soort        | titel    |
+      | voorvoegsel                          | Van      |
+      | geslachtsnaam                        | Naersen  |

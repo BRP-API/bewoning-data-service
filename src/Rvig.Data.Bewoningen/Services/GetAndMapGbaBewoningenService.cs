@@ -82,6 +82,9 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 	/// <param name="identificatie">This is either a bsn or an adresseerbaarObjectIdentificatie</param>
 	/// <param name="getBewoningDataObjectFunc"></param>
 	/// <param name="getMappedBewoningObjectFunc"></param>
+	/// <param name="peildatum"></param>
+	/// <param name="van"></param>
+	/// <param name="tot"></param>
 	/// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
 	private async Task<IEnumerable<GbaBewoning>> GetMappedBewoningen(
 		string identificatie, 

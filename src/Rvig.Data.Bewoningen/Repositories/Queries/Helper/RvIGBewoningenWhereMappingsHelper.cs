@@ -9,6 +9,11 @@ public class RvIGBewoningenWhereMappingsHelper : RvIGBaseWhereMappingsHelper
 	{
 		["pers.pl_id"] = nameof(bewoning_bewoner.pl_id),
 		["pers.burger_service_nr"] = nameof(bewoning_bewoner.burger_service_nr),
+		["pers.voor_naam"] = nameof(bewoning_bewoner.voor_naam),
+		["pers.titel_predicaat"] = nameof(bewoning_bewoner.titel_predicaat),
+		["pers.geslachts_naam_voorvoegsel"] = nameof(bewoning_bewoner.geslachts_naam_voorvoegsel),
+		["pers.geslachts_naam"] = nameof(bewoning_bewoner.geslachts_naam),
+		["pers.geboorte_datum"] = nameof(bewoning_bewoner.geboorte_datum),
 		["vb.inschrijving_gemeente_code as vb_inschrijving_gemeente_code"] = nameof(bewoning_bewoner.vb_inschrijving_gemeente_code),
 		//["adres.gemeente_code as adres_gemeente_code"] = nameof(bewoning_bewoner.adres_gemeente_code),
 		["vb.onderzoek_gegevens_aand as vb_onderzoek_gegevens_aand"] = nameof(bewoning_bewoner.vb_onderzoek_gegevens_aand),
