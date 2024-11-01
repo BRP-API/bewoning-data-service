@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Options;
 using Moq;
 using Rvig.Base.App.Services;
-using Rvig.HaalCentraalApi.Shared.ApiModels.Universal;
-using Rvig.HaalCentraalApi.Shared.Exceptions;
-using Rvig.HaalCentraalApi.Shared.Options;
-using Rvig.HaalCentraalApi.Shared.Validation;
+using Rvig.BrpApi.Shared.ApiModels.Universal;
+using Rvig.BrpApi.Shared.Exceptions;
+using Rvig.BrpApi.Shared.Options;
+using Rvig.BrpApi.Shared.Validation;
 using System;
 using Test.RvigHaalCentraal.Util;
 

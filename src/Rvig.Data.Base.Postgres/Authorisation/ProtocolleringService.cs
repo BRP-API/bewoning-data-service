@@ -1,7 +1,7 @@
 ﻿using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Base.Providers;
 using Rvig.Data.Base.Postgres.Repositories;
-using Rvig.HaalCentraalApi.Shared.Interfaces;
+using Rvig.BrpApi.Shared.Interfaces;
 
 namespace Rvig.Data.Base.Postgres.Authorisation
 {

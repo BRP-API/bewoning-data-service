@@ -6,14 +6,14 @@ using Rvig.Data.Base.Postgres.Services;
 using Rvig.Data.Bewoningen.DatabaseModels;
 using Rvig.Data.Bewoningen.Mappers;
 using Rvig.Data.Bewoningen.Repositories;
-using Rvig.HaalCentraalApi.Bewoningen.ApiModels.Bewoning;
-using Rvig.HaalCentraalApi.Bewoningen.Interfaces;
-using Rvig.HaalCentraalApi.Bewoningen.ResponseModels.Bewoning;
-using Rvig.HaalCentraalApi.Shared.Exceptions;
-using Rvig.HaalCentraalApi.Shared.Interfaces;
-using Rvig.HaalCentraalApi.Shared.Util;
-using Rvig.HaalCentraalApi.Bewoningen.RequestModels.Bewoning;
-using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
+using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
+using Rvig.BrpApi.Bewoningen.Interfaces;
+using Rvig.BrpApi.Bewoningen.ResponseModels.Bewoning;
+using Rvig.BrpApi.Shared.Exceptions;
+using Rvig.BrpApi.Shared.Interfaces;
+using Rvig.BrpApi.Shared.Util;
+using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
+using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
 
 namespace Rvig.Data.Bewoningen.Services;
 public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMapGbaBewoningenService

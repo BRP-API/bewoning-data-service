@@ -5,8 +5,8 @@ using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Base.Postgres.Repositories;
 using Rvig.Data.Bewoningen.DatabaseModels;
 using Rvig.Data.Bewoningen.Repositories.Queries;
-using Rvig.HaalCentraalApi.Shared.Helpers;
-using Rvig.HaalCentraalApi.Shared.Options;
+using Rvig.BrpApi.Shared.Helpers;
+using Rvig.BrpApi.Shared.Options;
 using System.Reflection.Metadata;
 
 namespace Rvig.Data.Bewoningen.Repositories;

@@ -1,5 +1,5 @@
-﻿//using Rvig.HaalCentraalApi.Shared.Exceptions;
-//using Rvig.HaalCentraalApi.Shared.Validation;
+﻿//using Rvig.BrpApi.Shared.Exceptions;
+//using Rvig.BrpApi.Shared.Validation;
 
 //namespace Test.Rvig.HaalCentraalApi.DeveloperTests
 //{

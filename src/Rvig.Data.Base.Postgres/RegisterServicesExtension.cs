@@ -4,8 +4,8 @@ using Rvig.Data.Base.Postgres.Authorisation;
 using Rvig.Data.Base.Postgres.Helpers;
 using Rvig.Data.Base.Postgres.Repositories;
 using Rvig.Data.Base.Postgres.Services;
-using Rvig.HaalCentraalApi.Shared.Interfaces;
-using Rvig.HaalCentraalApi.Shared.Options;
+using Rvig.BrpApi.Shared.Interfaces;
+using Rvig.BrpApi.Shared.Options;
 
 namespace Rvig.Data.Base.Postgres;
 

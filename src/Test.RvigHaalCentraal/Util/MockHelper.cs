@@ -9,15 +9,15 @@ using System.IO;
 using System.Text;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Rvig.HaalCentraalApi.Shared.Options;
-using Rvig.HaalCentraalApi.Shared.Helpers;
+using Rvig.BrpApi.Shared.Options;
+using Rvig.BrpApi.Shared.Helpers;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Rvig.Data.Base.Postgres.Services;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Builder;
 using Rvig.Base.App.Util;
-using Rvig.HaalCentraalApi.Shared.Util;
+using Rvig.BrpApi.Shared.Util;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 

@@ -3,7 +3,7 @@
 //using Newtonsoft.Json;
 //using Rvig.Data.Mappers;
 //using Rvig.Data.Providers;
-//using Rvig.HaalCentraalApi.Shared.Options;
+//using Rvig.BrpApi.Shared.Options;
 //using System.IO;
 //using System.Text;
 

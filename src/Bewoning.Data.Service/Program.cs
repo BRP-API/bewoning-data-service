@@ -1,12 +1,12 @@
 using Rvig.Base.App;
 using System.Collections.Generic;
 using System;
-using Rvig.HaalCentraalApi.Bewoningen.Services;
+using Rvig.BrpApi.Bewoningen.Services;
 using Rvig.Data.Bewoningen.Mappers;
 using Rvig.Data.Bewoningen.Repositories;
 using Rvig.Data.Bewoningen.Services;
-using Rvig.HaalCentraalApi.Bewoningen.Interfaces;
-using Rvig.HaalCentraalApi.Bewoningen.Validation.RequestModelValidators;
+using Rvig.BrpApi.Bewoningen.Interfaces;
+using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
 using Microsoft.AspNetCore.Builder;
 
 var servicesDictionary = new Dictionary<Type, Type>

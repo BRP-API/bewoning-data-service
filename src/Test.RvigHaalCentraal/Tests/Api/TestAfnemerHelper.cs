@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Rvig.Data.Base.Helpers;
-using Rvig.HaalCentraalApi.Shared.Exceptions;
-using Rvig.HaalCentraalApi.Shared.Options;
+using Rvig.BrpApi.Shared.Exceptions;
+using Rvig.BrpApi.Shared.Options;
 using System;
 using System.Security.Claims;
 using System.Security.Principal;

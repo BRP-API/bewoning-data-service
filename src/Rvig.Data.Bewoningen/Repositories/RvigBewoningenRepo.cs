@@ -1,11 +1,11 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using Rvig.Data.Bewoningen.DatabaseModels;
-using Rvig.HaalCentraalApi.Shared.Options;
+using Rvig.BrpApi.Shared.Options;
 using Rvig.Data.Base.Postgres.Repositories;
 using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Bewoningen.Repositories.Queries;
-using Rvig.HaalCentraalApi.Shared.Helpers;
+using Rvig.BrpApi.Shared.Helpers;
 using Npgsql;
 
 namespace Rvig.Data.Bewoningen.Repositories;

@@ -1,10 +1,10 @@
 ﻿using Rvig.Data.Base.Postgres.Repositories;
-using Rvig.HaalCentraalApi.Shared.Exceptions;
+using Rvig.BrpApi.Shared.Exceptions;
 using System.Linq.Expressions;
 using System;
 using System.Threading.Tasks;
 using Test.RvigHaalCentraal.Util;
-using Rvig.HaalCentraalApi.Shared.Validation;
+using Rvig.BrpApi.Shared.Validation;
 
 namespace Test.RvigHaalCentraal.Tests.Validation
 {

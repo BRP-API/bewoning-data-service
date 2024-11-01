@@ -5,9 +5,9 @@
 //using Microsoft.AspNetCore.Routing;
 //using Microsoft.Extensions.Primitives;
 //using Rvig.HaalCentraalApi.RequestModels;
-//using Rvig.HaalCentraalApi.Shared.ApiModels.Universal;
-//using Rvig.HaalCentraalApi.Shared.Exceptions;
-//using Rvig.HaalCentraalApi.Shared.Validation;
+//using Rvig.BrpApi.Shared.ApiModels.Universal;
+//using Rvig.BrpApi.Shared.Exceptions;
+//using Rvig.BrpApi.Shared.Validation;
 
 //namespace Test.Rvig.HaalCentraalApi.DeveloperTests
 //{
