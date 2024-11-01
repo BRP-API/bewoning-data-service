@@ -1,13 +1,13 @@
-﻿using Rvig.Data.Bewoningen.DatabaseModels;
+﻿using System.Globalization;
+using Rvig.BrpApi.Shared.Util;
+using Rvig.BrpApi.Shared.Validation;
+using Rvig.BrpApi.Shared.ApiModels.PersonenHistorieBase;
+using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
+using Rvig.Data.Bewoningen.DatabaseModels;
 using Rvig.Data.Base.Postgres.Helpers;
-using Rvig.HaalCentraalApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.Data.Base.Postgres.Mappers;
 using Rvig.Data.Base.Postgres.DatabaseModels;
-using Rvig.HaalCentraalApi.Shared.Util;
 using Rvig.Data.Base.Postgres.Mappers.Helpers;
-using Rvig.HaalCentraalApi.Shared.Validation;
-using System.Globalization;
-using Rvig.HaalCentraalApi.Shared.ApiModels.PersonenHistorieBase;
 
 namespace Rvig.Data.Bewoningen.Mappers;
 public interface IRvIGDataBewoningenMapper
@@ -101,7 +101,7 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 			Geslachtsnaam = dbBewoner.geslachts_naam
 		};
 
-		if (!string.IsNullOrWhiteSpace(dbBewoner.titel_predicaat))
+		if (!string.IsNullOrEmpty(dbBewoner.titel_predicaat))
 		{
 			var adellijkeTitelPredicaatOmschrijvingSoort = await _domeinTabellenHelper.GetAdellijkeTitelPredikaatOmschrijvingEnSoort(dbBewoner.titel_predicaat);
 			naam.AdellijkeTitelPredicaat = new AdellijkeTitelPredicaatType
