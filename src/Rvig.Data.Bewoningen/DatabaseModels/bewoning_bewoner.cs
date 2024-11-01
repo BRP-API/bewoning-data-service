@@ -18,8 +18,11 @@ public record bewoning_bewoner
 	[RubriekCategory(8), RubriekElement("10.30")] public int? vb_adreshouding_start_datum { get; set; }
 	[RubriekCategory(8), RubriekElement("10.30")] public int? vorige_start_adres_datum { get; set; }
 	[RubriekCategory(8), RubriekElement("10.30")] public int? volgende_start_adres_datum { get; set; }
+	[RubriekCategory(8), RubriekElement("83.10")] public int? onderzoek_gegevens_aand { get; set; }
 	[RubriekCategory(8), RubriekElement("83.10")] public int? vb_onderzoek_gegevens_aand { get; set; }
+	[RubriekCategory(8), RubriekElement("83.20")] public int? onderzoek_start_datum { get; set; }
 	[RubriekCategory(8), RubriekElement("83.20")] public int? vb_onderzoek_start_datum { get; set; }
+	[RubriekCategory(8), RubriekElement("83.30")] public int? onderzoek_eind_datum { get; set; }
 	[RubriekCategory(8), RubriekElement("83.30")] public int? vb_onderzoek_eind_datum { get; set; }
 	[RubriekCategory(8), RubriekElement("11.80")] public string? adres_verblijf_plaats_ident_code { get; set; }
 	[RubriekCategory(8), RubriekElement("11.80")] public string? vorige_adres_verblijf_plaats_ident_code { get; set; }
