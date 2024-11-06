@@ -47,9 +47,9 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 				GeheimhoudingPersoonsgegevens = dbBewonerPlId.dbBewoner.pl_geheim_ind.HasValue && dbBewonerPlId.dbBewoner.pl_geheim_ind != 0 ? dbBewonerPlId.dbBewoner.pl_geheim_ind : null,
 				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbBewonerPlId.dbBewoner.vb_onderzoek_eind_datum),
 				Geboorte = MapBewonerGeboorte(dbBewonerPlId.dbBewoner),
-				Naam = MapBewonerNaam(dbBewonerPlId.dbBewoner).GetAwaiter().GetResult(),
-				PersoonInOnderzoek = MapGbaInOnderzoek(dbBewonerPlId.dbBewoner.onderzoek_gegevens_aand, dbBewonerPlId.dbBewoner.onderzoek_start_datum, dbBewonerPlId.dbBewoner.onderzoek_eind_datum)
-			}, dbBewonerPlId.plId))
+				Naam = MapBewonerNaam(dbBewonerPlId.dbBewoner).GetAwaiter().GetResult(), 
+				Geslacht = GbaMappingHelper.ParseToGeslachtEnum(dbBewonerPlId.dbBewoner.geslachts_aand)
+            }, dbBewonerPlId.plId))
 ;
 		List<(bewoning_bewoner dbBewoner, long plId)>? opgeschorteMogelijkeBewoners = dbMogelijkeBewonersPlIds
 			.Where(dbBewonerPlId => !IsBewonerOpgeschort(dbBewonerPlId.dbBewoner.pl_bijhouding_opschort_reden, dbBewonerPlId.dbBewoner.pl_bijhouding_opschort_datum, peildatum, van, tot))
