@@ -13,12 +13,9 @@ public class RvIGBewoningenWhereMappingsHelper : RvIGBaseWhereMappingsHelper
 		["pers.titel_predicaat"] = nameof(bewoning_bewoner.titel_predicaat),
 		["pers.geslachts_naam_voorvoegsel"] = nameof(bewoning_bewoner.geslachts_naam_voorvoegsel),
 		["pers.geslachts_naam"] = nameof(bewoning_bewoner.geslachts_naam),
+		["pers.geslachts_aand"] = nameof(bewoning_bewoner.geslachts_aand),
 		["pers.geboorte_datum"] = nameof(bewoning_bewoner.geboorte_datum),
-		["pers.onderzoek_gegevens_aand"] = nameof(bewoning_bewoner.onderzoek_gegevens_aand),
-		["pers.onderzoek_start_datum"] = nameof(bewoning_bewoner.onderzoek_start_datum),
-		["pers.onderzoek_eind_datum"] = nameof(bewoning_bewoner.onderzoek_eind_datum),
 		["vb.inschrijving_gemeente_code as vb_inschrijving_gemeente_code"] = nameof(bewoning_bewoner.vb_inschrijving_gemeente_code),
-		//["adres.gemeente_code as adres_gemeente_code"] = nameof(bewoning_bewoner.adres_gemeente_code),
 		["vb.onderzoek_gegevens_aand as vb_onderzoek_gegevens_aand"] = nameof(bewoning_bewoner.vb_onderzoek_gegevens_aand),
 		["vb.onderzoek_start_datum as vb_onderzoek_start_datum"] = nameof(bewoning_bewoner.vb_onderzoek_start_datum),
 		["vb.onderzoek_eind_datum as vb_onderzoek_eind_datum"] = nameof(bewoning_bewoner.vb_onderzoek_eind_datum),
@@ -29,11 +26,12 @@ public class RvIGBewoningenWhereMappingsHelper : RvIGBaseWhereMappingsHelper
 		["vb.aangifte_adreshouding_oms as vb_aangifte_adreshouding_oms"] = nameof(bewoning_bewoner.vb_aangifte_adreshouding_oms),
 		["vb.adres_functie as vb_adres_functie"] = nameof(bewoning_bewoner.vb_adres_functie),
 		["COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum) as huidig_start_adres_datum"] = nameof(bewoning_bewoner.vb_adreshouding_start_datum),
+		["adres.verblijf_plaats_ident_code as adres_verblijf_plaats_ident_code"] = nameof(bewoning_bewoner.adres_verblijf_plaats_ident_code),
+		["adres.nummer_aand_ident_code as adres_nummer_aand_ident_code"] = nameof(bewoning_bewoner.adres_nummer_aand_ident_code),
+		//["adres.gemeente_code as adres_gemeente_code"] = nameof(bewoning_bewoner.adres_gemeente_code),
 		//["lead(COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum)) over (PARTITION BY vb.pl_id order by vb.pl_id) as vorige_start_adres_datum"] = nameof(bewoning_bewoner.vorige_start_adres_datum),
 		//["lag(COALESCE(vb.adreshouding_start_datum, vb.vertrek_datum)) over (PARTITION BY vb.pl_id order by vb.pl_id) as volgende_start_adres_datum"] = nameof(bewoning_bewoner.volgende_start_adres_datum),
-		["adres.verblijf_plaats_ident_code as adres_verblijf_plaats_ident_code"] = nameof(bewoning_bewoner.adres_verblijf_plaats_ident_code),
 		//["lead(adres.verblijf_plaats_ident_code) over (PARTITION BY vb.pl_id order by vb.pl_id) as vorige_adres_verblijf_plaats_ident_code"] = nameof(bewoning_bewoner.vorige_adres_verblijf_plaats_ident_code),
-		["adres.nummer_aand_ident_code as adres_nummer_aand_ident_code"] = nameof(bewoning_bewoner.adres_nummer_aand_ident_code),
 	};
 
 	public static IDictionary<string, string> GetBewoningenInnerMappings() => new Dictionary<string, string>()
