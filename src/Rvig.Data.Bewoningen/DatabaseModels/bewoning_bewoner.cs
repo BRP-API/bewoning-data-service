@@ -10,7 +10,8 @@ public record bewoning_bewoner
 	[RubriekCategory(1), RubriekElement("02.30")] public string? geslachts_naam_voorvoegsel { get; set; }
 	[RubriekCategory(1), RubriekElement("02.40")] public string? geslachts_naam { get; set; }
 	[RubriekCategory(1), RubriekElement("03.10")] public int? geboorte_datum { get; set; }
-	[RubriekCategory(7), RubriekElement("67.10")] public int? pl_bijhouding_opschort_datum { get; set; }
+    [RubriekCategory(1), RubriekElement("04.10")] public string? geslachts_aand { get; set; }
+    [RubriekCategory(7), RubriekElement("67.10")] public int? pl_bijhouding_opschort_datum { get; set; }
 	[RubriekCategory(7), RubriekElement("67.20")] public string? pl_bijhouding_opschort_reden { get; set; }
 	[RubriekCategory(7), RubriekElement("70.10")] public short? pl_geheim_ind { get; set; }
 	[RubriekCategory(8), RubriekElement("92.10")] public short? vb_inschrijving_gemeente_code { get; set; }
