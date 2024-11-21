@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: BRP bewoning
+  title: Haal Centraal BRP bewoning
   description: |
     API voor het raadplegen van de (historische) bewoning van een adres.
   version: 2.0.0
@@ -9,11 +9,15 @@ info:
   license:
     name: European Union Public License, version 1.2 (EUPL-1.2)
     url: https://eupl.eu/1.2/nl/
+servers:
+  - description: |
+      Proef omgeving
+    url: https://proefomgeving.haalcentraal.nl/haalcentraal/api/bewoning
+  - description: |
+      Lokaal
+    url: http://localhost:5010/haalcentraal/api/bewoning
 tags:
   - name: Bewoning
-externalDocs:
-  description: Haal Centraal BRP bewoning website
-  url: https://brp-api.github.io/Haal-Centraal-BRP-bewoning/
 paths:
   /bewoningen:
     post:
@@ -37,7 +41,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/BewoningenQueryResponse'
+                $ref: '#/components/schemas/GbaBewoningenQueryResponse'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -72,11 +76,6 @@ components:
       properties:
         type:
           type: string
-      example:
-        type: BewoningMetPeriode
-        datumVan: '2023-11-19'
-        datumTot: '2024-01-27'
-        adresseerbaarObjectIdentificatie: '0599010370005001'
     BewoningMetPeildatum:
       required:
         - peildatum
@@ -91,8 +90,6 @@ components:
                 de datum waarover de bewoning wordt opgevraagd.
             adresseerbaarObjectIdentificatie:
               $ref: '#/components/schemas/AdresseerbaarObjectIdentificatieFilter'
-              description: |
-                De identificatie van het adresseerbaar object waarover de bewoning wordt gevraagd.
     BewoningMetPeriode:
       required:
         - datumVan
@@ -112,42 +109,13 @@ components:
                 de einddatum van de periode waarover de bewoning wordt opgevraagd.
             adresseerbaarObjectIdentificatie:
               $ref: '#/components/schemas/AdresseerbaarObjectIdentificatieFilter'
-              description: |
-                De identificatie van het adresseerbaar object waarover de bewoning wordt gevraagd.
-    BewoningenQueryResponse:
+    GbaBewoningenQueryResponse:
       type: object
       properties:
         bewoningen:
           type: array
           items:
-            $ref: '#/components/schemas/Bewoning'
-      example:
-        bewoningen:
-          - adresseerbaarObjectIdentificatie: '0599010370005001'
-            periode:
-              datumVan: '2023-11-19'
-              datumTot: '2024-01-01'
-            bewoners:
-              - burgerservicenummer: '999997968'
-                geheimhoudingPersoonsgegevens: true
-              - burgerservicenummer: '999990524'
-                naam:
-                  volledigeNaam: Pieter Jan de Vries
-                geboorte:
-                  datum:
-                    type: Datum
-                    langFormaat: 1 juli 1984
-                    datum: '1984-07-01'
-            mogelijkeBewoners: []
-          - adresseerbaarObjectIdentificatie: '0599010370005001'
-            periode:
-              datumVan: '2024-01-01'
-              datumTot: '2024-01-27'
-            bewoners:
-              - burgerservicenummer: '999997968'
-                geheimhoudingPersoonsgegevens: true
-            mogelijkeBewoners:
-              - burgerservicenummer: '999990524'
+            $ref: '#/components/schemas/GbaBewoning'
     DatumFilter:
       type: string
       format: date
@@ -218,140 +186,114 @@ components:
       type: string
       pattern: ^[0-9]{9}$
       example: '555555021'
-    GeheimhoudingPersoonsgegevens:
+    IndicatieGeheim:
       description: |
-        Indicatie dat persoonsgegevens niet mogen worden verstrekt aan derden / maatschappelijke instellingen.
-      type: boolean
-    InOnderzoek:
-      type: boolean
-      description: |
-        Geeft aan dat de verblijfplaats in onderzoek is.
-    VolledigeNaam:
+        Gegevens over het mogen verstrekken van persoonsgegevens aan derden / maatschappelijke instellingen.
+      type: integer
+      minimum: 0
+      maximum: 7
+    GbaDatum:
       type: string
-      pattern: ^[a-zA-Z0-9À-ž \.\-\']{1,450}$
+      pattern: ^[0-9]{8}$
+      example: '20180700'
+    InOnderzoek:
+      type: object
+      required:
+        - aanduidingGegevensInOnderzoek
+        - datumIngangOnderzoek
+      properties:
+        aanduidingGegevensInOnderzoek:
+          type: string
+          pattern: ^[0-9]{6}$
+          example: '100000'
+        datumIngangOnderzoek:
+          $ref: '#/components/schemas/GbaDatum'
+    Waardetabel:
+      type: object
+      properties:
+        code:
+          type: string
+          pattern: ^[a-zA-Z0-9 \.]+$
+          example: '6030'
+        omschrijving:
+          type: string
+          pattern: ^[a-zA-Z0-9À-ž \'\.\-\(\),]{1,200}$
+          example: Nederland
+    Geslachtsaanduiding:
+      allOf:
+        - $ref: '#/components/schemas/Waardetabel'
+        - example:
+            code: M
+            omschrijving: man
+    Voornamen:
       description: |
-        Combinatie van predicaat, voornamen, adellijke titel, voorvoegsels en geslachtsnaam, zonder toevoeging van een eventuele partnernaam.
-      example: Pieter Jan de Vries
-    Naam:
+        De verzameling namen voor de geslachtsnaam, gescheiden door spaties.
+      type: string
+      pattern: ^[a-zA-Z0-9À-ž \.\-\']{1,200}$
+      maxLength: 200
+      example: Pieter Jan
+    AdellijkeTitelPredicaatSoort:
+      type: string
+      enum:
+        - titel
+        - predicaat
+    AdellijkeTitelPredicaatType:
+      description: |
+        Wordt gevuld met waarden uit de landelijke tabel 'Adellijke titel/predicaat'. De property soort geeft aan of het een 'predicaat' of een 'titel' is.
+      allOf:
+        - $ref: '#/components/schemas/Waardetabel'
+        - properties:
+            soort:
+              $ref: '#/components/schemas/AdellijkeTitelPredicaatSoort'
+          example:
+            code: JV
+            omschrijving: jonkvrouw
+            soort: predicaat
+    Voorvoegsel:
+      type: string
+      pattern: ^[a-zA-Z \']{1,10}$
+      maxLength: 10
+      example: de
+    Geslachtsnaam:
+      type: string
+      pattern: ^[a-zA-Z0-9À-ž \.\-\']{1,200}$
+      description: |
+        De achternaam van een persoon.
+      example: Vries
+    NaamBasis:
       type: object
       properties:
-        volledigeNaam:
-          $ref: '#/components/schemas/VolledigeNaam'
-    AbstractDatum:
-      type: object
-      required:
-        - type
-        - langFormaat
-      properties:
-        type:
-          type: string
-        langFormaat:
-          type: string
-          pattern: ^[a-z0-9 ]{1,17}$
-      discriminator:
-        propertyName: type
-        mapping:
-          Datum: '#/components/schemas/VolledigeDatum'
-          DatumOnbekend: '#/components/schemas/DatumOnbekend'
-          JaarDatum: '#/components/schemas/JaarDatum'
-          JaarMaandDatum: '#/components/schemas/JaarMaandDatum'
-      example:
-        type: Datum
-        datum: '2018-07-01'
-        langFormaat: 1 juli 2018
-    VolledigeDatum:
-      description: Datum conform iso8601
-      allOf:
-        - $ref: '#/components/schemas/AbstractDatum'
-        - type: object
-          properties:
-            datum:
-              type: string
-              format: date
-      required:
-        - datum
-      example:
-        type: Datum
-        datum: '2018-07-01'
-        langFormaat: 1 juli 2018
-    DatumOnbekend:
-      description: representatie voor een volledig onbekend datum
-      allOf:
-        - $ref: '#/components/schemas/AbstractDatum'
-        - type: object
-          properties:
-            onbekend:
-              type: boolean
-              default: true
-      required:
-        - onbekend
-      example:
-        type: DatumOnbekend
-        onbekend: true
-        langFormaat: onbekend
-    Jaar:
-      type: integer
-      format: int32
-      minimum: 1
-      maximum: 9999
-    JaarDatum:
-      description: representatie voor een datum waarvan maand en dag onbekend zijn
-      allOf:
-        - $ref: '#/components/schemas/AbstractDatum'
-        - type: object
-          properties:
-            jaar:
-              $ref: '#/components/schemas/Jaar'
-      required:
-        - jaar
-      example:
-        type: JaarDatum
-        jaar: 2018
-        langFormaat: 2018
-    Maand:
-      type: integer
-      format: int32
-      minimum: 1
-      maximum: 12
-    JaarMaandDatum:
-      description: representatie voor een datum waarvan de dag onbekend is
-      allOf:
-        - $ref: '#/components/schemas/AbstractDatum'
-        - type: object
-          properties:
-            jaar:
-              $ref: '#/components/schemas/Jaar'
-            maand:
-              $ref: '#/components/schemas/Maand'
-      required:
-        - jaar
-        - maand
-      example:
-        type: JaarMaandDatum
-        jaar: 2018
-        maand: 7
-        langFormaat: juli 2018
+        voornamen:
+          $ref: '#/components/schemas/Voornamen'
+        adellijkeTitelPredicaat:
+          $ref: '#/components/schemas/AdellijkeTitelPredicaatType'
+        voorvoegsel:
+          $ref: '#/components/schemas/Voorvoegsel'
+        geslachtsnaam:
+          $ref: '#/components/schemas/Geslachtsnaam'
     GeboorteBasis:
       type: object
       properties:
         datum:
-          $ref: '#/components/schemas/AbstractDatum'
+          $ref: '#/components/schemas/GbaDatum'
           description: |
             Datum waarop de persoon is geboren.
-    Bewoner:
+    GbaBewoner:
       type: object
       properties:
         burgerservicenummer:
           $ref: '#/components/schemas/Burgerservicenummer'
         geheimhoudingPersoonsgegevens:
-          $ref: '#/components/schemas/GeheimhoudingPersoonsgegevens'
-        inOnderzoek:
+          $ref: '#/components/schemas/IndicatieGeheim'
+        verblijfplaatsInOnderzoek:
           $ref: '#/components/schemas/InOnderzoek'
+        geslacht:
+          $ref: '#/components/schemas/Geslachtsaanduiding'
         naam:
-          $ref: '#/components/schemas/Naam'
+          $ref: '#/components/schemas/NaamBasis'
         geboorte:
           $ref: '#/components/schemas/GeboorteBasis'
-    Bewoning:
+    GbaBewoning:
       description: |
         Een bewoning geeft aan welke personen in een periode (mogelijk) op een adresseerbaar object staan ingeschreven.
 
@@ -372,7 +314,7 @@ components:
           minItems: 0
           maxItems: 100
           items:
-            $ref: '#/components/schemas/Bewoner'
+            $ref: '#/components/schemas/GbaBewoner'
         mogelijkeBewoners:
           type: array
           description: |
@@ -380,7 +322,7 @@ components:
           minItems: 0
           maxItems: 100
           items:
-            $ref: '#/components/schemas/Bewoner'
+            $ref: '#/components/schemas/GbaBewoner'
         indicatieVeelBewoners:
           type: boolean
           description: |
