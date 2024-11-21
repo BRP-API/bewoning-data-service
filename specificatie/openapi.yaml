@@ -10,7 +10,7 @@ info:
   title: Haal Centraal BRP bewoning
   description: |
     API voor het raadplegen van de (historische) bewoning van een adres.
-  version: 2.0.0
+  version: 2.1.0
   contact:
     url: https://github.com/BRP-API/Haal-Centraal-BRP-bewoning
   license:
