@@ -1,0 +1,60 @@
+name: lint OpenAPI specificaties
+
+on:
+  push:
+    paths:
+      - specificatie/*.yaml
+      - .github/workflows/lint-oas.yml
+    branches:
+      - '**'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+    
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Zet run permissions op script folder
+        uses: ./.github/actions/zet-run-bash-scripts-permission
+        with:
+          path-bash-file-or-folder: ./scripts/*
+
+      - name: lint OAS
+        run: ./scripts/oas-lint.sh
+      - name: resolve OAS
+        run: ./scripts/oas-resolve.sh
+      - name: lint resolved OAS
+        run: ./scripts/oas-lint-resolved.sh
+
+      - name: push resolved to remote
+        run: |
+          doCommit=false
+
+          if [ -n "$(git status specificatie/resolved/openapi.yaml --porcelain)" ]; then
+              echo "specificatie/resolved/openapi.yaml modified"
+              git add specificatie/resolved/openapi.*
+              doCommit=true
+          fi
+
+          if [ $doCommit = true ]; then
+              echo "commit resolve artifacts"
+              git config user.name "$GITHUB_ACTOR"
+              git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+              git pull --ff-only
+              git commit -m "commit resolve artifacts"
+              git push
+          else
+              echo "no commit"
+          fi

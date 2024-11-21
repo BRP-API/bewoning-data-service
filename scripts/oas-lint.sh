@@ -1,3 +1,3 @@
 #!/bin/bash
 
-spectral lint ./specificatie/**/*.yaml
+npx spectral lint ./specificatie/openapi.yaml
