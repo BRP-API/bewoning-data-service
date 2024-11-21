@@ -33,7 +33,7 @@ paths:
         content:
           'application/json; charset=utf-8':
             schema:
-              $ref: "#/components/schemas/BewoningenQuery"
+              $ref: '#/components/schemas/BewoningenQuery'
       responses:
         '200':
           description: |
@@ -41,7 +41,7 @@ paths:
           content:
             'application/json; charset=utf-8':
               schema:
-                $ref: "#/components/schemas/GbaBewoningenQueryResponse"
+                $ref: '#/components/schemas/GbaBewoningenQueryResponse'
         '400':
           $ref: 'problem-details/400-bad-request-response-v1.yaml#/components/responses/400'
         '401':
