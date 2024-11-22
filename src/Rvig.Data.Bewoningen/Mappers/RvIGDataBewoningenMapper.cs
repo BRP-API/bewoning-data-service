@@ -59,8 +59,10 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 			{
 				Burgerservicenummer = dbMogelijkeBewonerPlId.dbBewoner.burger_service_nr?.ToString().PadLeft(9, '0'),
 				GeheimhoudingPersoonsgegevens = dbMogelijkeBewonerPlId.dbBewoner.pl_geheim_ind.HasValue && dbMogelijkeBewonerPlId.dbBewoner.pl_geheim_ind != 0 ? dbMogelijkeBewonerPlId.dbBewoner.pl_geheim_ind : null,
-				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_eind_datum)
-			}, dbMogelijkeBewonerPlId.plId))
+				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_eind_datum),
+                Naam = MapBewonerNaam(dbMogelijkeBewonerPlId.dbBewoner).GetAwaiter().GetResult(),
+                Geslacht = GbaMappingHelper.ParseToGeslachtEnum(dbMogelijkeBewonerPlId.dbBewoner.geslachts_aand)
+            }, dbMogelijkeBewonerPlId.plId))
 ;
 
 		if (bewoners?.Count > 0 || mogelijkeBewoners?.Count > 0)
