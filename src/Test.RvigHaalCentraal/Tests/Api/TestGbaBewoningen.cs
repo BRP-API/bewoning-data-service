@@ -8,7 +8,6 @@ using Rvig.BrpApi.Shared.Helpers;
 using Rvig.BrpApi.Shared.Interfaces;
 using Rvig.BrpApi.Shared.Options;
 using System.Threading.Tasks;
-using Test.Rvig.HaalCentraal.Util;
 using Test.RvigHaalCentraal.Util;
 using Xunit;
 
