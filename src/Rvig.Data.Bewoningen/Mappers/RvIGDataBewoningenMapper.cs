@@ -100,9 +100,9 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 	{
 		var naam = new GbaNaamBasis
 		{
-			Voornamen = dbBewoner.voor_naam,
+			Voornamen = dbBewoner.diak_voor_naam ?? dbBewoner.voor_naam,
 			Voorvoegsel = dbBewoner.geslachts_naam_voorvoegsel,
-			Geslachtsnaam = dbBewoner.geslachts_naam
+			Geslachtsnaam = dbBewoner.diak_geslachts_naam ?? dbBewoner.geslachts_naam
 		};
 
 		if (!string.IsNullOrEmpty(dbBewoner.titel_predicaat))
