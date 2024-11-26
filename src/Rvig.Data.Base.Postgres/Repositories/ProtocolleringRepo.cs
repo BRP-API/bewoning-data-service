@@ -2,8 +2,8 @@
 using Npgsql;
 using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Base.Postgres.Repositories.Queries;
-using Rvig.HaalCentraalApi.Shared.Helpers;
-using Rvig.HaalCentraalApi.Shared.Options;
+using Rvig.BrpApi.Shared.Helpers;
+using Rvig.BrpApi.Shared.Options;
 
 namespace Rvig.Data.Base.Postgres.Repositories;
 public interface IProtocolleringRepo

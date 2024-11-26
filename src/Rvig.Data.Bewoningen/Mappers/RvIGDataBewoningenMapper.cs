@@ -1,12 +1,13 @@
-﻿using Rvig.Data.Bewoningen.DatabaseModels;
+﻿using System.Globalization;
+using Rvig.BrpApi.Shared.Util;
+using Rvig.BrpApi.Shared.Validation;
+using Rvig.BrpApi.Shared.ApiModels.PersonenHistorieBase;
+using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
+using Rvig.Data.Bewoningen.DatabaseModels;
 using Rvig.Data.Base.Postgres.Helpers;
-using Rvig.HaalCentraalApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.Data.Base.Postgres.Mappers;
 using Rvig.Data.Base.Postgres.DatabaseModels;
-using Rvig.HaalCentraalApi.Shared.Util;
 using Rvig.Data.Base.Postgres.Mappers.Helpers;
-using Rvig.HaalCentraalApi.Shared.Validation;
-using System.Globalization;
 
 namespace Rvig.Data.Bewoningen.Mappers;
 public interface IRvIGDataBewoningenMapper
@@ -44,8 +45,11 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 			{
 				Burgerservicenummer = dbBewonerPlId.dbBewoner.burger_service_nr?.ToString().PadLeft(9, '0'),
 				GeheimhoudingPersoonsgegevens = dbBewonerPlId.dbBewoner.pl_geheim_ind.HasValue && dbBewonerPlId.dbBewoner.pl_geheim_ind != 0 ? dbBewonerPlId.dbBewoner.pl_geheim_ind : null,
-				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbBewonerPlId.dbBewoner.vb_onderzoek_eind_datum)
-			}, dbBewonerPlId.plId))
+				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbBewonerPlId.dbBewoner.vb_onderzoek_eind_datum),
+				Geboorte = MapBewonerGeboorte(dbBewonerPlId.dbBewoner),
+				Naam = MapBewonerNaam(dbBewonerPlId.dbBewoner).GetAwaiter().GetResult(), 
+				Geslacht = GbaMappingHelper.ParseToGeslachtEnum(dbBewonerPlId.dbBewoner.geslachts_aand)
+            }, dbBewonerPlId.plId))
 ;
 		List<(bewoning_bewoner dbBewoner, long plId)>? opgeschorteMogelijkeBewoners = dbMogelijkeBewonersPlIds
 			.Where(dbBewonerPlId => !IsBewonerOpgeschort(dbBewonerPlId.dbBewoner.pl_bijhouding_opschort_reden, dbBewonerPlId.dbBewoner.pl_bijhouding_opschort_datum, peildatum, van, tot))
@@ -55,8 +59,11 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 			{
 				Burgerservicenummer = dbMogelijkeBewonerPlId.dbBewoner.burger_service_nr?.ToString().PadLeft(9, '0'),
 				GeheimhoudingPersoonsgegevens = dbMogelijkeBewonerPlId.dbBewoner.pl_geheim_ind.HasValue && dbMogelijkeBewonerPlId.dbBewoner.pl_geheim_ind != 0 ? dbMogelijkeBewonerPlId.dbBewoner.pl_geheim_ind : null,
-				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_eind_datum)
-			}, dbMogelijkeBewonerPlId.plId))
+				VerblijfplaatsInOnderzoek = MapGbaInOnderzoek(dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_gegevens_aand, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_start_datum, dbMogelijkeBewonerPlId.dbBewoner.vb_onderzoek_eind_datum),
+                Geboorte = MapBewonerGeboorte(dbMogelijkeBewonerPlId.dbBewoner),
+                Naam = MapBewonerNaam(dbMogelijkeBewonerPlId.dbBewoner).GetAwaiter().GetResult(),
+                Geslacht = GbaMappingHelper.ParseToGeslachtEnum(dbMogelijkeBewonerPlId.dbBewoner.geslachts_aand)
+            }, dbMogelijkeBewonerPlId.plId))
 ;
 
 		if (bewoners?.Count > 0 || mogelijkeBewoners?.Count > 0)
@@ -87,6 +94,38 @@ public class RvIGDataBewoningenMapper : RvIGDataMapperBase, IRvIGDataBewoningenM
 		}
 
 		return bewoning;
+	}
+
+	private async Task<GbaNaamBasis?> MapBewonerNaam(bewoning_bewoner dbBewoner)
+	{
+		var naam = new GbaNaamBasis
+		{
+			Voornamen = dbBewoner.voor_naam,
+			Voorvoegsel = dbBewoner.geslachts_naam_voorvoegsel,
+			Geslachtsnaam = dbBewoner.geslachts_naam
+		};
+
+		if (!string.IsNullOrEmpty(dbBewoner.titel_predicaat))
+		{
+			var adellijkeTitelPredicaatOmschrijvingSoort = await _domeinTabellenHelper.GetAdellijkeTitelPredikaatOmschrijvingEnSoort(dbBewoner.titel_predicaat);
+			naam.AdellijkeTitelPredicaat = new AdellijkeTitelPredicaatType
+			{
+				Code = dbBewoner.titel_predicaat,
+				Omschrijving = adellijkeTitelPredicaatOmschrijvingSoort.omschrijving,
+				Soort = GbaMappingHelper.ParseToSoortAdellijkeTitelPredikaatEnum(adellijkeTitelPredicaatOmschrijvingSoort.soort)
+			};
+		}
+		return naam.Geslachtsnaam != null || naam.AdellijkeTitelPredicaat != null || naam.Voornamen != null || naam.Voorvoegsel != null ? naam : null;
+	}
+
+	private GbaGeboorteBeperkt? MapBewonerGeboorte(bewoning_bewoner dbBewoner)
+	{
+		var geboorte = new GbaGeboorteBeperkt
+		{
+			Datum = dbBewoner.geboorte_datum.ToString()
+		};
+		
+		return !String.IsNullOrEmpty(dbBewoner.geboorte_datum.ToString()) ? geboorte : null;
 	}
 
 	public (List<(bewoning_bewoner dbBewoner, long plId)> bewoners, List<(bewoning_bewoner dbBewoner, long plId)> mogelijkeBewoners) FilterBewonersByPeildatum(IEnumerable<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, DateTime? peildatum)

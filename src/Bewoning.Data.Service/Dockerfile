@@ -15,10 +15,10 @@ COPY ["Brp.Shared.Infrastructure/Brp.Shared.Infrastructure.csproj", "Brp.Shared.
 COPY ["Serilog.Sinks.PersistentFile/Serilog.Sinks.PersistentFile.csproj", "Serilog.Sinks.PersistentFile/"]
 COPY ["Rvig.Data.Base.WebApi/Rvig.Data.Base.WebApi.csproj", "Rvig.Data.Base.WebApi/"]
 COPY ["Rvig.Data.Base/Rvig.Data.Base.csproj", "Rvig.Data.Base/"]
-COPY ["Rvig.HaalCentraalApi.Shared/Rvig.HaalCentraalApi.Shared.csproj", "Rvig.HaalCentraalApi.Shared/"]
+COPY ["Rvig.BrpApi.Shared/Rvig.BrpApi.Shared.csproj", "Rvig.BrpApi.Shared/"]
 COPY ["Rvig.Data.Base.Postgres/Rvig.Data.Base.Postgres.csproj", "Rvig.Data.Base.Postgres/"]
 COPY ["Rvig.Data.Bewoningen/Rvig.Data.Bewoningen.csproj", "Rvig.Data.Bewoningen/"]
-COPY ["Rvig.HaalCentraalApi.Bewoningen/Rvig.HaalCentraalApi.Bewoningen.csproj", "Rvig.HaalCentraalApi.Bewoningen/"]
+COPY ["Rvig.BrpApi.Bewoningen/Rvig.BrpApi.Bewoningen.csproj", "Rvig.BrpApi.Bewoningen/"]
 RUN dotnet restore "./Bewoning.Data.Service/Bewoning.Data.Service.csproj"
 COPY . .
 WORKDIR "/src/Bewoning.Data.Service"

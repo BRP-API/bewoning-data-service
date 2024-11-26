@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Serialization;
-using Rvig.HaalCentraalApi.Shared.ApiModels.Universal;
+using Rvig.BrpApi.Shared.ApiModels.Universal;
 using Serilog.Events;
 
 namespace Rvig.Base.App.Models

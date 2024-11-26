@@ -3,7 +3,7 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Newtonsoft.Json;
 using Rvig.Base.App.Models;
-using Rvig.HaalCentraalApi.Shared.ApiModels.Universal;
+using Rvig.BrpApi.Shared.ApiModels.Universal;
 
 namespace Rvig.Base.App.Util
 {

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Rvig.Base.App.Models;
-using Rvig.HaalCentraalApi.Shared.ApiModels.Universal;
-using Rvig.HaalCentraalApi.Shared.Exceptions;
-using Rvig.HaalCentraalApi.Shared.Helpers;
+using Rvig.BrpApi.Shared.ApiModels.Universal;
+using Rvig.BrpApi.Shared.Exceptions;
+using Rvig.BrpApi.Shared.Helpers;
 using System;
 using System.IO;
 using System.Threading.Tasks;

@@ -3,11 +3,11 @@
 //using Microsoft.AspNetCore.Mvc.Testing;
 //using Microsoft.AspNetCore.TestHost;
 //using Microsoft.Extensions.DependencyInjection;
-//using Rvig.HaalCentraalApi.Shared.Interfaces;
+//using Rvig.BrpApi.Shared.Interfaces;
 //using Rvig.HaalCentraalApi;
-//using Rvig.HaalCentraalApi.Shared.ApiModels.BRP;
-//using Rvig.HaalCentraalApi.Shared.Options;
-//using Rvig.HaalCentraalApi.Shared.RepoModels;
+//using Rvig.BrpApi.Shared.ApiModels.BRP;
+//using Rvig.BrpApi.Shared.Options;
+//using Rvig.BrpApi.Shared.RepoModels;
 
 //namespace Test.Rvig.HaalCentraalApi.Util;
 
