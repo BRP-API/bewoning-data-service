@@ -215,10 +215,10 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
 
     Abstract Scenario: volledige naam van persoon <omschrijving>
       Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
-      | naam                  | waarde          |
-      | voornamen (02.10)     | <voornamen>     |
-      | voorvoegsel (02.30)   | <voorvoegsel>   |
-      | geslachtsnaam (02.40) | <geslachtsnaam> |
+      | naam                        | waarde          |
+      | voornamen (diakrieten)      | <voornamen>     |
+      | voorvoegsel (02.30)         | <voorvoegsel>   |
+      | geslachtsnaam (diakrieten)  | <geslachtsnaam> |
       En de persoon is ingeschreven op adres 'A1' met de volgende gegevens
       | gemeente van inschrijving (09.10) | datum aanvang adreshouding (10.30) |
       | 0800                              | 20100818                           |
