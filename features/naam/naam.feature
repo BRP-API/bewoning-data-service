@@ -242,11 +242,12 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
       | geslachtsnaam | <geslachtsnaam> |
 
       Voorbeelden:
-      | voornamen                              | voorvoegsel | geslachtsnaam                     | omschrijving                        |
-      | Christina Maria                        |             | Maassen                           | zonder voorvoegsel                  |
-      | Gerrit                                 | den         | Braber                            | met voorvoegsel                     |
-      |                                        |             | Obbadah                           | naamketen                           |
-      | Mohamed                                | El          | Rafi                              | voorvoegsel met hoofdletter         |
-      | Dian Marini Maya                       |             | .                                 | geslachtsnaam heeft standaardwaarde |
-      | Lisanty Teresita del niño Jesús Virgen | De las      | do Livramento de La Salete Jansz. | geslachtsnaam met punt              |
-      | Żáïŀëñøŕ Åłéèç Đëļŧå                   | 'S          | Streeveld                         | geslachtsnaam met diakrieten        |
+      | voornamen                              | voorvoegsel | geslachtsnaam                            | omschrijving                        |
+      | Christina Maria                        |             | Maassen                                  | zonder voorvoegsel                  |
+      | Gerrit                                 | den         | Braber                                   | met voorvoegsel                     |
+      |                                        |             | Obbadah                                  | naamketen                           |
+      | Mohamed                                | El          | Rafi                                     | voorvoegsel met hoofdletter         |
+      | Dian Marini Maya                       |             | .                                        | geslachtsnaam heeft standaardwaarde |
+      | Lisanty Teresita del niño Jesús Virgen | De las      | do Livramento de La Salete Jansz.        | geslachtsnaam met punt              |
+      | Żáïŀëñøŕ Åłéèç Đëļŧå                   | 'S          | Streeveld                                | voornaam met diakrieten             |
+      | Tibbe                                  | van         | ’Höü-Sÿáëck                              | achternaam met diakrieten           |
