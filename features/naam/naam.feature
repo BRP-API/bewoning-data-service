@@ -12,9 +12,7 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
   | gemeentecode (92.10) | identificatiecode verblijfplaats (11.80) |
   | 0800                 | 0800000000000001                         |
 
-  Regel: een persoon is binnen een periode bewoner van een adresseerbaar object als:
-  - de van datum van de periode valt op of na datum aanvang adreshouding van de persoon op het adresseerbaar object
-  - de tot datum van de periode valt vóór datum aanvang adreshouding van de persoon op het volgende adresseerbaar object
+  Regel: Naam wordt geleverd bij raadplegen van bewoning met type BewoningMetPeildatum en BewoningMetPeriode
 
   Scenario: naam van de bewoner wordt geleverd bij het raadplegen van bewoning met periode
       Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
@@ -49,7 +47,7 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
       | code         | M      |
       | omschrijving | man    |
 
-  Scenario: naam van de bewoner met diakrieten wordt geleverd bij het raadplegen van bewoning met periode
+  Scenario: naam van de bewoner wordt geleverd bij het raadplegen van bewoning met periode
     Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
     | voornamen (02.10) | adellijke titel of predicaat (02.20) | voorvoegsel (02.30) | geslachtsnaam (02.40) | geslachtsaanduiding (04.10) |
     | Robin Sam         | B                                    | van den             | Aedel                 | M                           |
@@ -210,44 +208,66 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
     | JH                      | jonkheer                   | predicaat           | M                   | man                   |
     | JV                      | jonkvrouw                  | predicaat           | V                   | vrouw                 |
 
+  Regel: Voornamen/geslachtsnaam met diakrieten wordt geleverd
+    - als voornamen/geslachtsnaam diakrieten bevat zijn beide gevuld. De velden bevatten verschillende waarden.
+    - als voornamen/geslachtsnaam geen diakrieten bevat is alleen voornamen (02.10)/geslachtsnaam (02.40) gevuld.
 
-  Regel: Naam bevat diakrieten
+  Abstract Scenario: voornamen met of zonder diakrieten
+    Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
+    | naam                      | waarde               |
+    | voornamen (02.10)         | <voornamen>          |
+    | voornamen (diakrieten)    | <voornamen_diak>     |
+    En de persoon is ingeschreven op adres 'A1' met de volgende gegevens
+    | gemeente van inschrijving (09.10) | datum aanvang adreshouding (10.30) |
+    | 0800                              | 20100818                           |
+    Als bewoningen wordt gezocht met de volgende parameters
+    | naam                             | waarde             |
+    | type                             | BewoningMetPeriode |
+    | datumVan                         | 2010-09-01         |
+    | datumTot                         | 2014-08-01         |
+    | adresseerbaarObjectIdentificatie | 0800000000000001   |
+    Dan heeft de response een bewoning met de volgende gegevens
+    | naam                             | waarde                    |
+    | periode                          | 2010-09-01 tot 2014-08-01 |
+    | adresseerbaarObjectIdentificatie | 0800000000000001          |
+    En heeft de bewoning een bewoner met de volgende gegevens
+    | burgerservicenummer |
+    | 000000024           |
+    En heeft de bewoner de volgende 'naam' gegevens
+    | naam          | waarde                |
+    | voornamen     | <voornamen_resultaat> |
 
-    Abstract Scenario: volledige naam van persoon <omschrijving>
-      Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
-      | naam                        | waarde          |
-      | voornamen (diakrieten)      | <voornamen>     |
-      | voorvoegsel (02.30)         | <voorvoegsel>   |
-      | geslachtsnaam (diakrieten)  | <geslachtsnaam> |
-      En de persoon is ingeschreven op adres 'A1' met de volgende gegevens
-      | gemeente van inschrijving (09.10) | datum aanvang adreshouding (10.30) |
-      | 0800                              | 20100818                           |
-      Als bewoningen wordt gezocht met de volgende parameters
-      | naam                             | waarde             |
-      | type                             | BewoningMetPeriode |
-      | datumVan                         | 2010-09-01         |
-      | datumTot                         | 2014-08-01         |
-      | adresseerbaarObjectIdentificatie | 0800000000000001   |
-      Dan heeft de response een bewoning met de volgende gegevens
-      | naam                             | waarde                    |
-      | periode                          | 2010-09-01 tot 2014-08-01 |
-      | adresseerbaarObjectIdentificatie | 0800000000000001          |
-      En heeft de bewoning een bewoner met de volgende gegevens
-      | burgerservicenummer |
-      | 000000024           |
-      En heeft de bewoner de volgende 'naam' gegevens
-      | naam          | waarde          |
-      | voornamen     | <voornamen>     |
-      | voorvoegsel   | <voorvoegsel>   |
-      | geslachtsnaam | <geslachtsnaam> |
+    Voorbeelden:
+    | voornamen               | voornamen_diak         | voornamen_resultaat      | omschrijving                 |
+    | Zailenor Aleez Delta    | Żáïŀëñøŕ Åłéèç Đëļŧå   | Żáïŀëñøŕ Åłéèç Đëļŧå     | voornamen met diakrieten     |
+    | Robin Sam               |                        | Robin Sam                | voornamen zonder diakrieten  |
 
-      Voorbeelden:
-      | voornamen                              | voorvoegsel | geslachtsnaam                            | omschrijving                        |
-      | Christina Maria                        |             | Maassen                                  | zonder voorvoegsel                  |
-      | Gerrit                                 | den         | Braber                                   | met voorvoegsel                     |
-      |                                        |             | Obbadah                                  | naamketen                           |
-      | Mohamed                                | El          | Rafi                                     | voorvoegsel met hoofdletter         |
-      | Dian Marini Maya                       |             | .                                        | geslachtsnaam heeft standaardwaarde |
-      | Lisanty Teresita del niño Jesús Virgen | De las      | do Livramento de La Salete Jansz.        | geslachtsnaam met punt              |
-      | Żáïŀëñøŕ Åłéèç Đëļŧå                   | 'S          | Streeveld                                | voornaam met diakrieten             |
-      | Tibbe                                  | van         | ’Höü-Sÿáëck                              | achternaam met diakrieten           |
+  Abstract Scenario: geslachtsnaam met en zonder diakrieten
+    Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
+    | naam                        | waarde               |
+    | geslachtsnaam (02.40)       | <geslachtsnaam>      |
+    | geslachtsnaam (diakrieten)  | <geslachtsnaam_diak> |
+    En de persoon is ingeschreven op adres 'A1' met de volgende gegevens
+    | gemeente van inschrijving (09.10) | datum aanvang adreshouding (10.30) |
+    | 0800                              | 20100818                           |
+    Als bewoningen wordt gezocht met de volgende parameters
+    | naam                             | waarde             |
+    | type                             | BewoningMetPeriode |
+    | datumVan                         | 2010-09-01         |
+    | datumTot                         | 2014-08-01         |
+    | adresseerbaarObjectIdentificatie | 0800000000000001   |
+    Dan heeft de response een bewoning met de volgende gegevens
+    | naam                             | waarde                    |
+    | periode                          | 2010-09-01 tot 2014-08-01 |
+    | adresseerbaarObjectIdentificatie | 0800000000000001          |
+    En heeft de bewoning een bewoner met de volgende gegevens
+    | burgerservicenummer |
+    | 000000024           |
+    En heeft de bewoner de volgende 'naam' gegevens
+    | naam          | waarde                    |
+    | geslachtsnaam | <geslachtsnaam_resultaat> |
+
+    Voorbeelden:
+    | geslachtsnaam           | geslachtsnaam_diak     | geslachtsnaam_resultaat  | omschrijving                     |
+    | Zailenor Aleez Delta    | Żáïŀëñøŕ Åłéèç Đëļŧå   | Żáïŀëñøŕ Åłéèç Đëļŧå     | geslachtsnaam met diakrieten     |
+    | Robin Sam               |                        | Robin Sam                | geslachtsnaam zonder diakrieten  |
