@@ -12,7 +12,7 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
   | gemeentecode (92.10) | identificatiecode verblijfplaats (11.80) |
   | 0800                 | 0800000000000001                         |
 
-  Regel: Geslachtsaanduiding van bewoner wordt geleverd bij raadplegen van bewoning
+Regel: Geslachtsaanduiding van bewoner wordt geleverd bij raadplegen van bewoning
 
   Scenario: geslachtsaanduiding van bewoner wordt geleverd bij het raadplegen van bewoning met periode
     Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
@@ -63,7 +63,7 @@ zodat ik de volledige naam van de bewoner kan leveren aan de consumer van de Bew
     | code         | V      |
     | omschrijving | vrouw  |
 
-  Regel: Geslachtsaanduiding van mogelijke bewoner wordt geleverd bij raadplegen van bewoning in onzekerheidsperiode
+Regel: Geslachtsaanduiding van mogelijke bewoner wordt geleverd bij raadplegen van bewoning in onzekerheidsperiode
 
   Scenario: geslachtsaanduiding van mogelijke bewoner wordt geleverd bij het raadplegen van bewoning met periode in onzekerheidsperiode
     Gegeven de persoon met burgerservicenummer '000000024' heeft de volgende gegevens
