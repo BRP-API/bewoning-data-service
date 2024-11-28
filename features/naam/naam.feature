@@ -108,7 +108,7 @@ Regel: Naam van mogelijke bewoner wordt geleverd bij raadplegen van bewoning in 
     | burgerservicenummer | naam.voornamen | naam.voorvoegsel | naam.geslachtsnaam | 
     | 000000024           | Robin Sam      | van den          | Aedel              |
 
-Regel: Voornamen/geslachtsnaam met diakrieten wordt geleverd
+Regel: Als een (mogelijke) bewoner ook voornamen en/of geslachtsnaam met diakrieten heeft, dan wordt deze geleverd
     - als voornamen/geslachtsnaam diakrieten bevat zijn beide gevuld. De velden bevatten verschillende waarden.
     - als voornamen/geslachtsnaam geen diakrieten bevat is alleen voornamen (02.10)/geslachtsnaam (02.40) gevuld.
 
