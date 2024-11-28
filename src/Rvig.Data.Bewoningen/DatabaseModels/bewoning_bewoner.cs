@@ -6,10 +6,12 @@ public record bewoning_bewoner
 	public long pl_id { get; set; }
 	[RubriekCategory(1), RubriekElement("01.20")] public long? burger_service_nr { get; set; }
 	[RubriekCategory(1), RubriekElement("02.10")] public string? voor_naam { get; set; }
-	[RubriekCategory(1), RubriekElement("02.20")] public string? titel_predicaat { get; set; }
+    [RubriekCategory(1), RubriekElement("02.40")] public string? diak_voor_naam { get; set; }
+    [RubriekCategory(1), RubriekElement("02.20")] public string? titel_predicaat { get; set; }
 	[RubriekCategory(1), RubriekElement("02.30")] public string? geslachts_naam_voorvoegsel { get; set; }
 	[RubriekCategory(1), RubriekElement("02.40")] public string? geslachts_naam { get; set; }
-	[RubriekCategory(1), RubriekElement("03.10")] public int? geboorte_datum { get; set; }
+    [RubriekCategory(1), RubriekElement("02.40")] public string? diak_geslachts_naam { get; set; }
+    [RubriekCategory(1), RubriekElement("03.10")] public int? geboorte_datum { get; set; }
     [RubriekCategory(1), RubriekElement("04.10")] public string? geslachts_aand { get; set; }
     [RubriekCategory(7), RubriekElement("67.10")] public int? pl_bijhouding_opschort_datum { get; set; }
 	[RubriekCategory(7), RubriekElement("67.20")] public string? pl_bijhouding_opschort_reden { get; set; }

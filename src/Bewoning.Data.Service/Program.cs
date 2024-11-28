@@ -7,7 +7,6 @@ using Rvig.Data.Bewoningen.Repositories;
 using Rvig.Data.Bewoningen.Services;
 using Rvig.BrpApi.Bewoningen.Interfaces;
 using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
-using Microsoft.AspNetCore.Builder;
 
 var servicesDictionary = new Dictionary<Type, Type>
 {
