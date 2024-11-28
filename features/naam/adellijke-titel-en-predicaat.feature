@@ -69,7 +69,7 @@ Regel: Adellijke titel en predicaat van bewoner wordt geleverd bij raadplegen va
     Als bewoningen wordt gezocht met de volgende parameters
     | naam                             | waarde               |
     | type                             | BewoningMetPeildatum |
-    | peildatum                         | 2010-09-01          |
+    | peildatum                        | 2010-09-01           |
     | adresseerbaarObjectIdentificatie | 0800000000000001     |
     Dan heeft de response een bewoning met de volgende gegevens
     | naam                             | waarde                    |
