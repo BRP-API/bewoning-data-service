@@ -20,6 +20,9 @@ npx cucumber-js -f json:./test-reports/cucumber-js/bewoning/test-result.json \
                 -f summary \
                 features/raadpleeg-bewoning-met-periode \
                 features/raadpleeg-bewoning-op-peildatum \
+                features/geboortedatum \
+                features/geslacht \
+                features/naam \
                 features/protocollering \
                 --tags "not @skip-verify" \
                 --world-parameters "$PARAMS"

@@ -85,6 +85,14 @@ jobs:
         run: |
           ./scripts/specs-verify.sh
 
+      - name: Voeg test summary toe aan Github Step Summary
+        if: always()
+        run: |
+          echo "### Cucumber Test Reports" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat test-reports/cucumber-js/bewoning/test-result-summary.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
       - name: Stop containers
         if: always()
         run: |
