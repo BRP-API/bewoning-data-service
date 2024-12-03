@@ -33,7 +33,7 @@ Regel: Naam van bewoner wordt geleverd bij raadplegen van bewoning
     | adresseerbaarObjectIdentificatie | 0800000000000001          |
     En heeft de bewoning een bewoner met de volgende gegevens
     | burgerservicenummer |
-    | 000000032           |
+    | 000000025           |
     En heeft de bewoner de volgende 'naam' gegevens
     | naam                                 | waarde    |
     | voornamen                            | Robin Sam |
