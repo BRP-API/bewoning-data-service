@@ -104,7 +104,7 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
     Scenario: De bewoners worden gesorteerd op geboortedatum als datum aanvang aadreshouding en geslachtsnaam overeenkomt
         Beide bewoners in de gevraagde periode zijn op dezelfde dag ingeschreven op het adresseerbaar object
         Beide bewoners hebben dezelfde geslachtsnaam
-        De bewoners worden gesorteerd op geboortedatum, aflopend (van jong naar oud)
+        De bewoners worden gesorteerd op geboortedatum, van oud naar jong
       Als bewoningen wordt gezocht met de volgende parameters
         | naam                             | waarde             |
         | type                             | BewoningMetPeriode |
