@@ -103,6 +103,9 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 			List<(bewoning_bewoner dbBewoner, long plId)> allDbBewonersPlIds = dbBewoningWrapper.Bewoners
 				.Where(bewonerPlId => bewonerPlId.adres_verblijf_plaats_ident_code?.Equals(identificatie) == true)
 				.Select(bewoner => (dbBewoner: bewoner, plId: bewoner.pl_id))
+				.OrderBy(bewoner => bewoner.dbBewoner.vb_adreshouding_start_datum)
+				.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
+				.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
 				.ToList();
 
 			if (peildatum.HasValue && !van.HasValue && !tot.HasValue)
@@ -206,30 +209,6 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 			}
 
 			bewoningen = MergeDuplicateBewoningenWithCoincidingPeriods(bewoningen);
-
-			bewoningen = bewoningen.Distinct()
-				.OrderBy(bewoning => bewoning?.Periode?.DatumVan)
-				.ToList();
-
-			bewoningen.ForEach(bewoning =>
-			{
-				if (bewoning?.Bewoners != null)
-				{
-					bewoning.Bewoners = bewoning.Bewoners?
-						.OrderBy(bewoner => bewoner.Naam)
-						.ThenBy(bewoner => bewoner.Geboorte?.Datum)
-                        .ThenBy(bewoner => bewoner.Burgerservicenummer)
-                        .ToList();
-				}
-                if (bewoning?.MogelijkeBewoners != null)
-                {
-                    bewoning.MogelijkeBewoners = bewoning.MogelijkeBewoners?
-                        .OrderBy(bewoner => bewoner.Naam)
-                        .ThenBy(bewoner => bewoner.Geboorte?.Datum)
-                        .ThenBy(bewoner => bewoner.Burgerservicenummer)
-                        .ToList();
-                }
-            });
 		}
 		
 		return bewoningen;
