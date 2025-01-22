@@ -207,7 +207,29 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
 			bewoningen = MergeDuplicateBewoningenWithCoincidingPeriods(bewoningen);
 
-			return bewoningen.Distinct();
+			bewoningen = bewoningen.Distinct()
+				.OrderBy(bewoning => bewoning?.Periode?.DatumVan)
+				.ToList();
+
+			bewoningen.ForEach(bewoning =>
+			{
+				if (bewoning?.Bewoners != null)
+				{
+					bewoning.Bewoners = bewoning.Bewoners?
+						.OrderBy(bewoner => bewoner.Naam)
+						.ThenBy(bewoner => bewoner.Geboorte?.Datum)
+                        .ThenBy(bewoner => bewoner.Burgerservicenummer)
+                        .ToList();
+				}
+                if (bewoning?.MogelijkeBewoners != null)
+                {
+                    bewoning.MogelijkeBewoners = bewoning.MogelijkeBewoners?
+                        .OrderBy(bewoner => bewoner.Naam)
+                        .ThenBy(bewoner => bewoner.Geboorte?.Datum)
+                        .ThenBy(bewoner => bewoner.Burgerservicenummer)
+                        .ToList();
+                }
+            });
 		}
 		
 		return bewoningen;
