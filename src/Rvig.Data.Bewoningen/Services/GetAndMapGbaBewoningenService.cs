@@ -210,8 +210,8 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
 			bewoningen = MergeDuplicateBewoningenWithCoincidingPeriods(bewoningen);
 		}
-		
-		return bewoningen;
+
+        return bewoningen.Distinct();
 	}
 
 	/// <summary>
