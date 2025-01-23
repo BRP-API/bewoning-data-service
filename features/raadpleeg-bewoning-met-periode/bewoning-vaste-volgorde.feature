@@ -1,5 +1,5 @@
 # language: nl
-@api @valideer-volgorde
+@api
 Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op datum aanvang adreshouding en naam
 
   Achtergrond:
@@ -60,6 +60,7 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
 
   Regel: Binnen een bewoning samenstelling worden de bewoners in een vaste volgorde gesorteerd
 
+    @valideer-volgorde
     Scenario: De bewoners worden gesorteerd op datum aanvang adreshouding
         Bewoner met bsn 000000012 is later ingeschreven dan de persoon met bsn 000000024
         Binnen de gevraagde periode zijn beide personen bewoners van het adresseerbaar object
@@ -81,6 +82,7 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
         | burgerservicenummer |
         |           000000012 |
 
+    @valideer-volgorde
     Scenario: De bewoners worden gesorteerd op geslachtsnaam als datum aanvang adreshouding overeenkomt
         Beide bewoners in de gevraagde periode zijn op dezelfde dag ingeschreven op het adresseerbaar object
         De bewoners worden alfabetisch gesorteerd op geslachtsnaam
@@ -101,6 +103,7 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
         | burgerservicenummer | naam.geslachtsnaam |
         |           000000036 | Jansen             |
 
+    @valideer-volgorde
     Scenario: De bewoners worden gesorteerd op geboortedatum als datum aanvang aadreshouding en geslachtsnaam overeenkomt
         Beide bewoners in de gevraagde periode zijn op dezelfde dag ingeschreven op het adresseerbaar object
         Beide bewoners hebben dezelfde geslachtsnaam

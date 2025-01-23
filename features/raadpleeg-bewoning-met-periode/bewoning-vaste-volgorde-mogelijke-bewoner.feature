@@ -1,5 +1,5 @@
 # language: nl
-@api @valideer-volgorde
+@api
 Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op datum aanvang adreshouding en naam
 
   Achtergrond:
@@ -50,7 +50,7 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
       |                              0800 |                           20250401 |
     En de persoon met burgerservicenummer '000000072' heeft de volgende gegevens
       | geslachtsnaam (02.40) | geboortedatum (03.10) |
-      | Pietersen             | vandaag - 50 jaar    |
+      | Pietersen             | vandaag - 50 jaar     |
     En de persoon is ingeschreven op adres 'A1' met de volgende gegevens
       | gemeente van inschrijving (09.10) | datum aanvang adreshouding (10.30) |
       |                              0800 |                           20250300 |
@@ -60,10 +60,12 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
 
   Regel: Binnen een bewoning samenstelling worden de bewoners in een vaste volgorde gesorteerd
 
+    @valideer-volgorde
     Scenario: De bewoners worden gesorteerd op datum aanvang adreshouding
         Bewoner met bsn 000000012 is later ingeschreven dan de persoon met bsn 000000024
         Binnen de gevraagde periode zijn beide personen bewoners van het adresseerbaar object
         Omdat persoon met bsn 000000024 eerder is ingeschreven op dit adres, wordt deze persoon eerder vermeld in de response
+
       Als bewoningen wordt gezocht met de volgende parameters
         | naam                             | waarde             |
         | type                             | BewoningMetPeriode |
@@ -81,9 +83,11 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
         | burgerservicenummer |
         |           000000012 |
 
+    @valideer-volgorde
     Scenario: De bewoners worden gesorteerd op geslachtsnaam als datum aanvang adreshouding overeenkomt
         Beide bewoners in de gevraagde periode zijn op dezelfde dag ingeschreven op het adresseerbaar object
         De bewoners worden alfabetisch gesorteerd op geslachtsnaam
+
       Als bewoningen wordt gezocht met de volgende parameters
         | naam                             | waarde             |
         | type                             | BewoningMetPeriode |
@@ -101,10 +105,12 @@ Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op d
         | burgerservicenummer | naam.geslachtsnaam |
         |           000000036 | Jansen             |
 
+    @valideer-volgorde
     Scenario: De bewoners worden gesorteerd op geboortedatum als datum aanvang aadreshouding en geslachtsnaam overeenkomt
         Beide bewoners in de gevraagde periode zijn op dezelfde dag ingeschreven op het adresseerbaar object
         Beide bewoners hebben dezelfde geslachtsnaam
         De bewoners worden gesorteerd op geboortedatum, van oud naar jong
+
       Als bewoningen wordt gezocht met de volgende parameters
         | naam                             | waarde             |
         | type                             | BewoningMetPeriode |
