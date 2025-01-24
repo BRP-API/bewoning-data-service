@@ -105,6 +105,7 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 				.Select(bewoner => (dbBewoner: bewoner, plId: bewoner.pl_id))
 				.OrderBy(bewoner => bewoner.dbBewoner.vb_adreshouding_start_datum)
 				.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
+				.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
 				.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
 				.ToList();
 
