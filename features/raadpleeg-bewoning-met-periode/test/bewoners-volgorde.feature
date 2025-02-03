@@ -225,7 +225,7 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
 
   @valideer-volgorde
   Scenario: Datum vertrek beïnvloed de volgorde niet
-    Gegeven met datum aanvang adreshouding 20240601 in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A2'
+    Gegeven vervolgens zijn de volgende personen met datum aanvang adreshouding 20240601 ingeschreven in gemeente '0800' op adres 'A2'
       | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
       |                   000000012 | Pietersen             | Femke             |              19980526 |
       |                   000000048 | Jansen                | Karel Jan         |              19990624 |
