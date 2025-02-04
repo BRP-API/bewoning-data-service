@@ -183,21 +183,11 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 					(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) = 
 						GetBewonersAndMogelijkeBewoners(allDbBewonersPlIds, peildatum, startDateTime, endDateTime);
 
-					dbBewonersPlIds = dbBewonersPlIds
-						.OrderBy(x => x.dbBewoner.vorige_start_adres_datum != null ? x.dbBewoner.vorige_start_adres_datum + 1 : x.dbBewoner.vb_adreshouding_start_datum)
-						.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
-						.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
-						.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
-						.ToList();
-
-					dbMogelijkeBewonersPlIds = dbMogelijkeBewonersPlIds
-						.OrderBy(x => x.dbBewoner.vorige_start_adres_datum != null ? x.dbBewoner.vorige_start_adres_datum + 1 : x.dbBewoner.vb_adreshouding_start_datum)
-						.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
-						.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
-						.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
-						.ToList();
-
-					bewonerFilteringResultsWithPeriods.Add((bewonersPlIds: dbBewonersPlIds, mogelijkeBewonersPlIds: dbMogelijkeBewonersPlIds, startDateTime, endDateTime));
+					bewonerFilteringResultsWithPeriods.Add((
+						bewonersPlIds: OrderBewoners(dbBewonersPlIds),
+						mogelijkeBewonersPlIds: OrderBewoners(dbMogelijkeBewonersPlIds),
+						startDateTime,
+						endDateTime));
 				}
 			}
 			bewonerFilteringResultsWithPeriods.ForEach(result =>
@@ -226,6 +216,16 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 		}
 
 		return bewoningen;
+	}
+
+	private static List<(bewoning_bewoner dbBewoner, long plId)> OrderBewoners(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds)
+	{
+		return dbBewonersPlIds
+			.OrderBy(x => x.dbBewoner.vorige_start_adres_datum != null ? x.dbBewoner.vorige_start_adres_datum + 1 : x.dbBewoner.vb_adreshouding_start_datum)
+			.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
+			.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
+			.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
+			.ToList();
 	}
 
 	/// <summary>
