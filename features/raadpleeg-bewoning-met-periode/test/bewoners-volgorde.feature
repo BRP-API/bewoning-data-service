@@ -418,10 +418,10 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |           000000036 | Elise          | Boer               |       19971130 |
       |           000000061 | Irene          | Jansen             |       20000328 |
       |           000000048 | Karel Jan      | Jansen             |       19990624 |
-      |           000000085 | Bas            | Pietersen          |       20000119 |
-      |           000000073 | Bas            | Pietersen          |       20190917 |
       |           000000103 | Leonie         | Teunissen          |       20181103 |
       |           000000139 | Peter          | Teunissen          |       20210411 |
+      |           000000085 | Bas            | Pietersen          |       20000119 |
+      |           000000073 | Bas            | Pietersen          |       20190917 |
       |           000000115 | Ruud           | Alberts            |       20160703 |
       |           000000097 | Corine         | Alberts            |       20171109 |
       |           000000140 | Anton          | Boer               |       20140621 |

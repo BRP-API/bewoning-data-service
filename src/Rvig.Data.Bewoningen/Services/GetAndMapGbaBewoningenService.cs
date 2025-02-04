@@ -184,8 +184,25 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
 					allDbBewonersPlIds = RemoveBewonersWithActiveSpecificInOnderzoek(allDbBewonersPlIds, startDateTime, endDateTime);
 
-					(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) = GetBewonersAndMogelijkeBewoners(allDbBewonersPlIds, peildatum, startDateTime, endDateTime);
-					
+					(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, 
+					 List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) = GetBewonersAndMogelijkeBewoners(allDbBewonersPlIds, peildatum, startDateTime, endDateTime);
+
+					dbBewonersPlIds = dbBewonersPlIds
+						.OrderBy(x => x.dbBewoner.vorige_start_adres_datum != null ? x.dbBewoner.vorige_start_adres_datum + 1 : x.dbBewoner.vb_adreshouding_start_datum)
+						.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
+						.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
+						.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
+						.DistinctBy(x => x.dbBewoner.burger_service_nr)
+						.ToList();
+
+					dbMogelijkeBewonersPlIds = dbMogelijkeBewonersPlIds
+						.OrderBy(x => x.dbBewoner.vorige_start_adres_datum != null ? x.dbBewoner.vorige_start_adres_datum + 1 : x.dbBewoner.vb_adreshouding_start_datum)
+						.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
+						.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
+						.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
+						.DistinctBy(x => x.dbBewoner.burger_service_nr)
+						.ToList();
+
 					bewonerFilteringResultsWithPeriods.Add((bewonersPlIds: dbBewonersPlIds, mogelijkeBewonersPlIds: dbMogelijkeBewonersPlIds, startDateTime, endDateTime));
 				}
 			}
