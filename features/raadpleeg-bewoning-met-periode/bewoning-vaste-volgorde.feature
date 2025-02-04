@@ -1,6 +1,6 @@
 # language: nl
 @api
-Functionaliteit: De samenstelling van bewoners in een periode is gesorteerd op datum aanvang adreshouding en naam.
+Functionaliteit: De sortering van bewoners op vaste volgorde
 
   Achtergrond:
     Gegeven adres 'A1' heeft de volgende gegevens

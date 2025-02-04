@@ -1,7 +1,7 @@
 # language: nl
 @api
-Functionaliteit: De samenstelling van mogelijke bewoners in een periode is gesorteerd op datum aanvang adreshouding en naam. 
-Een mogelijke bewoner is een persoon die (voor een deel) van de gevraagde periode in de onzekerheidsperiode van de gevraagde adreshouding valt.
+Functionaliteit: De sortering van mogelijke bewoners op vaste volgorde
+Een mogelijke bewoner is een persoon die (voor een deel) van de gevraagde periode in de onzekerheidsperiode van de gevraagde adreshouding valt
 
   Achtergrond:
     Gegeven adres 'A1' heeft de volgende gegevens
