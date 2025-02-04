@@ -360,7 +360,7 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |                  20230712 |           20230700 |                   20230711 |            20230700 |
 
   @valideer-volgorde
-  Scenario: Sorteren mogelijke bewoners met gedeeltelijk onbekende datum aanvang en bekende aanvang vorige verblijfplaats
+  Scenario: Sorteren bewoners en mogelijke bewoners met gedeeltelijk onbekende datum aanvang en bekende aanvang vorige verblijfplaats
     # vorige verblijfplaats
     Gegeven met datum aanvang adreshouding 20230415 in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A2'
       | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
