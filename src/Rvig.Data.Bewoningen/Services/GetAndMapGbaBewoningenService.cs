@@ -103,10 +103,6 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 			List<(bewoning_bewoner dbBewoner, long plId)> allDbBewonersPlIds = dbBewoningWrapper.Bewoners
 				.Where(bewonerPlId => bewonerPlId.adres_verblijf_plaats_ident_code?.Equals(identificatie) == true)
 				.Select(bewoner => (dbBewoner: bewoner, plId: bewoner.pl_id))
-				.OrderBy(bewoner => bewoner.dbBewoner.vb_adreshouding_start_datum)
-				.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
-				.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
-				.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
 				.ToList();
 
 			if (peildatum.HasValue && !van.HasValue && !tot.HasValue)
