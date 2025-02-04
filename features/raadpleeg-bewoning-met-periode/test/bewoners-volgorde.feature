@@ -334,7 +334,7 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |           000000085 | Bas            | Pietersen          |       20000119 |
       |           000000073 | Bas            | Pietersen          |       20190917 |
       |           000000115 | Ruud           | Alberts            |       20160703 |
-    En heeft de bewoning mogelijkeBewoners met de volgende gegevens
+    En heeft de bewoning mogelijke bewoners met de volgende gegevens
       | burgerservicenummer | naam.voornamen | naam.geslachtsnaam | geboorte.datum |
       |           000000103 | Leonie         | Teunissen          |       20181103 |
       |           000000139 | Peter          | Teunissen          |       20210411 |
