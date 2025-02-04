@@ -293,6 +293,73 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |           000000097 | Peter          | Teunissen          |       20210411 |
 
   @valideer-volgorde
+  Abstract Scenario: Sorteren bewoners met gedeeltelijk onbekende datum aanvang en bekende aanvang vorige verblijfplaats
+    Gegeven met datum aanvang adreshouding <datum aanvang vorige Cees> in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A1'
+      | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
+      |                   000000097 | Nielson               | Aart              |              20020411 |
+    En vervolgens zijn de volgende personen met datum aanvang adreshouding <datum aanvang Cees> ingeschreven in gemeente '0800' op adres 'A2'
+      | burgerservicenummer (01.20) |
+      |                   000000097 |
+    En met datum aanvang adreshouding <datum aanvang Gerda> in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A2'
+      | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
+      |                   000000103 | Nielson               | Gerda             |              20020411 |
+    Als bewoningen wordt gezocht met de volgende parameters
+      | naam                             | waarde             |
+      | type                             | BewoningMetPeriode |
+      | datumVan                         |         2024-01-01 |
+      | datumTot                         |         2025-01-01 |
+      | adresseerbaarObjectIdentificatie |   0800010000000002 |
+    Dan heeft de response een bewoning met de volgende gegevens
+      | naam                             | waarde                    |
+      | periode                          | 2024-01-01 tot 2025-01-01 |
+      | adresseerbaarObjectIdentificatie |          0800010000000002 |
+    En heeft de bewoning bewoners met de volgende gegevens
+      | burgerservicenummer | naam.voornamen | naam.geslachtsnaam | geboorte.datum |
+      |           000000103 | Gerda          | Nielson            |       20020411 |
+      |           000000097 | Aart           | Nielson            |       20020411 |
+
+    Voorbeelden:
+      | datum aanvang vorige Cees | datum aanvang Cees | datum aanvang Gerda |
+      |                  20230612 |           20230000 |            20230603 |
+      |                  20230612 |           20230000 |            20230612 |
+      |                  20230612 |           20230600 |            20230612 |
+
+  @valideer-volgorde
+  Abstract Scenario: Sorteren mogelijke bewoners met gedeeltelijk onbekende datum aanvang en bekende aanvang vorige verblijfplaats
+    Gegeven met datum aanvang adreshouding <datum aanvang vorige Cees> in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A1'
+      | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
+      |                   000000097 | Nielson               | Aart              |              20020411 |
+    En vervolgens zijn de volgende personen met datum aanvang adreshouding <datum aanvang Cees> ingeschreven in gemeente '0800' op adres 'A2'
+      | burgerservicenummer (01.20) |
+      |                   000000097 |
+    Gegeven met datum aanvang adreshouding <datum aanvang vorige Gerda> in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A1'
+      | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
+      |                   000000103 | Nielson               | Gerda             |              20020411 |
+    En vervolgens zijn de volgende personen met datum aanvang adreshouding <datum aanvang Gerda> ingeschreven in gemeente '0800' op adres 'A2'
+      | burgerservicenummer (01.20) |
+      |                   000000103 |
+    Als bewoningen wordt gezocht met de volgende parameters
+      | naam                             | waarde             |
+      | type                             | BewoningMetPeriode |
+      | datumVan                         |         2023-07-15 |
+      | datumTot                         |         2023-08-01 |
+      | adresseerbaarObjectIdentificatie |   0800010000000002 |
+    Dan heeft de response een bewoning met de volgende gegevens
+      | naam                             | waarde                    |
+      | periode                          | 2023-07-15 tot 2023-08-01 |
+      | adresseerbaarObjectIdentificatie |          0800010000000002 |
+    En heeft de bewoning mogelijke bewoners met de volgende gegevens
+      | burgerservicenummer | naam.voornamen | naam.geslachtsnaam | geboorte.datum |
+      |           000000103 | Gerda          | Nielson            |       20020411 |
+      |           000000097 | Aart           | Nielson            |       20020411 |
+
+    Voorbeelden:
+      | datum aanvang vorige Cees | datum aanvang Cees | datum aanvang vorige Gerda | datum aanvang Gerda |
+      |                  20230712 |           20230000 |                   20230711 |            20230000 |
+      |                  20230712 |           20230000 |                   20230700 |            20230000 |
+      |                  20230712 |           20230700 |                   20230711 |            20230700 |
+
+  @valideer-volgorde
   Scenario: Sorteren mogelijke bewoners met gedeeltelijk onbekende datum aanvang en bekende aanvang vorige verblijfplaats
     # vorige verblijfplaats
     Gegeven met datum aanvang adreshouding 20230415 in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A2'
