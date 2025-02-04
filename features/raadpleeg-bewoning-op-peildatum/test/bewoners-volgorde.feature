@@ -366,7 +366,6 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |                   000000103 |
       |                   000000139 |
       |                   000000140 |
-      |                   000000127 |
     En met datum aanvang adreshouding 20230415 in gemeente '0800' zijn de volgende personen ingeschreven op adres 'A1'
       | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
       |                   000000115 | Alberts               | Ruud              |              20160703 |
