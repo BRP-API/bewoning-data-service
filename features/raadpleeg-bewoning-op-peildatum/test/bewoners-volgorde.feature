@@ -471,4 +471,3 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |           000000085 | Bas            | Pietersen          |       20000119 |
       |           000000073 | Bas            | Pietersen          |       20190917 |
       |           000000097 | Corine         | Alberts            |       20171109 |
-
