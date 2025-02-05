@@ -101,7 +101,7 @@ Functionaliteit: De sortering van bewoners op vaste volgorde
   Regel: (Mogelijke) bewoners worden op basis van geslachtsnaam alfabetisch gesorteerd als de datum aanvang adreshouding van de bewoners overeenkomen
 
     @valideer-volgorde
-    Scenario: De mogelijke bewoners worden alfabetisch gesorteerd op geslachtsnaam
+    Scenario: De bewoners in de gevraagde periode hebben dezelfde datum aanvang adreshouding en verschillende geslachtsnaam
       Gegeven de persoon met burgerservicenummer '000000012' heeft de volgende gegevens
         | geslachtsnaam (02.40) |
         | Jansen                |
@@ -130,7 +130,7 @@ Functionaliteit: De sortering van bewoners op vaste volgorde
         |           000000012 | Jansen             |
 
     @valideer-volgorde
-    Scenario: De mogelijke bewoners worden alfabetisch gesorteerd op geslachtsnaam
+    Scenario: De mogelijke bewoners in de gevraagde periode hebben dezelfde datum aanvang adreshouding en verschillende geslachtsnaam
       Gegeven de persoon met burgerservicenummer '000000012' heeft de volgende gegevens
         | geslachtsnaam (02.40) |
         | Jansen                |
@@ -161,7 +161,7 @@ Functionaliteit: De sortering van bewoners op vaste volgorde
   Regel: (Mogelijke) bewoners worden op basis van voornamen alfabetisch gesorteerd als de datum aanvang adreshouding en de geslachtsnaam van de bewoners overeenkomen
 
     @valideer-volgorde
-    Scenario: De bewoners worden alfabetisch gesorteerd op voornamen
+    Scenario: De bewoners in de gevraagde priode hebben dezelfde datum aanvang adreshouding en verschillende voornamen
       Gegeven de persoon met burgerservicenummer '000000012' heeft de volgende gegevens
         | voornamen (02.10) |
         | Bert              |
@@ -190,7 +190,7 @@ Functionaliteit: De sortering van bewoners op vaste volgorde
         |           000000012 | Bert           |
 
     @valideer-volgorde
-    Scenario: De bewoners worden alfabetisch gesorteerd op voornamen
+    Scenario: De mogelijke bewoners in de gevraagde priode hebben dezelfde datum aanvang adreshouding en verschillende voornamen
       Gegeven de persoon met burgerservicenummer '000000012' heeft de volgende gegevens
         | voornamen (02.10) |
         | Bert              |
@@ -221,7 +221,7 @@ Functionaliteit: De sortering van bewoners op vaste volgorde
   Regel: (Mogelijke) bewoners worden op basis van geboortedatum oplopend (van oud naar jong) gesorteerd als de datum aanvang adreshouding,geslachtsnaam en voornamen van de bewoners overeenkomen
 
     @valideer-volgorde
-    Scenario: De bewoners worden oplopend gesorteerd op geboortedatum (van oud naar jong)
+    Scenario: De bewoners in de gevraagde priode hebben dezelfde datum aanvang adreshouding en verschillende geboortedatum
       Gegeven de persoon met burgerservicenummer '000000012' heeft de volgende gegevens
         | geboortedatum (03.10) |
         | vandaag - 35 jaar     |
@@ -250,7 +250,7 @@ Functionaliteit: De sortering van bewoners op vaste volgorde
         |           000000012 | vandaag - 35 jaar |
 
     @valideer-volgorde
-    Scenario: De bewoners worden oplopend gesorteerd op geboortedatum (van oud naar jong)
+    Scenario: De mogelijke bewoners in de gevraagde priode hebben dezelfde datum aanvang adreshouding en verschillende geboortedatum
       Gegeven de persoon met burgerservicenummer '000000012' heeft de volgende gegevens
         | geboortedatum (03.10) |
         | vandaag - 35 jaar     |
