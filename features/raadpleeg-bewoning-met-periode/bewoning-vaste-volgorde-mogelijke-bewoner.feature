@@ -33,7 +33,6 @@ Een mogelijke bewoner is een persoon die (voor een deel) van de gevraagde period
         |           000000024 |
         |           000000012 |
 
-
   Regel: (Mogelijke) bewoners worden op basis van geslachtsnaam alfabetisch gesorteerd als de datum aanvang adreshouding van de bewoners overeenkomen
 
     @valideer-volgorde
