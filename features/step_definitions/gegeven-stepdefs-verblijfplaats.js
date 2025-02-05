@@ -69,11 +69,11 @@ Given(/^er zijn (\d*) personen ingeschreven op adres '(.*)' met de volgende gege
     }
 });
 
-Given(/^met datum aanvang adreshouding (\d*) in gemeente '(\d*)' zijn de volgende personen ingeschreven op adres '(.*)'$/, function (datumAanvang, gemeenteCode, adresId, dataTable) {
+Given(/^met datum aanvang adreshouding (\d*) zijn de volgende personen ingeschreven op adres '(.*)'$/, function (datumAanvang, adresId, dataTable) {
     // De dataTable moet minimaal een kolom 'burgerservicenummer (01.20)' hebben
      
     const verblijfplaatsData = [
-        ['gemeente van inschrijving (09.10)', gemeenteCode],
+        ['gemeente van inschrijving (09.10)', '0800'],
         ['datum aanvang adreshouding (10.30)', datumAanvang]
     ];
 
@@ -88,11 +88,11 @@ Given(/^met datum aanvang adreshouding (\d*) in gemeente '(\d*)' zijn de volgend
     };
 });
 
-Given(/^vervolgens zijn de volgende personen met datum aanvang adreshouding (\d*) ingeschreven in gemeente '(\d*)' op adres '(.*)'$/, function (datumAanvang, gemeenteCode, adresId, dataTable) {
+Given(/^vervolgens zijn de volgende personen met datum aanvang adreshouding (\d*) ingeschreven op adres '(.*)'$/, function (datumAanvang, adresId, dataTable) {
     // De dataTable moet minimaal een kolom 'burgerservicenummer (01.20)' hebben
     
     const verblijfplaatsData = [
-        ['gemeente van inschrijving (09.10)', gemeenteCode],
+        ['gemeente van inschrijving (09.10)', '0800'],
         ['datum aanvang adreshouding (10.30)', datumAanvang]
     ];
 
