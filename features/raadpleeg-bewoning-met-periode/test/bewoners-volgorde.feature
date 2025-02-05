@@ -420,3 +420,40 @@ Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsn
       |           000000115 | Ruud           | Alberts            |       20160703 |
       |           000000097 | Corine         | Alberts            |       20171109 |
       |           000000140 | Anton          | Boer               |       20140621 |
+
+  @valideer-volgorde
+  Scenario: Sorteren mogelijke bewoners met gedeeltelijk onbekende datum aanvang volgende verblijfplaats
+    # deze verblijfplaats met onbekende datum aanvang ligt na de bekende datum aanvang van overige (mogelijk) bewoners
+    Gegeven met datum aanvang adreshouding 20250000 zijn de volgende personen ingeschreven op adres 'A1'
+      | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
+      |                   000000097 | Alberts               | Corine            |              20171109 |
+    # volgende verblijfplaats met onbekende datum aanvang
+    En vervolgens zijn de volgende personen met datum aanvang adreshouding 20250000 ingeschreven op adres 'A2'
+      | burgerservicenummer (01.20) | geslachtsnaam (02.40) | voornamen (02.10) | geboortedatum (03.10) |
+      |                   000000012 | Pietersen             | Femke             |              19980526 |
+      |                   000000024 | Jansen                | Karel             |              20011014 |
+      |                   000000036 | Boer                  | Elise             |              19971130 |
+      |                   000000048 | Jansen                | Karel Jan         |              19990624 |
+      |                   000000061 | Jansen                | Irene             |              20000328 |
+      |                   000000073 | Pietersen             | Bas               |              20190917 |
+      |                   000000085 | Pietersen             | Bas               |              20000119 |
+    Als bewoningen wordt gezocht met de volgende parameters
+      | naam                             | waarde               |
+      | type                             | BewoningMetPeriode |
+      | datumVan                         |         2025-01-01 |
+      | datumTot                         |         2025-02-01 |
+      | adresseerbaarObjectIdentificatie |     0800010000000001 |
+    Dan heeft de response een bewoning met de volgende gegevens
+      | naam                             | waarde                    |
+      | periode                          | 2025-01-01 tot 2025-02-01 |
+      | adresseerbaarObjectIdentificatie |          0800010000000001 |
+    En heeft de bewoning mogelijke bewoners met de volgende gegevens
+      | burgerservicenummer | naam.voornamen | naam.geslachtsnaam | geboorte.datum |
+      |           000000024 | Karel          | Jansen             |       20011014 |
+      |           000000012 | Femke          | Pietersen          |       19980526 |
+      |           000000036 | Elise          | Boer               |       19971130 |
+      |           000000061 | Irene          | Jansen             |       20000328 |
+      |           000000048 | Karel Jan      | Jansen             |       19990624 |
+      |           000000085 | Bas            | Pietersen          |       20000119 |
+      |           000000073 | Bas            | Pietersen          |       20190917 |
+      |           000000097 | Corine         | Alberts            |       20171109 |
