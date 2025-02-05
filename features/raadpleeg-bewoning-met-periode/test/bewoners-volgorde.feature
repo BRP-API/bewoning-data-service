@@ -1,24 +1,20 @@
 # language: nl
 @api
 Functionaliteit: Sorteren van bewoners op datum aanvang adreshouding, geslachtsnaam, voornamen en geboortedatum
-    De sortering gebeurt op basis van de volgende criteria, in deze volgorde:
-    1. Datum van aanvang adreshouding: bewoners worden gesorteerd op de datum waarop zij op het adres zijn ingeschreven.
-    2. Geslachtsnaam: als meerdere bewoners dezelfde aanvangsdatum hebben, worden zij alfabetisch gesorteerd op hun achternaam.
-    3. Voornamen: bij gelijke achternamen wordt verder gesorteerd op voornamen in alfabetische volgorde.
-    4. Geboortedatum: als de voornamen ook gelijk zijn, wordt tenslotte gesorteerd op geboortedatum, waarbij de oudste persoon eerst komt.
-
-
-    Testen door combinaties van bewoners:
+    Testen sortering met combinaties van bewoners:
     - met verschillende datum aanvang adreshouding
+      * volledig bekende datums
+      * gedeeltelijk onbekende datums
+      * gedeeltelijk onbekende datums met datum aanvang vorige in de onzekerheidsperiode: volgorde wordt berekend met datum vorige + 1
     - met zelfde datum aanvang adreshouding maar verschillende geslachtsnaam
     - met zelfde datum aanvang adreshouding en geslachtsnaam maar verschillende voornamen
     - met zelfde datum aanvang adreshouding en geslachtsnaam en voornamen maar verschillende geboortedatum
+    - met ook verschillende vertrekdatum. Dit mag geen effect hebben op de volgorde
 
-    Voor de zekerheid hebben niet-relevante gegevens steeds omgekeerde volgorde. Zou dus het geteste criterium niet goed werken, dan merken we dat aan de sortering op de volgende aspecten.
-
-    Sortering wordt getest voor bewoners en voor mogelijke bewoners.
-    Sortering wordt getest met volledige datums en met onvolledige datums.
-    Sortering wordt getest met ook verschillende vertrekdatum. Dit mag geen effect hebben op de volgorde.
+    Sortering wordt getest voor: 
+    - bewoners
+    - mogelijke bewoners omdat datum aanvang (gedeeltelijk) onbekend is
+    - mogelijke bewoners omdat datum aanvang volgende (gedeeltelijk) onbekend is
 
   Achtergrond:
     Gegeven adres 'A1' heeft de volgende gegevens
