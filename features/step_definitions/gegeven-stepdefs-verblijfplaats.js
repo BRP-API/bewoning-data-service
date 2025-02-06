@@ -78,7 +78,7 @@ Given(/^met datum aanvang adreshouding (\d*) zijn de volgende personen ingeschre
     ];
 
     for (dataRow of dataTable.hashes()) {
-        // burgerservicenummer wordt uit de dataTable gehaald want moet apart worden opgegeven
+        // burgerservicenummer wordt uit de dataTable gehaald want moet apart worden opgegeven bij creeren van persoon
         if (!dataRow.hasOwnProperty('burgerservicenummer (01.20)') ) {
             throw new Error("In de data tabel ontbreekt kolom 'burgerservicenummer (01.20)'");
         }
