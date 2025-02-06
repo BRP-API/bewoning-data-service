@@ -16,6 +16,31 @@ using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
 
 namespace Rvig.Data.Bewoningen.Services;
+
+public static class BewoningBewonerExtensions
+{
+	public static int DatumAanvangAdreshouding(this bewoning_bewoner bewoner)
+	{
+		// DatumOnvolledig is a class that is used to parse dates that could contain 0s for year, month or day
+		var huidigeStartDatum = new DatumOnvolledig(bewoner.vb_adreshouding_start_datum?.ToString());
+		var vorigeStartDatum = new DatumOnvolledig(bewoner.vorige_start_adres_datum?.ToString());
+
+		// current start date is known
+		if (!huidigeStartDatum.IsOnvolledig() && bewoner.vb_adreshouding_start_datum.HasValue)
+		{
+			return bewoner.vb_adreshouding_start_datum.Value;
+		}
+		// if the current start date is partly unknown but the previous start date is known the onzekerheidsperiode has ended 1 day after the previous start date.
+		if (huidigeStartDatum.OnlyYearHasValue() && !vorigeStartDatum.IsOnvolledig() && bewoner.vorige_start_adres_datum.HasValue)
+		{
+			var eindeOnzekerheidsperiodeDate = DateTime.Parse(vorigeStartDatum.Datum!, CultureInfo.CurrentCulture).AddDays(1);
+            return int.Parse(eindeOnzekerheidsperiodeDate.ToString("yyyyMMdd"));
+
+        }
+		return bewoner.vb_adreshouding_start_datum ?? 0;
+    }
+}
+
 public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMapGbaBewoningenService
 {
 	private readonly IRvigBewoningenRepo _dbBewoningenRepo;
@@ -221,7 +246,7 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 	private static List<(bewoning_bewoner dbBewoner, long plId)> OrderBewoners(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds)
 	{
 		return dbBewonersPlIds
-			.OrderBy(x => x.dbBewoner.vorige_start_adres_datum != null ? x.dbBewoner.vorige_start_adres_datum + 1 : x.dbBewoner.vb_adreshouding_start_datum)
+			.OrderBy(x => x.dbBewoner.DatumAanvangAdreshouding())
 			.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
 			.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
 			.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
