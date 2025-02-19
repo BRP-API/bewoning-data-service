@@ -111,7 +111,7 @@ jobs:
             test-reports
             test-data/logs
       - name: Push test rapportage naar brp-api.github.io repo
-        if: always()
+        if: false
         uses: tech-thinker/push-to-repo@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.GIT_PAT_TOKEN }}
