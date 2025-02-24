@@ -17,14 +17,7 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Models\**" />
-    <Content Remove="Models\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <None Remove="Models\**" />
-  </ItemGroup>
-
-	<ItemGroup>
+	<!--<ItemGroup>
 		<Content Include="..\Rvig.Base.App\appsettings.Development.json" Link="appsettings.Development.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
@@ -34,7 +27,7 @@
 		<Content Include="..\Rvig.Base.App\appsettings.json" Link="appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
-	</ItemGroup>
+	</ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
@@ -44,11 +37,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rvig.Base.App\Rvig.Base.App.csproj" />
     <ProjectReference Include="..\Rvig.Data.Base.Postgres\Rvig.Data.Base.Postgres.csproj" />
+    <ProjectReference Include="..\Rvig.Data.Base.WebApi\Rvig.Data.Base.WebApi.csproj" />
     <ProjectReference Include="..\Rvig.Data.Bewoningen\Rvig.Data.Bewoningen.csproj" />
     <ProjectReference Include="..\Rvig.BrpApi.Bewoningen\Rvig.BrpApi.Bewoningen.csproj" />
     <ProjectReference Include="..\Rvig.BrpApi.Shared\Rvig.BrpApi.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

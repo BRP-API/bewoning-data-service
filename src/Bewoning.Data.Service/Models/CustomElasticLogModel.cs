@@ -1,8 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using Rvig.BrpApi.Shared.ApiModels.Universal;
-using Serilog.Events;
 
-namespace Rvig.Base.App.Models
+namespace Bewoning.Data.Service.Models
 {
 	[DataContract]
 	public class CustomElasticLogModel

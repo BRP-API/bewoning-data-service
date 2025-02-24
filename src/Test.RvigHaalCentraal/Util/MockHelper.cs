@@ -16,10 +16,10 @@ using System.Security.Claims;
 using Rvig.Data.Base.Postgres.Services;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Builder;
-using Rvig.Base.App.Util;
 using Rvig.BrpApi.Shared.Util;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Bewoning.Data.Service.Util;
 
 namespace Test.RvigHaalCentraal.Util;
 

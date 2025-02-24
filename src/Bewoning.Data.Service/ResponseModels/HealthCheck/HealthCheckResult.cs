@@ -1,4 +1,4 @@
-﻿namespace Rvig.Base.App.ResponseModels.HealthCheck;
+﻿namespace Bewoning.Data.Service.ResponseModels.HealthCheck;
 
 public class HealthCheckResult
 {

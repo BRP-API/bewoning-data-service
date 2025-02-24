@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Net;
 
-namespace Rvig.Base.App.Middleware;
+namespace Bewoning.Data.Service.Middleware;
 
 public class JwtBearerWwwAuthenticateMiddleware
 {

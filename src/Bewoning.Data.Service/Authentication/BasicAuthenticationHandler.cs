@@ -7,7 +7,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace Rvig.Base.App.Authentication;
+namespace Bewoning.Data.Service.Authentication;
 /// <summary>
 /// Temporary authentication handler for test purposes, should be updated with the correct authentication (OAuth?).
 /// </summary>

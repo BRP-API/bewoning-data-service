@@ -12,7 +12,7 @@ using Rvig.BrpApi.Shared.Validation;
 using System.Net;
 using System.Net.Http.Headers;
 
-namespace Rvig.Base.App.Services;
+namespace Bewoning.Data.Service.Services;
 
 public interface IErrorResponseService
 {

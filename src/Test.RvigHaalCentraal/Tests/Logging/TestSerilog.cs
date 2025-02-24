@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Rvig.Base.App.Models;
+﻿using Bewoning.Data.Service.Models;
+using Newtonsoft.Json;
 using Rvig.BrpApi.Shared.ApiModels.Universal;
 using Rvig.BrpApi.Shared.Exceptions;
 using Rvig.BrpApi.Shared.Helpers;
@@ -7,8 +7,8 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Test.RvigHaalCentraal.Util;
-using static Rvig.Base.App.Models.HttpLoggingModelSegment;
-using static Rvig.Base.App.Models.RequestLoggingModelSegment;
+using static Bewoning.Data.Service.Models.HttpLoggingModelSegment;
+using static Bewoning.Data.Service.Models.RequestLoggingModelSegment;
 
 namespace Test.RvigHaalCentraal.Tests.Logging
 {

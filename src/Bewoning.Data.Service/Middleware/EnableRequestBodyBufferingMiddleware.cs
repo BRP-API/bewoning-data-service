@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Rvig.BrpApi.Shared.Exceptions;
 using System.IO;
 using System.Text;
 
-namespace Rvig.Base.App.Middleware
+namespace Bewoning.Data.Service.Middleware
 {
 	public class EnableRequestBodyBufferingMiddleware
 	{

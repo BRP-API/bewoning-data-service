@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Rvig.Base.App.Middleware
+namespace Bewoning.Data.Service.Middleware
 {
 	public class ForceAcceptAndContentTypeHeadersWithValueMiddleware
 	{

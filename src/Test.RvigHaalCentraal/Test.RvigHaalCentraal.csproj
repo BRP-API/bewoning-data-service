@@ -38,10 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rvig.Base.App\Rvig.Base.App.csproj" />
     <ProjectReference Include="..\Rvig.BrpApi.Bewoningen\Rvig.BrpApi.Bewoningen.csproj" />
     <ProjectReference Include="..\Rvig.Data.Base.Postgres\Rvig.Data.Base.Postgres.csproj" />
     <ProjectReference Include="..\Rvig.BrpApi.Shared\Rvig.BrpApi.Shared.csproj" />
+    <ProjectReference Include="..\Bewoning.Data.Service\Bewoning.Data.Service.csproj" />
   </ItemGroup>
 
 </Project>
