@@ -3,8 +3,8 @@ using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Base.Helpers;
 using Rvig.Data.Base.Services;
 using Rvig.Data.Base.Postgres.Repositories;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Interfaces;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Interfaces;
 
 namespace Rvig.Data.Base.Postgres.Services
 {

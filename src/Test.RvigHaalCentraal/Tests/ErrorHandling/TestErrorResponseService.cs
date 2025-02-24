@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Moq;
 using Bewoning.Data.Service.Services;
-using Rvig.BrpApi.Shared.ApiModels.Universal;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Validation;
 using System;
 using Test.RvigHaalCentraal.Util;
+using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Validation;
 
 namespace Test.RvigHaalCentraal.Tests.ErrorHandling
 {

@@ -2,7 +2,7 @@
 using Serilog.Events;
 using Serilog.Formatting;
 using Newtonsoft.Json;
-using Rvig.BrpApi.Shared.ApiModels.Universal;
+using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
 using Bewoning.Data.Service.Models;
 
 namespace Bewoning.Data.Service.Util

@@ -1,10 +1,10 @@
-﻿using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Validation;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Test.RvigHaalCentraal.Util;
+using Rvig.BrpApi.Bewoningen.Validation;
+using Rvig.BrpApi.Bewoningen.Exceptions;
 
 namespace Test.RvigHaalCentraal.Tests.Api;
 

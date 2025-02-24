@@ -1,13 +1,11 @@
-﻿using Rvig.BrpApi.Shared.Helpers;
-using Rvig.BrpApi.Shared.Interfaces;
-using Rvig.BrpApi.Shared.Services;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Fields;
 using Rvig.BrpApi.Bewoningen.Interfaces;
 using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.ResponseModels.Bewoning;
-using Rvig.BrpApi.Shared.Options;
+using Rvig.BrpApi.Bewoningen.Helpers;
+using Rvig.BrpApi.Bewoningen.Options;
 
 namespace Rvig.BrpApi.Bewoningen.Services;
 public interface IGbaBewoningenApiService

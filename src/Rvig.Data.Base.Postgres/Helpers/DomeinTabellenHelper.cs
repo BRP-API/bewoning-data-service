@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Rvig.BrpApi.Shared.Interfaces;
-using Rvig.BrpApi.Shared.Options;
+using Rvig.BrpApi.Bewoningen.Interfaces;
+using Rvig.BrpApi.Bewoningen.Options;
 using System.Collections.Concurrent;
 
 namespace Rvig.Data.Base.Postgres.Helpers;

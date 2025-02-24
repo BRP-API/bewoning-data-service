@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Rvig.Data.Base.Services;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Options;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Options;
 
 namespace Rvig.Data.Base.Helpers
 {

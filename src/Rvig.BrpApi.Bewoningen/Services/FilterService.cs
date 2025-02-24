@@ -2,9 +2,8 @@
 using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.ResponseModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
-using Rvig.BrpApi.Shared.Fields;
-using Rvig.BrpApi.Shared.Interfaces;
-using Rvig.BrpApi.Shared.Services;
+using Rvig.BrpApi.Bewoningen.Fields;
+using Rvig.BrpApi.Bewoningen.Interfaces;
 
 namespace Rvig.BrpApi.Bewoningen.Services
 {

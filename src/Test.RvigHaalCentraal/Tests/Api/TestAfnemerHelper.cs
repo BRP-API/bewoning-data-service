@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Rvig.Data.Base.Helpers;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Options;
 using System;
 using System.Security.Claims;
 using System.Security.Principal;
 using Test.RvigHaalCentraal.Util;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Options;
 
 namespace Test.RvigHaalCentraal.Tests.Api
 {
-	[TestClass]
+    [TestClass]
 	public class TestAfnemerHelper
 	{
 		[TestMethod]

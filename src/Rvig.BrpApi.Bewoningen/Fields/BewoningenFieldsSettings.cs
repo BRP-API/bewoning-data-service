@@ -1,6 +1,4 @@
-﻿using Rvig.BrpApi.Shared.Fields;
-
-namespace Rvig.BrpApi.Bewoningen.Fields;
+﻿namespace Rvig.BrpApi.Bewoningen.Fields;
 public class BewoningenFieldsSettings : FieldsSettings
 {
 	public override FieldsSettingsModel GbaFieldsSettings { get; }

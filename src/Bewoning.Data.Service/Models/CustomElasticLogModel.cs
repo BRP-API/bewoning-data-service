@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
-using Rvig.BrpApi.Shared.ApiModels.Universal;
+using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
 
 namespace Bewoning.Data.Service.Models
 {
-	[DataContract]
+    [DataContract]
 	public class CustomElasticLogModel
 	{
 		[DataMember(Name = "@timestamp", EmitDefaultValue = false)]

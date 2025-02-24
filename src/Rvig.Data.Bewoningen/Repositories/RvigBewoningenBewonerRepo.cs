@@ -4,10 +4,10 @@ using Npgsql;
 using Rvig.Data.Base.Postgres.DatabaseModels;
 using Rvig.Data.Base.Postgres.Repositories;
 using Rvig.Data.Bewoningen.DatabaseModels;
-using Rvig.Data.Bewoningen.Repositories.Queries;
-using Rvig.BrpApi.Shared.Helpers;
-using Rvig.BrpApi.Shared.Options;
 using System.Reflection.Metadata;
+using Rvig.BrpApi.Bewoningen.Helpers;
+using Rvig.BrpApi.Bewoningen.Options;
+using Rvig.Data.Bewoningen.Repositories.Queries.Helper;
 
 namespace Rvig.Data.Bewoningen.Repositories;
 

@@ -1,5 +1,5 @@
 ﻿using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
-using Rvig.BrpApi.Shared.ApiModels.PersonenHistorieBase;
+using Rvig.BrpApi.Bewoningen.ApiModels.PersonenHistorieBase;
 
 namespace Test.RvigHaalCentraal.Util;
 

@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
-using Rvig.BrpApi.Shared.Validation.RequestModelValidators;
 
 namespace Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
 

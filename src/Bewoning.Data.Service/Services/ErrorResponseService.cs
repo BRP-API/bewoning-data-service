@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Rvig.BrpApi.Shared.ApiModels.Universal;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Helpers;
-using Rvig.BrpApi.Shared.Options;
-using Rvig.BrpApi.Shared.Validation;
+using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Helpers;
+using Rvig.BrpApi.Bewoningen.Validation;
 using System.Net;
 using System.Net.Http.Headers;
 

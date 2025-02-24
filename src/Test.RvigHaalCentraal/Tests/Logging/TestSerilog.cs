@@ -1,18 +1,18 @@
 ﻿using Bewoning.Data.Service.Models;
 using Newtonsoft.Json;
-using Rvig.BrpApi.Shared.ApiModels.Universal;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Helpers;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using Test.RvigHaalCentraal.Util;
 using static Bewoning.Data.Service.Models.HttpLoggingModelSegment;
 using static Bewoning.Data.Service.Models.RequestLoggingModelSegment;
+using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Helpers;
 
 namespace Test.RvigHaalCentraal.Tests.Logging
 {
-	[TestClass]
+    [TestClass]
 	public class TestSerilog
 	{
 		private ILoggingHelper? _loggingHelper;

@@ -2,8 +2,7 @@
 using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.ResponseModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Services;
-using Rvig.BrpApi.Shared.Validation;
-using Rvig.BrpApi.Shared.Controllers;
+using Rvig.BrpApi.Bewoningen.Validation;
 
 namespace Rvig.BrpApi.Bewoningen.Controllers;
 [ApiController]

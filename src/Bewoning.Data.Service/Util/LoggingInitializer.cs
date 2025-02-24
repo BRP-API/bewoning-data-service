@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
-using Rvig.BrpApi.Shared.Helpers;
 using Serilog.Core;
+using Rvig.BrpApi.Bewoningen.Helpers;
 
 namespace Bewoning.Data.Service.Util;
 

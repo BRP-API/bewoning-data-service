@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Fields;
 using System.Runtime.Serialization;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Fields;
 
 namespace Test.RvigHaalCentraal.Tests.Fields;
 

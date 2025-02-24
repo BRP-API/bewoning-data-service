@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Npgsql;
-using Rvig.BrpApi.Shared.Helpers;
-using Rvig.BrpApi.Shared.Options;
+using Rvig.BrpApi.Bewoningen.Helpers;
+using Rvig.BrpApi.Bewoningen.Options;
 using System.Text.RegularExpressions;
 
 namespace Rvig.Data.Base.Postgres.Repositories;

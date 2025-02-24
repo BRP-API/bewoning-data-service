@@ -3,23 +3,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Primitives;
 using Moq;
-using Rvig.Data.Base.Postgres.Repositories;
 using System;
 using System.IO;
 using System.Text;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Rvig.BrpApi.Shared.Options;
-using Rvig.BrpApi.Shared.Helpers;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
-using Rvig.Data.Base.Postgres.Services;
+using System.Runtime.Serialization;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Builder;
-using Rvig.BrpApi.Shared.Util;
-using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Bewoning.Data.Service.Util;
+using Rvig.Data.Base.Postgres.Repositories;
+using Rvig.BrpApi.Bewoningen.Helpers;
+using Rvig.BrpApi.Bewoningen.Options;
+using Rvig.BrpApi.Bewoningen.Util;
 
 namespace Test.RvigHaalCentraal.Util;
 

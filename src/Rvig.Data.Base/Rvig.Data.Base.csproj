@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rvig.BrpApi.Shared\Rvig.BrpApi.Shared.csproj" />
+    <Folder Include="Authorisation\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authorisation\" />
+    <ProjectReference Include="..\Rvig.BrpApi.Bewoningen\Rvig.BrpApi.Bewoningen.csproj" />
   </ItemGroup>
 
 </Project>

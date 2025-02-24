@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
-using Rvig.BrpApi.Shared.Util;
-using Rvig.BrpApi.Shared.Validation;
-using Rvig.BrpApi.Shared.ApiModels.PersonenHistorieBase;
+using Rvig.BrpApi.Bewoningen.Util;
+using Rvig.BrpApi.Bewoningen.Validation;
+using Rvig.BrpApi.Bewoningen.ApiModels.PersonenHistorieBase;
 using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.Data.Bewoningen.DatabaseModels;
 using Rvig.Data.Base.Postgres.Helpers;

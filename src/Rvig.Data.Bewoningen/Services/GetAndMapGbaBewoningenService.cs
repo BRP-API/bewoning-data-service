@@ -9,9 +9,8 @@ using Rvig.Data.Bewoningen.Repositories;
 using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Interfaces;
 using Rvig.BrpApi.Bewoningen.ResponseModels.Bewoning;
-using Rvig.BrpApi.Shared.Exceptions;
-using Rvig.BrpApi.Shared.Interfaces;
-using Rvig.BrpApi.Shared.Util;
+using Rvig.BrpApi.Bewoningen.Exceptions;
+using Rvig.BrpApi.Bewoningen.Util;
 using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
 

@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using Moq;
-using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
-using Rvig.BrpApi.Bewoningen.Interfaces;
-using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
-using Rvig.BrpApi.Bewoningen.Services;
-using Rvig.BrpApi.Shared.Helpers;
-using Rvig.BrpApi.Shared.Interfaces;
-using Rvig.BrpApi.Shared.Options;
 using System.Threading.Tasks;
 using Test.RvigHaalCentraal.Util;
 using Xunit;
+using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
+using Rvig.BrpApi.Bewoningen.Helpers;
+using Rvig.BrpApi.Bewoningen.Interfaces;
+using Rvig.BrpApi.Bewoningen.Options;
+using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
+using Rvig.BrpApi.Bewoningen.Services;
 
 namespace Test.RvigHaalCentraal.Tests.Api;
 

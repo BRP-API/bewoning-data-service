@@ -1,5 +1,5 @@
-﻿using Rvig.BrpApi.Shared.ApiModels.Universal;
-using Rvig.BrpApi.Shared.Exceptions;
+﻿using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
+using Rvig.BrpApi.Bewoningen.Exceptions;
 using System.Globalization;
 
 namespace Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators

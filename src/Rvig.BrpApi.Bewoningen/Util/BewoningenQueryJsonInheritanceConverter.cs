@@ -1,5 +1,4 @@
 ﻿using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
-using Rvig.BrpApi.Shared.Util;
 
 namespace Rvig.BrpApi.Bewoningen.Util;
 

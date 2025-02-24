@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Rvig.BrpApi.Shared.Exceptions;
+using Rvig.BrpApi.Bewoningen.Exceptions;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
