@@ -1,5 +1,4 @@
-﻿using Rvig.Data.Base.Postgres.Repositories.Queries.Helper;
-using Rvig.Data.Bewoningen.DatabaseModels;
+﻿using Rvig.Data.Bewoningen.DatabaseModels;
 
 namespace Rvig.Data.Bewoningen.Repositories.Queries.Helper;
 

@@ -1,8 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using Rvig.Data.Bewoningen.DatabaseModels;
-using Rvig.Data.Base.Postgres.Repositories;
-using Rvig.Data.Base.Postgres.DatabaseModels;
 using Npgsql;
 using Rvig.BrpApi.Bewoningen.Helpers;
 using Rvig.BrpApi.Bewoningen.Options;

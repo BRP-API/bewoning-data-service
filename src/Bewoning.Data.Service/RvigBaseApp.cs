@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Rvig.Data.Base;
-using Rvig.Data.Base.Postgres;
 using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 using FluentValidation.AspNetCore;
@@ -15,12 +13,12 @@ using FluentValidation;
 using Rvig.BrpApi.Bewoningen;
 using Rvig.BrpApi.Bewoningen.Exceptions;
 using Rvig.BrpApi.Bewoningen.Options;
-using Rvig.Data.Base.WebApi;
 using Serilog;
 using Brp.Shared.Infrastructure.ProblemDetails;
 using Bewoning.Data.Service.Middleware;
 using Bewoning.Data.Service.Services;
 using Bewoning.Data.Service.Authentication;
+using Rvig.Data.Bewoningen;
 
 namespace Bewoning.Data.Service;
 

@@ -1,8 +1,5 @@
 ﻿using System.Globalization;
 using Microsoft.AspNetCore.Http;
-using Rvig.Data.Base.Postgres.DatabaseModels;
-using Rvig.Data.Base.Postgres.Repositories;
-using Rvig.Data.Base.Postgres.Services;
 using Rvig.Data.Bewoningen.DatabaseModels;
 using Rvig.Data.Bewoningen.Mappers;
 using Rvig.Data.Bewoningen.Repositories;

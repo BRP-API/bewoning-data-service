@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Rvig.BrpApi.Bewoningen\Rvig.BrpApi.Bewoningen.csproj" />
-    <ProjectReference Include="..\Rvig.Data.Base.Postgres\Rvig.Data.Base.Postgres.csproj" />
     <ProjectReference Include="..\Bewoning.Data.Service\Bewoning.Data.Service.csproj" />
   </ItemGroup>
 

@@ -1,14 +1,14 @@
-﻿using Rvig.Data.Base.Postgres.Repositories;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using System;
 using System.Threading.Tasks;
 using Test.RvigHaalCentraal.Util;
 using Rvig.BrpApi.Bewoningen.Exceptions;
 using Rvig.BrpApi.Bewoningen.Validation;
+using Rvig.Data.Bewoningen.Repositories;
 
 namespace Test.RvigHaalCentraal.Tests.Validation
 {
-	[TestClass]
+    [TestClass]
 	public class TestValidationHelper
 	{
 		[TestMethod]

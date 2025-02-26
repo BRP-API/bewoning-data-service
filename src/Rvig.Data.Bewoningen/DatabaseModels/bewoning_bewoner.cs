@@ -1,6 +1,9 @@
-﻿using Rvig.Data.Base.Authorisation;
+﻿using Rvig.Data.Bewoningen.Authorisation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Rvig.Data.Bewoningen.DatabaseModels;
+
+[SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Record must conform the tablename in SQL source. Ignore C# casing convention because of this.")]
 public record bewoning_bewoner
 {
 	public long pl_id { get; set; }

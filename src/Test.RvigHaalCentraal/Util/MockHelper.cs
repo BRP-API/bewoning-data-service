@@ -14,10 +14,10 @@ using System.Security.Principal;
 using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
 using Bewoning.Data.Service.Util;
-using Rvig.Data.Base.Postgres.Repositories;
 using Rvig.BrpApi.Bewoningen.Helpers;
 using Rvig.BrpApi.Bewoningen.Options;
 using Rvig.BrpApi.Bewoningen.Util;
+using Rvig.Data.Bewoningen.Repositories;
 
 namespace Test.RvigHaalCentraal.Util;
 

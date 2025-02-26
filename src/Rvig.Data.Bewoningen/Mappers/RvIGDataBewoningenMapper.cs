@@ -4,10 +4,8 @@ using Rvig.BrpApi.Bewoningen.Validation;
 using Rvig.BrpApi.Bewoningen.ApiModels.PersonenHistorieBase;
 using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.Data.Bewoningen.DatabaseModels;
-using Rvig.Data.Base.Postgres.Helpers;
-using Rvig.Data.Base.Postgres.Mappers;
-using Rvig.Data.Base.Postgres.DatabaseModels;
-using Rvig.Data.Base.Postgres.Mappers.Helpers;
+using Rvig.Data.Bewoningen.Mappers.Helpers;
+using Rvig.Data.Bewoningen.Helpers;
 
 namespace Rvig.Data.Bewoningen.Mappers;
 public interface IRvIGDataBewoningenMapper

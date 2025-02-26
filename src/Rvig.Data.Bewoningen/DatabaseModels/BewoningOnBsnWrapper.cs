@@ -1,4 +1,4 @@
-﻿using Rvig.Data.Base.Authorisation;
+﻿using Rvig.Data.Bewoningen.Authorisation;
 
 namespace Rvig.Data.Bewoningen.DatabaseModels;
 

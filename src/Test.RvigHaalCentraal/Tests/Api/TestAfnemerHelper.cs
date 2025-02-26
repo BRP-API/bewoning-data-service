@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Rvig.Data.Base.Helpers;
 using System;
 using System.Security.Claims;
 using System.Security.Principal;
 using Test.RvigHaalCentraal.Util;
 using Rvig.BrpApi.Bewoningen.Exceptions;
 using Rvig.BrpApi.Bewoningen.Options;
+using Rvig.Data.Bewoningen.Helpers;
 
 namespace Test.RvigHaalCentraal.Tests.Api
 {

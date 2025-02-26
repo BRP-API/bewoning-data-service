@@ -1,9 +1,9 @@
-﻿using Rvig.Data.Base.Postgres.Authorisation;
-using Rvig.Data.Base.Postgres.DatabaseModels;
+﻿using Rvig.Data.Bewoningen.Authorisation;
+using Rvig.Data.Bewoningen.DatabaseModels;
 
 namespace Test.RvigHaalCentraal.Tests.Authorisation
 {
-	[TestClass]
+    [TestClass]
 	public class TestAuthorisationService
 	{
 		internal class TestPersoon : DbPersoonActueelWrapper
