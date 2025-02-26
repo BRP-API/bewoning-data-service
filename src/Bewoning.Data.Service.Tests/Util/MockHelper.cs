@@ -14,10 +14,10 @@ using System.Security.Principal;
 using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
 using Bewoning.Data.Service.Util;
-using Rvig.BrpApi.Bewoningen.Helpers;
-using Rvig.BrpApi.Bewoningen.Options;
-using Rvig.BrpApi.Bewoningen.Util;
-using Rvig.Data.Bewoningen.Repositories;
+using Bewoning.Api.Helpers;
+using Bewoning.Api.Util;
+using Bewoning.Data.Repositories;
+using Bewoning.Api.Options;
 
 namespace Bewoning.Data.Service.Tests.Util;
 
@@ -157,7 +157,7 @@ public static class MockHelper
     /// <returns></returns>
     public static T GetRepoMock<T>(List<(Expression<Func<T, object?>> expression, object? expectedResult)>? setupActions = null) where T : PostgresRepoBase
     {
-        var repository = new Mock<T>(Options.Create(new DatabaseOptions()), new LoggingHelper(MockIHttpContextAccessor()));
+        var repository = new Mock<T>(Microsoft.Extensions.Options.Options.Create(new DatabaseOptions()), new LoggingHelper(MockIHttpContextAccessor()));
         setupActions?.ForEach(action => repository.Setup(action.expression).Returns(action.expectedResult));
         return repository.Object;
     }

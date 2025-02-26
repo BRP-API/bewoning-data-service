@@ -1,5 +1,5 @@
-﻿using Rvig.Data.Bewoningen.Authorisation;
-using Rvig.Data.Bewoningen.DatabaseModels;
+﻿using Bewoning.Data.Authorisation;
+using Bewoning.Data.DatabaseModels;
 
 namespace Bewoning.Data.Service.Tests.Authorisation
 {

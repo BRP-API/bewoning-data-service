@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using System;
 using System.Security.Claims;
 using System.Security.Principal;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Options;
-using Rvig.Data.Bewoningen.Helpers;
 using Bewoning.Data.Service.Tests.Util;
+using Bewoning.Api.Options;
+using Bewoning.Api.Exceptions;
+using Bewoning.Data.Helpers;
 
 namespace Bewoning.Data.Service.Tests.Api
 {
@@ -43,16 +42,6 @@ namespace Bewoning.Data.Service.Tests.Api
             afnemer.Afnemerscode.Should().Be(990008);
         }
 
-        // [TestMethod]
-        // public void TestGetAfnemerInfoFromUsernameWithoutUsername()
-        // {
-        // 	// Arrange
-        // 	IHttpContextAccessor httpContextAccessor = SetupTest("basic", null);
-
-        // 	// Act / Assert
-        // 	Assert.ThrowsException<ArgumentException>(() => AfnemerHelper.GetAfnemerInfoFromAuthenticatedUser(httpContextAccessor));
-        // }
-
         [TestMethod]
         public void TestGetAfnemerInfoFromUsernameWithInvalidUsername()
         {
@@ -62,27 +51,6 @@ namespace Bewoning.Data.Service.Tests.Api
             // Act / Assert
             Assert.ThrowsException<AuthenticationException>(() => AfnemerHelper.GetAfnemerInfoFromAuthenticatedUser(httpContextAccessor));
         }
-
-        // [TestMethod]
-        // public void TestGetAfnemerInfoFromBasicUsernameWithInvalidGemeenteCode()
-        // {
-        // 	// Arrange
-        // 	IHttpContextAccessor httpContextAccessor = SetupTest("basic", "990008|invalidGemCode");
-
-        // 	// Act / Assert
-        // 	Assert.ThrowsException<ArgumentException>(() => AfnemerHelper.GetAfnemerInfoFromAuthenticatedUser(httpContextAccessor));
-        // }
-
-        // [TestMethod]
-        // public void TestGetAfnemerInfoFromJwtBearerUsernameWithInvalidGemeenteCode()
-        // {
-        // 	// Arrange
-        // 	IHttpContextAccessor httpContextAccessor = SetupTest("jwtbearer");
-        // 	((GenericIdentity)httpContextAccessor.HttpContext!.User!.Identity!).AddClaim(new Claim("claims", "gemeenteCode=invalidGemCode"));
-
-        // 	// Act / Assert
-        // 	Assert.ThrowsException<ArgumentException>(() => AfnemerHelper.GetAfnemerInfoFromAuthenticatedUser(httpContextAccessor));
-        // }
 
         [TestMethod]
         public void TestGetAfnemerInfoFromJwtBearerAuthenticatedUser()

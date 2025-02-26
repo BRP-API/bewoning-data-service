@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Fields;
+using Bewoning.Api.Fields;
+using Bewoning.Api.Exceptions;
 
 namespace Bewoning.Data.Service.Tests.Fields;
 

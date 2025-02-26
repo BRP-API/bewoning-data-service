@@ -1,5 +1,5 @@
-﻿using Rvig.BrpApi.Bewoningen.Interfaces;
-using Bewoning.Data.Service.ResponseModels.HealthCheck;
+﻿using Bewoning.Data.Service.ResponseModels.HealthCheck;
+using Bewoning.Api.Interfaces;
 
 namespace Bewoning.Data.Service.Services;
 

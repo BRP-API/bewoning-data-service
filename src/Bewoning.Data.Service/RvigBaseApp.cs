@@ -10,15 +10,14 @@ using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using Rvig.BrpApi.Bewoningen;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Options;
 using Serilog;
 using Brp.Shared.Infrastructure.ProblemDetails;
 using Bewoning.Data.Service.Middleware;
 using Bewoning.Data.Service.Services;
 using Bewoning.Data.Service.Authentication;
-using Rvig.Data.Bewoningen;
+using Bewoning.Api.Options;
+using Bewoning.Api.Exceptions;
+using Bewoning.Api;
 
 namespace Bewoning.Data.Service;
 

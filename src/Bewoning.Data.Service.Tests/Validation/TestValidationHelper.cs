@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System;
 using System.Threading.Tasks;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Validation;
-using Rvig.Data.Bewoningen.Repositories;
 using Bewoning.Data.Service.Tests.Util;
+using Bewoning.Api.Validation;
+using Bewoning.Api.Exceptions;
+using Bewoning.Data.Repositories;
 
 namespace Bewoning.Data.Service.Tests.Validation
 {

@@ -2,13 +2,13 @@
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
-using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
-using Rvig.BrpApi.Bewoningen.Helpers;
-using Rvig.BrpApi.Bewoningen.Interfaces;
-using Rvig.BrpApi.Bewoningen.Options;
-using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
-using Rvig.BrpApi.Bewoningen.Services;
 using Bewoning.Data.Service.Tests.Util;
+using Bewoning.Api.Helpers;
+using Bewoning.Api.Services;
+using Bewoning.Api.ApiModels.Bewoning;
+using Bewoning.Api.RequestModels.Bewoning;
+using Bewoning.Api.Options;
+using Bewoning.Api.Interfaces;
 
 namespace Bewoning.Data.Service.Tests.Api;
 

@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Rvig.BrpApi.Bewoningen.Validation;
-using Rvig.BrpApi.Bewoningen.Exceptions;
 using Bewoning.Data.Service.Tests.Util;
+using Bewoning.Api.Validation;
+using Bewoning.Api.Exceptions;
 
 namespace Bewoning.Data.Service.Tests.Api;
 

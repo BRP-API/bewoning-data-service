@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Serialization;
-using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
+using Bewoning.Api.ApiModels.Universal;
 
 namespace Bewoning.Data.Service.Models
 {

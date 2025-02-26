@@ -1,12 +1,12 @@
-﻿using Bewoning.Data.Service.Services;
+﻿using Bewoning.Api.ApiModels.Universal;
+using Bewoning.Api.Exceptions;
+using Bewoning.Api.Helpers;
+using Bewoning.Data.Service.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Helpers;
 
 namespace Bewoning.Data.Service.Controllers;
 

@@ -1,6 +1,6 @@
-﻿using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
-using Rvig.BrpApi.Bewoningen.ApiModels.PersonenHistorieBase;
-using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
+﻿using Bewoning.Api.ApiModels.Bewoning;
+using Bewoning.Api.ApiModels.PersonenHistorieBase;
+using Bewoning.Api.ApiModels.Universal;
 
 namespace Bewoning.Data.Service.Tests.Util;
 

@@ -2,10 +2,10 @@
 using Moq;
 using Bewoning.Data.Service.Services;
 using System;
-using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Validation;
 using Bewoning.Data.Service.Tests.Util;
+using Bewoning.Api.Exceptions;
+using Bewoning.Api.Validation;
+using Bewoning.Api.ApiModels.Universal;
 
 namespace Bewoning.Data.Service.Tests.ErrorHandling
 {

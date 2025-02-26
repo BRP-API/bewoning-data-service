@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Core;
-using Rvig.BrpApi.Bewoningen.Helpers;
+using Bewoning.Api.Helpers;
 
 namespace Bewoning.Data.Service.Util;
 

@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Bewoning.Api.ApiModels.Universal;
+using Bewoning.Api.Exceptions;
+using Bewoning.Api.Helpers;
+using Bewoning.Api.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Helpers;
-using Rvig.BrpApi.Bewoningen.Validation;
 using System.Net;
 using System.Net.Http.Headers;
 

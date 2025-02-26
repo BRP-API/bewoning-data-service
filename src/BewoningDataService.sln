@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rvig.BrpApi.Bewoningen", "Rvig.BrpApi.Bewoningen\Rvig.BrpApi.Bewoningen.csproj", "{57A7A4D1-419A-4D0C-8CCD-E3D378E200CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bewoning.Api", "Bewoning.Api\Bewoning.Api.csproj", "{57A7A4D1-419A-4D0C-8CCD-E3D378E200CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apis", "Apis", "{4728F96B-F2CC-4D46-9833-933220F7D644}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{3DFFAA98-38E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{77840799-C221-4CBB-A44B-B9FA6B2F960D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rvig.Data.Bewoningen", "Rvig.Data.Bewoningen\Rvig.Data.Bewoningen.csproj", "{0BB6C765-F749-40A7-8307-BF79769FCA1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bewoning.Data", "Bewoning.Data\Bewoning.Data.csproj", "{0BB6C765-F749-40A7-8307-BF79769FCA1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bewoning.Data.Service", "Bewoning.Data.Service\Bewoning.Data.Service.csproj", "{CADC5C85-1BB2-4E15-B516-2A88DD079FAA}"
 EndProject

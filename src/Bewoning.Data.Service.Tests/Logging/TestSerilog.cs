@@ -5,10 +5,10 @@ using System.IO;
 using System.Threading.Tasks;
 using static Bewoning.Data.Service.Models.HttpLoggingModelSegment;
 using static Bewoning.Data.Service.Models.RequestLoggingModelSegment;
-using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
-using Rvig.BrpApi.Bewoningen.Exceptions;
-using Rvig.BrpApi.Bewoningen.Helpers;
 using Bewoning.Data.Service.Tests.Util;
+using Bewoning.Api.Helpers;
+using Bewoning.Api.Exceptions;
+using Bewoning.Api.ApiModels.Universal;
 
 namespace Bewoning.Data.Service.Tests.Logging
 {

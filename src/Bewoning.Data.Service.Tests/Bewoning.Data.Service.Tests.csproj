@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rvig.BrpApi.Bewoningen\Rvig.BrpApi.Bewoningen.csproj" />
+    <ProjectReference Include="..\Bewoning.Api\Bewoning.Api.csproj" />
     <ProjectReference Include="..\Bewoning.Data.Service\Bewoning.Data.Service.csproj" />
   </ItemGroup>
 

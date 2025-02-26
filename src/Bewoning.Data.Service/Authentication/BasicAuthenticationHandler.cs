@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Rvig.BrpApi.Bewoningen.Exceptions;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Text.Encodings.Web;
+using Bewoning.Api.Exceptions;
 
 namespace Bewoning.Data.Service.Authentication;
 /// <summary>

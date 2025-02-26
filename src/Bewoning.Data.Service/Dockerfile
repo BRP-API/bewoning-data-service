@@ -10,8 +10,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Bewoning.Data.Service/Bewoning.Data.Service.csproj", "Bewoning.Data.Service/"]
-COPY ["Rvig.BrpApi.Bewoningen/Rvig.BrpApi.Bewoningen.csproj", "Rvig.BrpApi.Bewoningen/"]
-COPY ["Rvig.Data.Bewoningen/Rvig.Data.Bewoningen.csproj", "Rvig.Data.Bewoningen/"]
+COPY ["Bewoning.Api/Bewoning.Api.csproj", "Bewoning.Api/"]
+COPY ["Bewoning.Data/Bewoning.Data.csproj", "Bewoning.Data/"]
 COPY ["Brp.Shared.Infrastructure/Brp.Shared.Infrastructure.csproj", "Brp.Shared.Infrastructure/"]
 COPY ["Serilog.Sinks.PersistentFile/Serilog.Sinks.PersistentFile.csproj", "Serilog.Sinks.PersistentFile/"]
 RUN dotnet restore "./Bewoning.Data.Service/Bewoning.Data.Service.csproj"
