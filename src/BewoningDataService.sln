@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bewoning.Data.Service", "Be
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A3D983C3-795F-403C-8DC1-A55995D867C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.RvigHaalCentraal", "Test.RvigHaalCentraal\Test.RvigHaalCentraal.csproj", "{BA46CB2B-850A-42A7-9388-6EF842B0CC73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bewoning.Data.Service.Tests", "Bewoning.Data.Service.Tests\Bewoning.Data.Service.Tests.csproj", "{BA46CB2B-850A-42A7-9388-6EF842B0CC73}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2FFBD9ED-5082-4E38-A446-C2C53426D2DD}"
 EndProject

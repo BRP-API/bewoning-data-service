@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Moq;
 using System.Threading.Tasks;
-using Test.RvigHaalCentraal.Util;
 using Xunit;
 using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Helpers;
@@ -9,8 +8,9 @@ using Rvig.BrpApi.Bewoningen.Interfaces;
 using Rvig.BrpApi.Bewoningen.Options;
 using Rvig.BrpApi.Bewoningen.RequestModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.Services;
+using Bewoning.Data.Service.Tests.Util;
 
-namespace Test.RvigHaalCentraal.Tests.Api;
+namespace Bewoning.Data.Service.Tests.Api;
 
 public class TestGbaBewoningen
 {

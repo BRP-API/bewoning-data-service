@@ -2,7 +2,7 @@
 using Rvig.BrpApi.Bewoningen.ApiModels.PersonenHistorieBase;
 using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
 
-namespace Test.RvigHaalCentraal.Util;
+namespace Bewoning.Data.Service.Tests.Util;
 
 public static class GbaBewonerFixture
 {

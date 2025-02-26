@@ -2,12 +2,12 @@
 using Moq;
 using Bewoning.Data.Service.Services;
 using System;
-using Test.RvigHaalCentraal.Util;
 using Rvig.BrpApi.Bewoningen.ApiModels.Universal;
 using Rvig.BrpApi.Bewoningen.Exceptions;
 using Rvig.BrpApi.Bewoningen.Validation;
+using Bewoning.Data.Service.Tests.Util;
 
-namespace Test.RvigHaalCentraal.Tests.ErrorHandling
+namespace Bewoning.Data.Service.Tests.ErrorHandling
 {
     [TestClass]
     public class TestErrorResponseService

@@ -1,7 +1,7 @@
 ﻿using Rvig.BrpApi.Bewoningen.ApiModels.Bewoning;
 using Rvig.BrpApi.Bewoningen.ApiModels.PersonenHistorieBase;
 
-namespace Test.RvigHaalCentraal.Util;
+namespace Bewoning.Data.Service.Tests.Util;
 
 public static class GbaBewoningFixture
 {
@@ -43,5 +43,5 @@ public static class GbaBewoningFixture
         };
     }
 
-    
+
 }
