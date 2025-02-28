@@ -1,7 +1,7 @@
 ﻿using Bewoning.Api.Interfaces;
 using Bewoning.Data.Providers;
-using Bewoning.Data.Repositories;
 using Bewoning.Data.DatabaseModels;
+using Bewoning.Data.Repositories.Postgres;
 
 namespace Bewoning.Data.Authorisation
 {

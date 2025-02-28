@@ -3,7 +3,7 @@ using Bewoning.Api.Options;
 using Bewoning.Data.DatabaseModels;
 using Microsoft.Extensions.Options;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 
 public interface IRvigDbHealthCheckRepo
 {

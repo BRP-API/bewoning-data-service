@@ -9,7 +9,8 @@ using Bewoning.Api.ResponseModels.Bewoning;
 using Bewoning.Api.Exceptions;
 using Bewoning.Data.DatabaseModels;
 using Bewoning.Data.Mappers;
-using Bewoning.Data.Repositories;
+using Bewoning.Data.Repositories.Postgres;
+using Bewoning.Data.Repositories.Bewoningen;
 
 namespace Bewoning.Data.Services;
 public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMapGbaBewoningenService

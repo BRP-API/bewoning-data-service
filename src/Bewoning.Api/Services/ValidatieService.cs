@@ -42,7 +42,6 @@ namespace Bewoning.Api.Services
             {
                 throw new InvalidParamsException(peildatumValidationResult.Errors.Select(e => new InvalidParams { Code = "validation", Name = e.PropertyName, Reason = e.ErrorMessage }).ToList());
             }
-
         }
 
         private static void ValideerBewoningMetPeriode(BewoningMetPeriode bewoningMetPeriode)

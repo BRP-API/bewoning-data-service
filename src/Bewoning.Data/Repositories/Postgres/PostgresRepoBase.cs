@@ -7,7 +7,7 @@ using Npgsql;
 using System.Data;
 using static Dapper.SqlMapper;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 public abstract class PostgresRepoBase
 {
     protected readonly IOptions<DatabaseOptions> _databaseOptions;

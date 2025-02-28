@@ -16,8 +16,8 @@ using Newtonsoft.Json;
 using Bewoning.Data.Service.Util;
 using Bewoning.Api.Helpers;
 using Bewoning.Api.Util;
-using Bewoning.Data.Repositories;
 using Bewoning.Api.Options;
+using Bewoning.Data.Repositories.Postgres;
 
 namespace Bewoning.Data.Service.Tests.Util;
 

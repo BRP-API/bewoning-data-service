@@ -1,5 +1,5 @@
 ﻿using Bewoning.Api.Interfaces;
-using Bewoning.Data.Repositories;
+using Bewoning.Data.Repositories.Postgres;
 
 namespace Bewoning.Data.Services;
 

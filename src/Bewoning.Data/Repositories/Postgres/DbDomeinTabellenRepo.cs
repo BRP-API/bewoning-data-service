@@ -6,7 +6,7 @@ using Bewoning.Data.DatabaseModels;
 using Dapper;
 using Microsoft.Extensions.Options;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 // lo3_gemeente is not correct
 public class DbDomeinTabellenRepo : PostgresRepoBase, IDomeinTabellenRepo
 {

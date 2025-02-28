@@ -4,7 +4,7 @@ using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 
 public abstract class RvigRepoPostgresBase<T> : PostgresSqlQueryRepoBase<T> where T : class, new()
 {

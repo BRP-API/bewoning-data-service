@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Text.RegularExpressions;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 public abstract class PostgresSqlQueryRepoBase<T> : PostgresRepoBase where T : class, new()
 {
     protected PostgresSqlQueryRepoBase(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper)

@@ -2,9 +2,9 @@ using Bewoning.Data.Service;
 using Bewoning.Api.Validation.RequestModelValidators;
 using Bewoning.Api.Services;
 using Bewoning.Api.Interfaces;
-using Bewoning.Data.Repositories;
 using Bewoning.Data.Mappers;
 using Bewoning.Data.Services;
+using Bewoning.Data.Repositories.Bewoningen;
 
 var servicesDictionary = new Dictionary<Type, Type>
 {

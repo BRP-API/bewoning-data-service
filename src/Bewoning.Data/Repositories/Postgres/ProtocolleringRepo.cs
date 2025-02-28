@@ -5,7 +5,7 @@ using Bewoning.Data.Repositories.Queries.Helper;
 using Microsoft.Extensions.Options;
 using Npgsql;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 public interface IProtocolleringRepo
 {
     Task<int> Insert(DbProtocollering protocolleringRecord);

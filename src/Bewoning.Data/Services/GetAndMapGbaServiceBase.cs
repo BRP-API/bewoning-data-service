@@ -2,7 +2,7 @@
 using Bewoning.Api.Interfaces;
 using Bewoning.Data.DatabaseModels;
 using Bewoning.Data.Helpers;
-using Bewoning.Data.Repositories;
+using Bewoning.Data.Repositories.Postgres;
 using Microsoft.AspNetCore.Http;
 
 namespace Bewoning.Data.Services

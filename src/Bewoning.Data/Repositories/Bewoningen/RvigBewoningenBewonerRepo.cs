@@ -4,8 +4,9 @@ using Bewoning.Api.Helpers;
 using Bewoning.Api.Options;
 using Bewoning.Data.DatabaseModels;
 using Bewoning.Data.Repositories.Queries.Helper;
+using Bewoning.Data.Repositories.Postgres;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Bewoningen;
 
 public interface IRvigBewoningenBewonerRepo
 {

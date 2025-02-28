@@ -7,7 +7,7 @@ using Bewoning.Data.Repositories.Queries.Helper;
 using Dapper;
 using Microsoft.Extensions.Options;
 
-namespace Bewoning.Data.Repositories;
+namespace Bewoning.Data.Repositories.Postgres;
 public interface IAutorisationRepo
 {
     Task<DbAutorisatie?> GetByAfnemerCode(int afnemerCode);

@@ -7,7 +7,7 @@ using System.Net.Http;
 using Bewoning.Api.Helpers;
 using Bewoning.Data.Options;
 
-namespace Bewoning.Data.Repositories
+namespace Bewoning.Data.Repositories.WebApi
 {
     public abstract class RepoWebApiBase
     {

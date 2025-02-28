@@ -46,8 +46,6 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
     {
         _validatieService.ValideerModel(model);
 
-        var plIds = new List<long>();
-
         var bewoningen = await _bewoningenService.GetBewoningen(model);
 
         var response = new GbaBewoningenQueryResponse { Bewoningen = bewoningen.ToList() };
@@ -55,7 +53,7 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
         _filterService.FilterResponse(model, response);
 
         IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(response);
-        plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
+        var plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
 
         return (response, plIds);
     }

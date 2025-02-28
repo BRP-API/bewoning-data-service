@@ -4,7 +4,7 @@ using Bewoning.Data.Authorisation;
 using Bewoning.Data.Helpers;
 using Bewoning.Data.Options;
 using Bewoning.Data.Providers;
-using Bewoning.Data.Repositories;
+using Bewoning.Data.Repositories.Postgres;
 using Bewoning.Data.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

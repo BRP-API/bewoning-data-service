@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Bewoning.Data.Service.Tests.Util;
 using Bewoning.Api.Validation;
 using Bewoning.Api.Exceptions;
-using Bewoning.Data.Repositories;
+using Bewoning.Data.Repositories.Postgres;
 
 namespace Bewoning.Data.Service.Tests.Validation
 {
@@ -26,7 +26,7 @@ namespace Bewoning.Data.Service.Tests.Validation
             const long gemeenteVanInschrijving = 4949;
             var setupActions = new List<(Expression<Func<DbDomeinTabellenRepo, object?>> expression, object? expectedResult)>
             {
-                (_ => _.GetGemeenteNaam(gemeenteVanInschrijving), Task.FromResult<string?>(null))
+                (x => x.GetGemeenteNaam(gemeenteVanInschrijving), Task.FromResult<string?>(null))
             };
             await DbDomeinTabellenRepoTestMethodBase(gemeenteVanInschrijving.ToString(), ValidationHelperBase.ValidateGemeenteInschrijving, setupActions);
         }
@@ -62,7 +62,7 @@ namespace Bewoning.Data.Service.Tests.Validation
             const string voorvoegsel = "123";
             var setupActions = new List<(Expression<Func<DbDomeinTabellenRepo, object?>> expression, object? expectedResult)>
             {
-                (_ => _.VoorvoegselExist(voorvoegsel), Task.FromResult(false))
+                (_ => _.VoorvoegselExist(voorvoegsel), Task.FromResult(false)),
             };
 
             await DbDomeinTabellenRepoTestMethodBase(voorvoegsel, ValidationHelperBase.ValidateVoorvoegsel, setupActions);
@@ -101,7 +101,10 @@ namespace Bewoning.Data.Service.Tests.Validation
             Assert.ThrowsException<InvalidParamsException>(() => ValidationHelperBase.ValidateBurgerservicenummers(bsns));
         }
 
-        private static async Task DbDomeinTabellenRepoTestMethodBase(string? searchValue, Func<string?, DbDomeinTabellenRepo, Task> validateFunc, List<(Expression<Func<DbDomeinTabellenRepo, object?>> expression, object? expectedResult)>? setupActions = null)
+        private static async Task DbDomeinTabellenRepoTestMethodBase(
+            string? searchValue, 
+            Func<string?, DbDomeinTabellenRepo, Task> validateFunc, 
+            List<(Expression<Func<DbDomeinTabellenRepo, object?>> expression, object? expectedResult)>? setupActions = null)
         {
             DbDomeinTabellenRepo mockRepo = CreateMockRepo(setupActions);
 
