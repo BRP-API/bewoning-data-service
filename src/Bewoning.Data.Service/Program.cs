@@ -1,12 +1,10 @@
-using Rvig.Base.App;
-using System.Collections.Generic;
-using System;
-using Rvig.BrpApi.Bewoningen.Services;
-using Rvig.Data.Bewoningen.Mappers;
-using Rvig.Data.Bewoningen.Repositories;
-using Rvig.Data.Bewoningen.Services;
-using Rvig.BrpApi.Bewoningen.Interfaces;
-using Rvig.BrpApi.Bewoningen.Validation.RequestModelValidators;
+using Bewoning.Data.Service;
+using Bewoning.Api.Validation.RequestModelValidators;
+using Bewoning.Api.Services;
+using Bewoning.Api.Interfaces;
+using Bewoning.Data.Mappers;
+using Bewoning.Data.Services;
+using Bewoning.Data.Repositories.Bewoningen;
 
 var servicesDictionary = new Dictionary<Type, Type>
 {

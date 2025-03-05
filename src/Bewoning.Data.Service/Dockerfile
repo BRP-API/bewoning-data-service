@@ -10,15 +10,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Bewoning.Data.Service/Bewoning.Data.Service.csproj", "Bewoning.Data.Service/"]
-COPY ["Rvig.Base.App/Rvig.Base.App.csproj", "Rvig.Base.App/"]
+COPY ["Bewoning.Api/Bewoning.Api.csproj", "Bewoning.Api/"]
+COPY ["Bewoning.Data/Bewoning.Data.csproj", "Bewoning.Data/"]
 COPY ["Brp.Shared.Infrastructure/Brp.Shared.Infrastructure.csproj", "Brp.Shared.Infrastructure/"]
 COPY ["Serilog.Sinks.PersistentFile/Serilog.Sinks.PersistentFile.csproj", "Serilog.Sinks.PersistentFile/"]
-COPY ["Rvig.Data.Base.WebApi/Rvig.Data.Base.WebApi.csproj", "Rvig.Data.Base.WebApi/"]
-COPY ["Rvig.Data.Base/Rvig.Data.Base.csproj", "Rvig.Data.Base/"]
-COPY ["Rvig.BrpApi.Shared/Rvig.BrpApi.Shared.csproj", "Rvig.BrpApi.Shared/"]
-COPY ["Rvig.Data.Base.Postgres/Rvig.Data.Base.Postgres.csproj", "Rvig.Data.Base.Postgres/"]
-COPY ["Rvig.Data.Bewoningen/Rvig.Data.Bewoningen.csproj", "Rvig.Data.Bewoningen/"]
-COPY ["Rvig.BrpApi.Bewoningen/Rvig.BrpApi.Bewoningen.csproj", "Rvig.BrpApi.Bewoningen/"]
 RUN dotnet restore "./Bewoning.Data.Service/Bewoning.Data.Service.csproj"
 COPY . .
 WORKDIR "/src/Bewoning.Data.Service"
