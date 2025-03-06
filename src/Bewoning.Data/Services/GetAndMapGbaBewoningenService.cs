@@ -179,7 +179,11 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
                     (List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds, List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds) = GetBewonersAndMogelijkeBewoners(allDbBewonersPlIds, peildatum, startDateTime, endDateTime);
 
-                    bewonerFilteringResultsWithPeriods.Add((bewonersPlIds: dbBewonersPlIds, mogelijkeBewonersPlIds: dbMogelijkeBewonersPlIds, startDateTime, endDateTime));
+                    bewonerFilteringResultsWithPeriods.Add((
+                        bewonersPlIds: OrderBewoners(dbBewonersPlIds), 
+                        mogelijkeBewonersPlIds: OrderBewoners(dbMogelijkeBewonersPlIds), 
+                        startDateTime, 
+                        endDateTime));
                 }
             }
             bewonerFilteringResultsWithPeriods.ForEach(result =>
@@ -209,6 +213,16 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
         return bewoningen;
     }
+
+    private static List<(bewoning_bewoner dbBewoner, long plId)> OrderBewoners(List<(bewoning_bewoner dbBewoner, long plId)> dbBewonersPlIds)
+	{
+		return dbBewonersPlIds
+			.OrderBy(x => x.dbBewoner.vb_adreshouding_start_datum)
+			.ThenBy(bewoner => bewoner.dbBewoner.geslachts_naam)
+			.ThenBy(bewoner => bewoner.dbBewoner.voor_naam)
+			.ThenBy(bewoner => bewoner.dbBewoner.geboorte_datum)
+			.ToList();
+	}
 
     /// <summary>
     /// There is a use case within Bewoningen where if a bewoner has in onderzoek with number 89999 or 589999 and the in onderzoek period overlaps with the given bewoning period
