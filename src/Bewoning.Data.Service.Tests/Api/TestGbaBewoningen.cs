@@ -9,6 +9,7 @@ using Bewoning.Api.ApiModels.Bewoning;
 using Bewoning.Api.RequestModels.Bewoning;
 using Bewoning.Api.Options;
 using Bewoning.Api.Interfaces;
+using AutoMapper;
 
 namespace Bewoning.Data.Service.Tests.Api;
 
@@ -24,6 +25,7 @@ public class TestGbaBewoningen
         var loggingHelperMock = new Mock<ILoggingHelper>();
         var filterServiceMock = new Mock<IFilterService>();
         var protocolleringAuthorizationOptionsMock = new Mock<IOptions<ProtocolleringAuthorizationOptions>>();
+        var mapper = new Mock<IMapper>();
 
         return new GbaBewoningenApiService(
             getAndMapBewoningenMock.Object,
@@ -31,7 +33,8 @@ public class TestGbaBewoningen
             protocolleringServiceMock.Object,
             loggingHelperMock.Object,
             protocolleringAuthorizationOptionsMock.Object,
-            filterServiceMock.Object
+            filterServiceMock.Object,
+            mapper.Object
         );
     }
 
