@@ -69,8 +69,8 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
             .SelectMany(bewoning => bewoning.MogelijkeBewonersPlIds!));
     }
 
-    private Generated.Partials.GbaBewoning MapGbaBewoning(GbaBewoning bewoning)
+    private Generated.GbaBewoning MapGbaBewoning(GbaBewoning bewoning)
     {
-        return _mapper.Map<Generated.Partials.GbaBewoning>(bewoning);
+        return _mapper.Map<Generated.GbaBewoning>(bewoning);
     }
 }

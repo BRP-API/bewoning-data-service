@@ -8,7 +8,13 @@ namespace Bewoning.Api.Mappers
 
         public GbaBewoningMappingProfile()
         {
-            CreateMap<GbaBewoning, Generated.Partials.GbaBewoning>()
+            CreateMap<GbaBewoning, Generated.GbaBewoning>()
+                .ReverseMap();
+
+            CreateMap<Periode, Generated.Periode>()
+                .ReverseMap();
+
+            CreateMap<GbaBewoner, Generated.GbaBewoner>()
                 .ReverseMap();
         }
     }
