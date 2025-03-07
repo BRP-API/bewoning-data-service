@@ -16,14 +16,12 @@ public interface IGbaBewoningenApiService
 public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthorization, IGbaBewoningenApiService
 {
     protected IGetAndMapGbaBewoningenService _bewoningenService;
-    private readonly IValidatieService _validatieService;
     private readonly IFilterService _filterService;
 
     protected override BewoningenFieldsSettings _fieldsSettings => new();
 
     public GbaBewoningenApiService(
         IGetAndMapGbaBewoningenService bewoningenService,
-        IValidatieService validatieService,
         IDomeinTabellenRepo domeinTabellenRepo,
         IProtocolleringService protocolleringService,
         ILoggingHelper loggingHelper,
@@ -32,7 +30,6 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
         : base(domeinTabellenRepo, protocolleringService, loggingHelper, protocolleringAuthorizationOptions)
     {
         _bewoningenService = bewoningenService;
-        _validatieService = validatieService;
         _filterService = filterService;
     }
 
@@ -44,8 +41,6 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
     /// <exception cref="InvalidOperationException"></exception>
     public async Task<(GbaBewoningenQueryResponse bewoningenResponse, List<long>? plIds)> GetBewoningen(BewoningenQuery model)
     {
-        _validatieService.ValideerModel(model);
-
         var bewoningen = await _bewoningenService.GetBewoningen(model);
 
         var response = new GbaBewoningenQueryResponse { Bewoningen = bewoningen.ToList() };

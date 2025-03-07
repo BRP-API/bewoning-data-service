@@ -1,5 +1,4 @@
 using Bewoning.Data.Service;
-using Bewoning.Api.Validation.RequestModelValidators;
 using Bewoning.Api.Services;
 using Bewoning.Api.Interfaces;
 using Bewoning.Data.Mappers;
@@ -16,14 +15,9 @@ var servicesDictionary = new Dictionary<Type, Type>
 
 	// API
 	{ typeof(IGbaBewoningenApiService), typeof(GbaBewoningenApiService) },
-	{ typeof(IValidatieService), typeof(ValidatieService) },
 	{ typeof(IFilterService), typeof(FilterService) }
 };
 
-var validatorList = new List<Type>
-{
-	typeof(BewoningMetPeildatumValidator),
-	typeof(BewoningMetPeriodeValidator)
-};
+var validatorList = new List<Type>();
 
 RvigBaseApp.Init(servicesDictionary, validatorList, "BRP Bewoning API");

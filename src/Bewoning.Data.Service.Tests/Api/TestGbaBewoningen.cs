@@ -19,7 +19,6 @@ public class TestGbaBewoningen
     {
         // Mock the dependencies for GetAndMapGbaBewoningenService
         getAndMapBewoningenMock = new Mock<IGetAndMapGbaBewoningenService>();
-        var validatieServiceMock = new Mock<IValidatieService>();
         var domeinTabellenRepoMock = new Mock<IDomeinTabellenRepo>();
         var protocolleringServiceMock = new Mock<IProtocolleringService>();
         var loggingHelperMock = new Mock<ILoggingHelper>();
@@ -28,7 +27,6 @@ public class TestGbaBewoningen
 
         return new GbaBewoningenApiService(
             getAndMapBewoningenMock.Object,
-            validatieServiceMock.Object,
             domeinTabellenRepoMock.Object,
             protocolleringServiceMock.Object,
             loggingHelperMock.Object,
