@@ -6,6 +6,7 @@ using Bewoning.Api.Interfaces;
 using Bewoning.Api.ApiModels.Bewoning;
 using Bewoning.Api.Fields;
 using Bewoning.Api.ResponseModels.Bewoning;
+using AutoMapper;
 
 namespace Bewoning.Api.Services;
 public interface IGbaBewoningenApiService
@@ -17,6 +18,7 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 {
     protected IGetAndMapGbaBewoningenService _bewoningenService;
     private readonly IFilterService _filterService;
+    private readonly IMapper _mapper;
 
     protected override BewoningenFieldsSettings _fieldsSettings => new();
 
@@ -26,11 +28,13 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
         IProtocolleringService protocolleringService,
         ILoggingHelper loggingHelper,
         IOptions<ProtocolleringAuthorizationOptions> protocolleringAuthorizationOptions,
-        IFilterService filterService)
+        IFilterService filterService,
+        IMapper mapper)
         : base(domeinTabellenRepo, protocolleringService, loggingHelper, protocolleringAuthorizationOptions)
     {
         _bewoningenService = bewoningenService;
         _filterService = filterService;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -50,6 +54,8 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
         IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(response);
         var plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
 
+        response.Bewoningen.ConvertAll(MapGbaBewoning);
+
         return (response, plIds);
     }
 
@@ -61,5 +67,10 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
             .Concat(bewoningenResponse.Bewoningen
             .Where(bewoning => bewoning?.MogelijkeBewonersPlIds?.Any() == true)
             .SelectMany(bewoning => bewoning.MogelijkeBewonersPlIds!));
+    }
+
+    private Generated.Partials.GbaBewoning MapGbaBewoning(GbaBewoning bewoning)
+    {
+        return _mapper.Map<Generated.Partials.GbaBewoning>(bewoning);
     }
 }
