@@ -82,6 +82,7 @@ jobs:
       - name: Run unit tests
         run: |
           ./scripts/unit-tests-verify.sh
+          
       - name: Valideer functionele specs
         run: |
           ./scripts/specs-verify.sh
@@ -140,7 +141,7 @@ jobs:
           driver: docker-container
 
       - name: Build & push bewoning data service container images naar registry
-        if: false
+        if: always() && (steps.changed-project.outputs.app == 'true' || inputs.publishType == 'app')
         uses: docker/build-push-action@v6
         with:
           file: ${{ env.APP_PROJECT_PATH }}/Dockerfile
