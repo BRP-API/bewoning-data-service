@@ -23,6 +23,7 @@ env:
   APP_PROJECT_PATH: ./src/Bewoning.Data.Service
   APP_CSPROJ_FILE_PATH: ./src/Bewoning.Data.Service/Bewoning.Data.Service.csproj
   APP_CONTAINER_IMAGE: ghcr.io/brp-api/bewoning-data-service
+  SPEC_VERIFY_STEP_SUMMARY_FILE_PATH: ./test-reports/cucumber-js/bewoning/step-summary.txt
 
 jobs:
   continuous-integration:
@@ -88,10 +89,9 @@ jobs:
       - name: Voeg test summary toe aan Github Step Summary
         if: always()
         run: |
+          node ./scripts/generate-step-summary.js
           echo "### Cucumber Test Reports" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          cat test-reports/cucumber-js/bewoning/test-result-summary.txt >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat ${{ env.SPEC_VERIFY_STEP_SUMMARY_FILE_PATH }} >> $GITHUB_STEP_SUMMARY
 
       - name: Stop containers
         if: always()
@@ -102,6 +102,7 @@ jobs:
         if: always()
         run: |
           node ./scripts/generate-cucumber-reports.js ${{ steps.app-version.outputs.version }} ${{ steps.build-run-id.outputs.build-run }} ${{ github.ref_name }}
+
       - name: Upload test rapportage
         if: always()
         uses: actions/upload-artifact@v4
@@ -110,6 +111,7 @@ jobs:
           path: |
             test-reports
             test-data/logs
+
       - name: Push test rapportage naar brp-api.github.io repo
         if: false
         uses: tech-thinker/push-to-repo@main
