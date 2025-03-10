@@ -14,7 +14,7 @@
 
 using System;
 
-namespace Serilog.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
 {
     static class RollingIntervalExtensions
     {
@@ -62,7 +62,7 @@ namespace Serilog.Sinks.PersistentFile
 
         public static DateTime? GetNextCheckpoint(this PersistentFileRollingInterval interval, DateTime instant)
         {
-            var current = GetCurrentCheckpoint(interval, instant);
+            var current = interval.GetCurrentCheckpoint(instant);
             if (current == null)
                 return null;
 

@@ -15,7 +15,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
 {
     /// <summary>
     /// An instance of this sink may be substituted when an instance of the
