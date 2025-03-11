@@ -18,7 +18,7 @@ public class JwtBearerWwwAuthenticateMiddleware
 		{
 			// Replace header
 			context.Response.Headers.Remove("WWW-Authenticate");
-			context.Response.Headers.Add("WWW-Authenticate", "x-invalid_token");
+			context.Response.Headers.Append("WWW-Authenticate", "x-invalid_token");
 		}
 
 		await _next(context);

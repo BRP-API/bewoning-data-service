@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions
 {
-    [Serializable]
     public class UnsupportedMediaTypeException : Exception, IHaalCentraalException
     {
         public HttpStatusCode HttpStatusCode { get => HttpStatusCode.UnsupportedMediaType; }
@@ -27,7 +26,7 @@ namespace Bewoning.Api.Exceptions
             Details = message;
         }
 
-        protected UnsupportedMediaTypeException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected UnsupportedMediaTypeException(SerializationInfo info, StreamingContext context)
         {
         }
     }

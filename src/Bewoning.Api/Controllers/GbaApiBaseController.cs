@@ -1,4 +1,5 @@
 ﻿using Bewoning.Api.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bewoning.Api.Controllers;
@@ -23,7 +24,7 @@ public class GbaApiBaseController : ControllerBase
     {
         if (plIds?.Any() == true)
         {
-            Response.Headers.Add("x-geleverde-pls", string.Join(",", plIds.OrderBy(plId => plId)));
+            Response.Headers.Append("x-geleverde-pls", string.Join(",", plIds.OrderBy(plId => plId)));
         }
     }
 }

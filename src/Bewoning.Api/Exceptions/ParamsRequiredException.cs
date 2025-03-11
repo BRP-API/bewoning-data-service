@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions
 {
-    [Serializable]
     public class ParamsRequiredException : Exception, IHaalCentraalException
     {
         public HttpStatusCode HttpStatusCode { get => HttpStatusCode.BadRequest; }
@@ -30,7 +29,7 @@ namespace Bewoning.Api.Exceptions
             Details = message;
         }
 
-        protected ParamsRequiredException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ParamsRequiredException(SerializationInfo info, StreamingContext context)
         {
         }
     }

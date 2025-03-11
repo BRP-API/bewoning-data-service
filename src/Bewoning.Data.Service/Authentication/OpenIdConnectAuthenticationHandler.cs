@@ -15,6 +15,7 @@ public class OpenIdConnectAuthenticationHandler : AuthenticationHandler<Authenti
     const string _noClaimsMessage = "No claims in token.";
     private readonly ILoggingHelper _loggingHelper;
 
+    [Obsolete]
     public OpenIdConnectAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,

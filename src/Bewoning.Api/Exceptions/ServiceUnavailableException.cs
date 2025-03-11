@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions;
 
-[Serializable]
 public class ServiceUnavailableException : Exception, IHaalCentraalException
 {
     public HttpStatusCode HttpStatusCode { get => HttpStatusCode.ServiceUnavailable; }
@@ -27,7 +26,7 @@ public class ServiceUnavailableException : Exception, IHaalCentraalException
         Details = message;
     }
 
-    protected ServiceUnavailableException(SerializationInfo info, StreamingContext context) : base(info, context)
+    protected ServiceUnavailableException(SerializationInfo info, StreamingContext context)
     {
     }
 }

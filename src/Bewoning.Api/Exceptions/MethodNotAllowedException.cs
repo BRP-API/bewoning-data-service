@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions
 {
-    [Serializable]
     public class MethodNotAllowedException : Exception, IHaalCentraalException
     {
         public HttpStatusCode HttpStatusCode { get => HttpStatusCode.MethodNotAllowed; }
@@ -27,7 +26,7 @@ namespace Bewoning.Api.Exceptions
             Details = message;
         }
 
-        protected MethodNotAllowedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected MethodNotAllowedException(SerializationInfo info, StreamingContext context)
         {
         }
     }

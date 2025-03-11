@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions;
 
-[Serializable]
 public class InvalidRequestBodyException : Exception, IHaalCentraalException
 {
     public HttpStatusCode HttpStatusCode { get => HttpStatusCode.BadRequest; }
@@ -29,7 +28,7 @@ public class InvalidRequestBodyException : Exception, IHaalCentraalException
         Details = message;
     }
 
-    protected InvalidRequestBodyException(SerializationInfo info, StreamingContext context) : base(info, context)
+    protected InvalidRequestBodyException(SerializationInfo info, StreamingContext context)
     {
         Details = "Request body is geen geldige JSON.";
     }

@@ -1,6 +1,7 @@
 ﻿using Bewoning.Api.ApiModels.Universal;
 using Bewoning.Api.Exceptions;
 using Bewoning.Api.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 
@@ -27,7 +28,7 @@ public class ValidateVersionHeaderAttribute : ResultFilterAttribute
         {
             throw new CustomInvalidOperationException("API version must always be set.");
         }
-        context.HttpContext.Response.Headers.Add(_versionHeader, version);
+        context.HttpContext.Response.Headers.Append(_versionHeader, version);
         context.HttpContext.Items.Add(_versionHeader, version);
 
         context.HttpContext.Request.Headers.TryGetValue(_versionHeader, out var versionValue);

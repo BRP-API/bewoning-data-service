@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions;
 
-[Serializable]
 public class CustomNotImplementedException : NotImplementedException, IHaalCentraalException
 {
     public HttpStatusCode HttpStatusCode { get => HttpStatusCode.InternalServerError; }
@@ -24,7 +23,7 @@ public class CustomNotImplementedException : NotImplementedException, IHaalCentr
         Details = message;
     }
 
-    protected CustomNotImplementedException(SerializationInfo serializationInfo, StreamingContext streamingContext) : base(serializationInfo, streamingContext)
+    protected CustomNotImplementedException(SerializationInfo serializationInfo, StreamingContext streamingContext)
     {
     }
 }

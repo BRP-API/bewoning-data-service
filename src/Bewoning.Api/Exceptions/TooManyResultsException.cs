@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions
 {
-    [Serializable]
     public class TooManyResultsException : Exception, IHaalCentraalException
     {
         public HttpStatusCode HttpStatusCode { get => HttpStatusCode.BadRequest; }
@@ -29,7 +28,7 @@ namespace Bewoning.Api.Exceptions
             Details = message;
         }
 
-        protected TooManyResultsException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected TooManyResultsException(SerializationInfo info, StreamingContext context)
         {
         }
     }

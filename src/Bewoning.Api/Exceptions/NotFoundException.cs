@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions
 {
-    [Serializable]
     public class NotFoundException : Exception, IHaalCentraalException
     {
         public HttpStatusCode HttpStatusCode { get => HttpStatusCode.NotFound; }
@@ -27,7 +26,7 @@ namespace Bewoning.Api.Exceptions
             Details = message;
         }
 
-        protected NotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected NotFoundException(SerializationInfo info, StreamingContext context)
         {
         }
     }

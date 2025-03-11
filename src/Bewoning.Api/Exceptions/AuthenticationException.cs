@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions;
 
-[Serializable]
 public class AuthenticationException : Exception, IHaalCentraalException
 {
     public HttpStatusCode HttpStatusCode { get => HttpStatusCode.Unauthorized; }
@@ -27,7 +26,7 @@ public class AuthenticationException : Exception, IHaalCentraalException
         Details = message;
     }
 
-    protected AuthenticationException(SerializationInfo info, StreamingContext context) : base(info, context)
+    protected AuthenticationException(SerializationInfo info, StreamingContext context)
     {
     }
 }
