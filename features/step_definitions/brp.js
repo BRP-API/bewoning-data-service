@@ -38,7 +38,6 @@ function toCollectieNaam(naamColObj) {
 
 const tableNameMap = new Map([
 
-    ['adres', 'lo3_adres'],
     ['autorisatie', 'lo3_autorisatie'],
     ['geboorte', 'lo3_pl_persoon'],
     ['gemeente', 'lo3_gemeente'],
@@ -55,8 +54,8 @@ const tableNameMap = new Map([
     ['protocollering', 'haalcentraal_vraag'],
     ['reisdocument', 'lo3_pl_reis_doc' ],
     ['verblijfplaats', 'lo3_pl_verblijfplaats'],
-    ['adres', 'lo3_adres'],
     ['verblijfstitel', 'lo3_pl_verblijfstitel'],
+    ['adres', 'lo3_adres'],
 
 ]);
 
