@@ -6,6 +6,7 @@ Functionaliteit: Persoon, Inschrijving, Verblijfplaats gegeven stap definities
     Gegeven de 1e 'SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl' statement heeft als resultaat '9999'
     En de 2e 'SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl' statement heeft als resultaat '10000'
     En de 3e 'SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl' statement heeft als resultaat '10001'
+    En de 1e 'SELECT COALESCE(MAX(adres_id), 0)+1 FROM public.lo3_adres' statement heeft als resultaat '4999'
 
   Scenario: de persoon met burgerservicenummer '[bsn]'
     Gegeven de persoon met burgerservicenummer '000000012'
@@ -320,3 +321,18 @@ Functionaliteit: Persoon, Inschrijving, Verblijfplaats gegeven stap definities
       | persoon-P1 | inschrijving | INSERT INTO public.lo3_pl(pl_id,mutatie_dt,geheim_ind,bijhouding_opschort_datum,bijhouding_opschort_reden) VALUES((SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl),current_timestamp,$1,$2,$3) RETURNING * |    0,gisteren - 2 jaar,O |
       |            | persoon      | INSERT INTO public.lo3_pl_persoon(pl_id,stapel_nr,volg_nr,persoon_type,burger_service_nr,geslachts_naam) VALUES($1,$2,$3,$4,$5,$6)                                                                              |  9999,0,0,P,000000012,P1 |
       |            | overlijden   | INSERT INTO public.lo3_pl_overlijden(pl_id,volg_nr,overlijden_datum) VALUES($1,$2,$3)                                                                                                                           | 9999,0,gisteren - 2 jaar |
+
+  Scenario: meerdere personen zijn ingeschreven op adres
+    Gegeven adres 'A1' met identificatiecode verblijfplaats '0800010000000001' en gemeentecode '0518'
+    En de persoon 'P1' met burgerservicenummer '000000012'
+    En de persoon 'P2' met burgerservicenummer '000000024'
+    En 'P1' en 'P2' zijn ingeschreven op adres 'A1' op '20230000'
+    Dan zijn de gegenereerde SQL statements
+      | stap       | categorie      | text                                                                                                                                                                  | values                   |
+      | adres-A1   | adres          | INSERT INTO public.lo3_adres(adres_id,gemeente_code,verblijf_plaats_ident_code) VALUES((SELECT COALESCE(MAX(adres_id), 0)+1 FROM public.lo3_adres),$1,$2) RETURNING * |    0800010000000001,0518 |
+      | persoon-P1 | inschrijving   | INSERT INTO public.lo3_pl(pl_id,mutatie_dt,geheim_ind) VALUES((SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl),current_timestamp,$1) RETURNING *                 |                        0 |
+      |            | persoon        | INSERT INTO public.lo3_pl_persoon(pl_id,stapel_nr,volg_nr,persoon_type,burger_service_nr,geslachts_naam) VALUES($1,$2,$3,$4,$5,$6)                                    |  9999,0,0,P,000000012,P1 |
+      |            | verblijfplaats | INSERT INTO public.lo3_pl_verblijfplaats(pl_id,volg_nr,adres_functie,adreshouding_start_datum,adres_id) VALUES($1,$2,$3,$4,$5)                                        |   9999,0,4999,W,20230000 |
+      | persoon-P2 | inschrijving   | INSERT INTO public.lo3_pl(pl_id,mutatie_dt,geheim_ind) VALUES((SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl),current_timestamp,$1) RETURNING *                 |                        0 |
+      |            | persoon        | INSERT INTO public.lo3_pl_persoon(pl_id,stapel_nr,volg_nr,persoon_type,burger_service_nr,geslachts_naam) VALUES($1,$2,$3,$4,$5,$6)                                    | 10000,0,0,P,000000024,P2 |
+      |            | verblijfplaats | INSERT INTO public.lo3_pl_verblijfplaats(pl_id,volg_nr,adres_functie,adreshouding_start_datum,adres_id) VALUES($1,$2,$3,$4,$5)                                        |  10000,0,4999,W,20230000 |

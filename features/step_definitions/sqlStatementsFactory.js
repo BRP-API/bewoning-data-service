@@ -36,6 +36,38 @@ function createInsertIntoPersoonslijstStatement(inschrijving) {
     };
 }
 
+function createInsertIntoAdreslijstStatement(adres) {
+    const tableName = toDbTableName('adres');
+
+    let statementText = `INSERT INTO public.${tableName}(`;
+    let values = [];
+
+    statementText += 'adres_id';
+
+    Object.keys(adres).forEach(key => {
+        statementText += ',' + key;
+    });
+
+    statementText += ') VALUES(';
+
+    statementText += '(SELECT COALESCE(MAX(adres_id), 0)+1 FROM public.lo3_adres)';
+
+    Object.keys(adres).forEach((key, index) => {
+        values.push(adres[key]);
+        statementText += ',' + `$${index + 1}`;
+    });
+
+    statementText += ')';
+
+    statementText += ' RETURNING *';
+
+    return {
+        text: statementText,
+        categorie: 'adres',
+        values: values
+    };
+}
+
 function createInsertIntoStatement(entityNaam, entity) {
     const tableName = toDbTableName(entityNaam.replace(/-.*$/, ''));
 
@@ -76,6 +108,20 @@ function generateSqlStatementsFrom(data) {
     let sqlStatements = {
         personen: []
     };
+
+    if (data.adressen) {
+        sqlStatements.adressen = [];
+        data.adressen.forEach(adres => {
+            let adresStatements = {
+                stap: adres.id,
+                statements: []
+            };
+
+            adresStatements.statements.push(createInsertIntoAdreslijstStatement(adres.adres[0]));
+
+            sqlStatements.adressen.push(adresStatements);
+        });
+    }
 
     data.personen.forEach(persoon => {
         let persoonStatements = {

@@ -133,6 +133,12 @@ function vulPrimaryEnForeignKeys(sqlData, ids){
             if(statement.categorie !== 'inschrijving') {
                 statement.values[0] = ids.plIds[index] + '';
             }
+            if(statement.categorie === 'verblijfplaats') {
+                let index = statement.values.findIndex(val => val.startsWith('adres-'));
+                if (index !== -1) {
+                    statement.values[index] = ids.adresIds[0] + '';
+                }
+            }
         });
     });
 }
@@ -143,6 +149,32 @@ function dataTableToSqlStatements(dataTable) {
     }
 
     dataTable.hashes().forEach(row => {
+        if(row.categorie === 'adres') {
+            if(!retval.adressen) {
+                retval.adressen = [];
+            }
+
+            if (row.stap !== '') {
+                retval.adressen.push({
+                    stap: row.stap,
+                    statements: []
+                })
+            }
+
+            let expectedValues = row.values.split(',');
+            expectedValues.forEach((val, index) => {
+                expectedValues[index] = toDateOrString(val, false);
+            });
+    
+            let adres = retval.adressen.at(-1);
+            adres.statements.push({
+                text: row.text,
+                categorie: row.categorie,
+                values: expectedValues
+            });
+
+            return;
+        }
         if(row.stap !== '') {
             retval.personen.push({
                 stap: row.stap,

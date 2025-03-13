@@ -13,7 +13,8 @@ const { createPersoon,
         createVerblijfplaats,
         wijzigVerblijfplaats,
         aanvullenInschrijving,
-        createOverlijden
+        createOverlijden,
+        createAdres
 } = require('./persoon-2');
 const { toDbColumnName } = require('./brp');
 
@@ -757,3 +758,60 @@ function gegevenIsErkendDoorPersoonAlsOuder(context, aanduidingOuder, erkennings
         ])
     )
 }
+
+/**
+ * Expressieve gegevenstappen voor verblijfplaats woonadres 
+ * */
+
+Given(/^adres '(.*)' met identificatiecode verblijfplaats '(.*)' en gemeentecode '(.*)'$/, function (aanduiding, adresIdentificatieCode, gemeenteCode) {
+    const adresData = arrayOfArraysToDataTable([
+        ['gemeentecode (92.10)', gemeenteCode], // kolom gemeente_code is verplicht in tabel lo3_adres
+        ['identificatiecode verblijfplaats (11.80)', adresIdentificatieCode]
+    ]);
+    
+    createAdres(this.context, aanduiding, adresData);
+});
+
+Given(/^'(.*)' is ingeschreven op adres '(.*)' op '(.*)'$/, function (aanduiding, adresAanduiding, relatieveDatum) {
+    if (/(\d+) jaar geleden/.test(relatieveDatum)) {
+        const years = relatieveDatum.match(/(\d+)/)[0];
+        relatieveDatum = `vandaag - ${years} jaar`;
+    }
+
+    const verblijfplaats = arrayOfArraysToDataTable([
+        ['functie adres (10.10)', 'W'],
+        ['datum aanvang adreshouding (10.30)', relatieveDatum],
+        ['adres_id', `adres-${adresAanduiding}`]
+    ])
+
+    createVerblijfplaats(
+        getPersoon(this.context, aanduiding),
+        verblijfplaats
+    );
+})
+
+// Bijvoorbeeld:
+// Gegeven 'P1' en 'P2' zijn ingeschreven op adres 'A1' op 'gisteren - 1 jaar'
+// En 'P3,P4,P5' en 'P6' zijn ingeschreven op adres 'A2' op 'vandaag - 2 jaar'	
+Given(/^'(.*)' en '(.*)' zijn ingeschreven op adres '(.*)' op '(.*)'$/, function (aanduiding1, aanduiding2, adresAanduiding, relatieveDatum) {
+    if (/(\d+) jaar geleden/.test(relatieveDatum)) {
+        const years = relatieveDatum.match(/(\d+)/)[0];
+        relatieveDatum = `vandaag - ${years} jaar`;
+    }
+
+    const verblijfplaats = arrayOfArraysToDataTable([
+        ['functie adres (10.10)', 'W'], // woonadres
+        ['datum aanvang adreshouding (10.30)', relatieveDatum],
+        ['adres_id', `adres-${adresAanduiding}`]
+    ])
+
+    const aanduidingData = aanduiding1.split(',').map(name => name.trim());
+    aanduidingData.push(aanduiding2);
+
+    for (var aanduiding of aanduidingData) {
+        createVerblijfplaats(
+            getPersoon(this.context, aanduiding),
+            verblijfplaats
+        );
+    }
+});

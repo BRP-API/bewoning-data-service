@@ -28,12 +28,21 @@ async function executeInsertInschrijving(client, statement) {
     return result.rows[0]['pl_id'];
 }
 
+async function executeInsertAdres(client, statement) {
+    const result = await executeAndLogStatement(client, statement);
+
+    return result.rows[0]['adres_id'];
+}
+
 async function executeStatements(client, statements) {
     let pkId;
 
     for(const statement of statements) {
         if(statement.categorie === 'inschrijving') {
             pkId = await executeInsertInschrijving(client, statement);
+        }
+        else if(statement.categorie === 'adres') {
+            pkId = await executeInsertAdres(client, statement);
         }
         else {
             statement.values[0] = pkId;
@@ -54,6 +63,16 @@ async function execute(sqlStatements) {
     try {
         await client.query('BEGIN');
 
+        for(let adres of sqlStatements.adressen) {
+            for(let statement of adres.statements) {
+                adres.adres_id = await executeInsertAdres(client, statement);
+
+                // update adres foreign keys in personen statements (e.g.: adres-A1 => 1, adres-A2 => 2)
+                // adres-{$adresAanduiding} is a placeholder value for the adres_id columns in the pl tables
+                updateForeignKeys(entities=sqlStatements.personen, placeholder=adres.stap, newValue=adres.adres_id);
+            }
+        }
+
         for(let persoon of sqlStatements.personen) {
             persoon.plId = await executeStatements(client, persoon.statements);
         }
@@ -66,6 +85,18 @@ async function execute(sqlStatements) {
     }
     finally {
         client?.release();
+    }
+}
+
+function updateForeignKeys(entities, placeholder, newValue) {
+    for (let entity of entities) {
+        for (let statement of entity.statements) {
+            statement.values.forEach((value, index) => {
+                if (value === placeholder) {
+                    statement.values[index] = newValue;
+                }
+            });
+        }
     }
 }
 

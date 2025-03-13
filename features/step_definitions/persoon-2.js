@@ -215,6 +215,29 @@ function createOverlijden(persoon, dataTable) {
     persoon.overlijden.push(overlijden);
 }
 
+function createAdres(context, aanduiding, dataTable) {
+    if (!context.data) {
+        context.data = {};
+    }
+    if (!context.data.adressen) {
+        context.data.adressen = [];
+    }
+
+    let adres = { };
+
+    mapDataTableToEntiteit(adres, dataTable);
+
+    let adresData = {
+        adres: [adres]
+    }
+
+    adresData.id = !aanduiding
+        ? `adres-${context.data.adressen.length + 1}`
+        : `adres-${aanduiding}`;
+
+    context.data.adressen.push(adresData);
+}
+
 module.exports = {
     createPersoon,
     aanvullenPersoon,
@@ -226,6 +249,7 @@ module.exports = {
     wijzigPartner,
     createGezagsverhouding,
     aanvullenGezagsverhouding,
+    createAdres,
     createVerblijfplaats,
     wijzigVerblijfplaats,
     createOverlijden,
