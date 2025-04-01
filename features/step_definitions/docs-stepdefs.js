@@ -124,7 +124,7 @@ function vergelijkActualMetExpectedStatements(categorie, expected, actual, sqlDa
                                                  `${expected.categorie}: ${statement.values} != ${expected.values}`);
 }
 
-function vulPrimaryEnForeignKeys(sqlData, ids) {
+function vulPrimaryEnForeignKeys(sqlData, ids){
     sqlData.personen.forEach((persoon, index) => {
 
         delete persoon.plId;
@@ -133,49 +133,34 @@ function vulPrimaryEnForeignKeys(sqlData, ids) {
             if(statement.categorie !== 'inschrijving') {
                 statement.values[0] = ids.plIds[index] + '';
             }
-            if(statement.categorie === 'verblijfplaats' && statement.text.includes('adres_id')) {
-                const adresIndex = statement.values[2];
-                statement.values[2] = ids.adresIds[adresIndex] + '';
-            }
         });
-    });
-}
-
-function mapRowToSqlStatement(list, row) {
-    if(row.stap !== '') {
-        list.push({
-            stap: row.stap,
-            statements: []
-        }) 
-    }
-
-    let expectedValues = row.values.split(',');
-
-    expectedValues.forEach((val, index) => {
-        expectedValues[index] = toDateOrString(val, false);
-    });
-
-    let item = list.at(-1);
-    item.statements.push({
-        text: row.text,
-        categorie: row.categorie,
-        values: expectedValues
     });
 }
 
 function dataTableToSqlStatements(dataTable) {
     let retval = {
-        personen: [],
-        adressen: []
+        personen: []
     }
 
     dataTable.hashes().forEach(row => {
-        if(row.categorie === 'adres') {
-            mapRowToSqlStatement(retval.adressen, row);
+        if(row.stap !== '') {
+            retval.personen.push({
+                stap: row.stap,
+                statements: []
+            }) 
         }
-        else {
-            mapRowToSqlStatement(retval.personen, row);
-        }
+
+        let expectedValues = row.values.split(',');
+        expectedValues.forEach((val, index) => {
+            expectedValues[index] = toDateOrString(val, false);
+        });
+
+        let persoon = retval.personen.at(-1);
+        persoon.statements.push({
+            text: row.text,
+            categorie: row.categorie,
+            values: expectedValues
+        });
     });
 
     return retval;
