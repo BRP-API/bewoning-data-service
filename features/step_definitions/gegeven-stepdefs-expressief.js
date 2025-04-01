@@ -3,7 +3,6 @@ const { objectToDataTable, arrayOfArraysToDataTable } = require('./dataTableFact
 const { createPersoon,
         aanvullenPersoon,
         wijzigPersoon,
-        wijzigGeadopteerdPersoon,
         createKind,
         createOuder,
         wijzigOuder,
@@ -122,7 +121,7 @@ function gegevenDePersoonMetBsn(context, aanduiding, burgerservicenummer, dataTa
     );
 }
 
-Given(/^(?:de )?persoon '([a-zA-Z0-9]*)'(?: zonder burgerservicenummer)? heeft de volgende gegevens$/, function (aanduiding, dataTable) {
+Given(/^(?:de )?persoon '([a-zA-Z0-9]*)'$/, function (aanduiding, dataTable) {
     gegevenDePersoonMetBsn(this.context, aanduiding, undefined, dataTable);
 
     global.logger.info(`gegeven persoon '${aanduiding}'`, getPersoon(this.context, aanduiding));
@@ -130,26 +129,6 @@ Given(/^(?:de )?persoon '([a-zA-Z0-9]*)'(?: zonder burgerservicenummer)? heeft d
 
 Given(/^(?:de persoon(?: '(.*)')? )?met burgerservicenummer '(\d*)'$/, function (aanduiding, burgerservicenummer) {
     gegevenDePersoonMetBsn(this.context, aanduiding, burgerservicenummer, undefined);
-});
-
-Given(/^(?:de persoon(?: '(.*)')? )?zonder burgerservicenummer$/, function (aanduiding) {
-    gegevenDePersoonMetBsn(this.context, aanduiding, undefined, undefined);
-});
-
-function wijzigPersoonContext(context, aanduiding) {
-    const persoonId = `persoon-${aanduiding}`;
-    const index = context.data.personen.findIndex(element => element.id === persoonId);
-
-    if (index !== -1) {
-        const [element] = context.data.personen.splice(index, 1);
-        context.data.personen.push(element);
-    }
-}
-
-Given(/^persoon '([a-zA-Z0-9]*)'$/, function (aanduiding) {
-    wijzigPersoonContext(this.context, aanduiding);
-
-    global.logger.info(`gegeven persoon '${aanduiding}'`, getPersoon(this.context, aanduiding));
 });
 
 Given(/^adres '([a-zA-Z0-9]*)'$/, function (aanduiding, dataTable) {
@@ -259,11 +238,11 @@ Given(/^heeft de volgende persoon zonder burgerservicenummer als ouder ([1-2])$/
     global.logger.info(`heeft de volgende persoon zonder burgerservicenummer als ouder ${ouderType}`, getPersoon(this.context, undefined));
 });
 
-Given(/^(?:'(.*)' )?is minderjarig/, function (aanduiding) {
+Given(/^is minderjarig/, function () {
     const datumGeboorte = 'gisteren - 17 jaar';
 
     aanvullenPersoon(
-        getPersoon(this.context, aanduiding),
+        getPersoon(this.context, undefined),
         arrayOfArraysToDataTable([
             ['geboortedatum (03.10)', datumGeboorte]
         ])
@@ -396,18 +375,6 @@ Given(/^bijhouding van de persoonsgegevens van '(.*)' is opgeschort met de volge
     );
 });
 
-Given(/^de persoonslijst van '(.*)' is opgeschort met reden '(.)'$/, function (aanduiding, redenOpschortingBijhouding) {
-    const datumOpschortingBijhouden = 'gisteren - 2 jaar';
-    
-    aanvullenInschrijving(
-        getPersoon(this.context, aanduiding),
-        arrayOfArraysToDataTable([
-            ['datum opschorting bijhouding (67.10)', datumOpschortingBijhouden],
-            ['reden opschorting bijhouding (67.20)', redenOpschortingBijhouding]
-        ])
-    );
-});
-
 Given(/^heeft de volgende gegevens$/, function (dataTable) {
     aanvullenPersoon(
         getPersoon(this.context, undefined),
@@ -468,9 +435,7 @@ function gegevenDePersonenZijnGehuwdGecorrigeerd(context, aanduiding1, aanduidin
             ['geslachtsnaam (02.40)', aanduiding2]
         ], dataTable),
         true,
-        true,
-        true,
-        getBsn(getPersoon(context, aanduiding2))
+        true
     );
 
     wijzigPartner(
@@ -480,9 +445,7 @@ function gegevenDePersonenZijnGehuwdGecorrigeerd(context, aanduiding1, aanduidin
             ['geslachtsnaam (02.40)', aanduiding1]
         ], dataTable),
         true,
-        true,
-        true,
-        getBsn(getPersoon(context, aanduiding1))
+        true
     );
 }
 
@@ -495,37 +458,6 @@ Given(/^'(.*)' en '(.*)' zijn met elkaar gehuwd$/, function (aanduiding1, aandui
         ['datum huwelijkssluiting/aangaan geregistreerd partnerschap (06.10)', datumHuwelijk],
         ['plaats huwelijkssluiting/aangaan geregistreerd partnerschap (06.20)', plaatsHuwelijk],
         ['land huwelijkssluiting/aangaan geregistreerd partnerschap (06.30)', landHuwelijk],
-    ]);
-
-    gegevenDePersonenZijnGehuwd(this.context, aanduiding1, aanduiding2, huwelijkData);
-});
-
-Given(/^'(.*)' en '(.*)' zijn een geregistreerd partnerschap aangegaan op (\d*)-(\d*)-(\d*)$/, function (aanduiding1, aanduiding2, dag, maand, jaar) {
-    const datumHuwelijk = toBRPDate(dag, maand, jaar);
-    const plaatsHuwelijk = '0518';
-    const landHuwelijk = '6030';
-    const verbintenisSoort = 'P';
-
-    const huwelijkData = arrayOfArraysToDataTable([
-        ['datum huwelijkssluiting/aangaan geregistreerd partnerschap (06.10)', datumHuwelijk],
-        ['plaats huwelijkssluiting/aangaan geregistreerd partnerschap (06.20)', plaatsHuwelijk],
-        ['land huwelijkssluiting/aangaan geregistreerd partnerschap (06.30)', landHuwelijk],
-        ['soort verbintenis (15.10)', verbintenisSoort]
-    ]);
-
-    gegevenDePersonenZijnGehuwd(this.context, aanduiding1, aanduiding2, huwelijkData);
-});
-
-Given(/^'(.*)' en '(.*)' zijn (?!met elkaar)(.*) een geregistreerd partnerschap aangegaan$/, function (aanduiding1, aanduiding2, relatieveDatum) {
-    const plaatsHuwelijk = '0518';
-    const landHuwelijk = '6030';
-    const verbintenisSoort = 'P';
-
-    const huwelijkData = arrayOfArraysToDataTable([
-        ['datum huwelijkssluiting/aangaan geregistreerd partnerschap (06.10)', relatieveDatum],
-        ['plaats huwelijkssluiting/aangaan geregistreerd partnerschap (06.20)', plaatsHuwelijk],
-        ['land huwelijkssluiting/aangaan geregistreerd partnerschap (06.30)', landHuwelijk],
-        ['soort verbintenis (15.10)', verbintenisSoort]
     ]);
 
     gegevenDePersonenZijnGehuwd(this.context, aanduiding1, aanduiding2, huwelijkData);
@@ -635,7 +567,8 @@ function gegevenKindIsGeadopteerdDoorPersoonAlsOuder(context, kind, aanduidingOu
 
     wijzigPersoon(
         kind,
-        objectToDataTable(kindData)
+        objectToDataTable(kindData),
+        true
     );
 
     createOuder(
@@ -674,40 +607,8 @@ Given(/^'(.*)' is geadopteerd door '(.*)' als ouder ([1-2])$/, function (aanduid
     gegevenIsGeadopteerdDoorPersoonAlsOuder(this.context, aanduidingKind, aanduidingOuder, ouderType, adoptieOuderData);
 });
 
-function gegevenAdoptieVanKindIsHerroepenVoorOuder(context, kind, aanduidingOuder, ouderType, dataTable) {
-    const ouder = getPersoon(context, aanduidingOuder);
-
-    const kindData = { ...kind.persoon.at(-1) };
-    kindData[toDbColumnName('aktenummer (81.20)')] = '1AR0200'
-
-    wijzigGeadopteerdPersoon(
-        kind,
-        objectToDataTable(kindData),
-        true
-    );
-
-    wijzigOuder(
-        kind,
-        ouderType,
-        arrayOfArraysToDataTable([
-            ['burgerservicenummer (01.20)', getBsn(ouder)],
-            ['geslachtsnaam (02.40)', getGeslachtsnaam(ouder)]
-        ], dataTable),
-        true
-    );
-}
-
 Given(/^'(.*)' is geadopteerd door '(.*)' als ouder ([1-2]) met de volgende gegevens$/, function (aanduidingKind, aanduidingOuder, ouderType, dataTable) {
     gegevenIsGeadopteerdDoorPersoonAlsOuder(this.context, aanduidingKind, aanduidingOuder, ouderType, dataTable);
-});
-
-Given(/^de adoptie van '(.*)' is herroepen voor '(.*)' als ouder ([1-2])$/, function (aanduidingKind, aanduidingOuder, ouderType) {
-    const kind = getPersoon(this.context, aanduidingKind);
-    const adoptieOuderData = arrayOfArraysToDataTable([
-        ['datum ingang familierechtelijke betrekking (62.10)', 'morgen - 2 jaar']
-    ]);
-
-    gegevenAdoptieVanKindIsHerroepenVoorOuder(this.context, kind, aanduidingOuder, ouderType, adoptieOuderData);
 });
 
 Given(/^is niet in Nederland geadopteerd$/, function () {
@@ -763,7 +664,6 @@ Given(/^is ingeschreven in de BRP$/, function () {
             ['gemeente van inschrijving (09.10)', '0518']
         ])
     );
-    global.logger.info(`gegeven persoon is ingeschreven in de BRP`, getPersoon(this.context, undefined));
 });
 
 Given(/^is niet ingeschreven in de BRP$/, function () {
@@ -774,7 +674,6 @@ Given(/^is niet ingeschreven in de BRP$/, function () {
             ['gemeente van inschrijving (09.10)', '1999']
         ])
     );
-    global.logger.info(`gegeven persoon niet is ingeschreven in de BRP`, getPersoon(this.context, undefined));
 });
 
 Given(/^is ingeschreven in de BRP met de volgende gegevens$/, function (dataTable) {

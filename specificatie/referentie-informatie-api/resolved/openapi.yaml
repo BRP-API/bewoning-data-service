@@ -395,7 +395,7 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          BekendeDerde: '#/components/schemas/BekendeDerde'
+          Derde: '#/components/schemas/BekendeDerde'
           OnbekendeDerde: '#/components/schemas/OnbekendeDerde'
     BekendeDerde:
       allOf:

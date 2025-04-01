@@ -9,7 +9,7 @@ Functionaliteit: als stap definities
     Als 'gezag' wordt gevraagd van personen gezocht met burgerservicenummers '000000012,000000013'
 
   Abstract Scenario: personen zoeken met burgerservicenummer van '[persoon aanduiding]'
-    Gegeven persoon 'Gerda' heeft de volgende gegevens
+    Gegeven persoon 'Gerda'
       | burgerservicenummer (01.20) | geslachtsnaam (02.40) |
       |                   000000012 | Jansen                |
     Als <stap>

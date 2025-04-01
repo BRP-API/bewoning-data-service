@@ -135,10 +135,6 @@ function createJaarDatum(result, dateAsDate) {
  * @returns een datum string in BRP (YYYYMMDD) of ISO (YYYY-MM-DD) formaat
  */
 function toDateOrString(value, dateAsDate) {
-    if (/^\d+ jaar geleden$/.test(value)) {
-        const years = value.split(' ')[0];
-        value = `vandaag - ${years} jaar`;
-    }
     let result = parseDagNotatie(value);
     if(result !== null) {
         return createVolledigeDatum(result, dateAsDate);
@@ -155,19 +151,4 @@ function toDateOrString(value, dateAsDate) {
     return String(value);
 }
 
-/**
- * Functie voor het genereren van een datum zoals verwacht wordt in de BRP (integer)
- * 
- * @param {number} dag de dag of undefined, de waarde wordt aangepast naar twee nummers e.g.: undefined == 00, 1 == 01 
- * @param {number} maand de maand of undefined, de waarde wordt aangepast naar twee nummers e.g.: undefined == 00, 1 == 01 
- * @param {number} jaar het jaar
- * @returns een datum string in BRP (YYYYMMDD)
- */
-function toBRPDate(dag, maand, jaar) {
-    dag = (`00` + dag).slice(-2);
-    maand = (`00` + maand).slice(-2);
-
-    return `${jaar}${maand}${dag}`;
-}
-
-module.exports = { toDateOrString, toBRPDate };
+module.exports = { toDateOrString }
