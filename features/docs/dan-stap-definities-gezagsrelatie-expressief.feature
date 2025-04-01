@@ -6,10 +6,10 @@ Functionaliteit: Stap definities ten behoeve van specificeren gezagsrelaties
   Achtergrond:
     Gegeven de persoon 'Gerda' met burgerservicenummer '000000012'
     En de persoon 'Aart' met burgerservicenummer '000000024'
-    En de persoon 'Bert'
+    En de persoon 'Bert' heeft de volgende gegevens
       | burgerservicenummer (01.20) | geslachtsnaam (02.40) |
       |                   000000036 | Jansen                |
-    En de persoon 'Jeanette'
+    En de persoon 'Jeanette' heeft de volgende gegevens
       | voornamen (02.10) | geslachtsnaam (02.40) |
       | Jeanette          | Sanders               |
 
