@@ -18,36 +18,14 @@ const { createPersoon,
 } = require('./persoon-2');
 const { createAdres } = require('./adres-2');
 const { toDbColumnName } = require('./brp');
+const { getAdres,
+        getAdresIndex,
+        getBsn,
+        getGeslachtsnaam,
+        getGeboortedatum,
+        getPersoon } = require('./contextHelpers');
 
 const { toDateOrString, toBRPDate } = require('./brpDatum');
-
-function getPersoon(context, aanduiding) {
-    return !aanduiding
-        ? context.data.personen.at(-1)
-        : context.data.personen.find(p => p.id === `persoon-${aanduiding}`);
-}
-
-function getAdres(context, aanduiding) {
-    return !aanduiding
-        ? context.data.adressen.at(-1)
-        : context.data.adressen.find(a => a.id === `adres-${aanduiding}`);
-}
-
-function getAdresIndex(context, aanduiding) {
-    return context.data.adressen.findIndex(a => a.id === `adres-${aanduiding}`);
-}
-
-function getBsn(persoon) {
-    return persoon.persoon.at(-1).burger_service_nr;
-}
-
-function getGeslachtsnaam(persoon) {
-    return persoon.persoon.at(-1).geslachts_naam;
-}
-
-function getGeboortedatum(persoon) {
-    return persoon.persoon.at(-1).geboorte_datum;
-}
 
 function deleteHuwelijkProperties(entiteit) {
     delete entiteit.relatie_start_datum;
@@ -106,26 +84,39 @@ function dataTableHasColumn(dataTable, columnName) {
 
 
 function gegevenDePersoonMetBsn(context, aanduiding, burgerservicenummer, dataTable) {
-    const data = [];
+    const persoon = aanduiding
+        ? getPersoon(context, aanduiding)
+        : undefined;
 
-    if (burgerservicenummer) {
-        data.push(['burgerservicenummer (01.20)', burgerservicenummer]);
+    if(persoon) {
+        aanvullenPersoon(
+            persoon,
+            dataTable
+        );
+        global.logger.info(`persoon met '${aanduiding}'. Updaten met DataTable waarden`, dataTable);
     }
-    if (aanduiding && !dataTableHasColumn(dataTable, 'geslachtsnaam (02.40)')) {
-        data.push(['geslachtsnaam (02.40)', aanduiding]);
+    else {
+        const data = [];
+
+        if (burgerservicenummer) {
+            data.push(['burgerservicenummer (01.20)', burgerservicenummer]);
+        }
+        if (aanduiding && !dataTableHasColumn(dataTable, 'geslachtsnaam (02.40)')) {
+            data.push(['geslachtsnaam (02.40)', aanduiding]);
+        }
+    
+        createPersoon(
+            context,
+            aanduiding,
+            arrayOfArraysToDataTable(data, dataTable)
+        );
     }
 
-    createPersoon(
-        context,
-        aanduiding,
-        arrayOfArraysToDataTable(data, dataTable)
-    );
+    global.logger.info(`gegeven (de) persoon '${aanduiding}' (met/zonder burgerservicenummer) (heeft de volgende gegevens)`, getPersoon(context, aanduiding));
 }
 
 Given(/^(?:de )?persoon '([a-zA-Z0-9]*)'(?: zonder burgerservicenummer)? heeft de volgende gegevens$/, function (aanduiding, dataTable) {
     gegevenDePersoonMetBsn(this.context, aanduiding, undefined, dataTable);
-
-    global.logger.info(`gegeven persoon '${aanduiding}'`, getPersoon(this.context, aanduiding));
 });
 
 Given(/^(?:de persoon(?: '(.*)')? )?met burgerservicenummer '(\d*)'$/, function (aanduiding, burgerservicenummer) {
@@ -210,6 +201,7 @@ function getDag(dag) {
 function gegevenPersonenZijnIngeschrevenOpAdres(context, aanduidingAdres, aanduidingPersoon, datumAanvangAdreshouding) {
     const data = [
         ['adres_id', getAdresIndex(context, aanduidingAdres) + ''],
+        ['gemeente van inschrijving (09.10)', getAdres(context, aanduidingAdres).adres.gemeente_code],
         ['functie adres (10.10)', 'W'],
         ['datum aanvang adreshouding (10.30)', datumAanvangAdreshouding]
     ];
@@ -268,6 +260,8 @@ Given(/^(?:'(.*)' )?is minderjarig/, function (aanduiding) {
             ['geboortedatum (03.10)', datumGeboorte]
         ])
     );
+
+    global.logger.info(`gegeven persoon '${aanduiding}' is minderjarig`, getPersoon(this.context, aanduiding));
 });
 
 Given(/^is meerderjarig(?:, niet overleden en staat niet onder curatele)?$/, function () {
@@ -279,6 +273,8 @@ Given(/^is meerderjarig(?:, niet overleden en staat niet onder curatele)?$/, fun
             ['geboortedatum (03.10)', datumGeboorte]
         ])
     );
+
+    global.logger.info(`gegeven persoon is meerderjarig`, getPersoon(this.context, undefined));
 });
 
 Given(/^is in Nederland geboren$/, function () {
