@@ -74,6 +74,7 @@ jobs:
       - name: Start containers
         run: |
           ./scripts/containers-start.sh ci
+          
       - name: Wait for DB restart
         run: sleep 5s
         shell: bash
@@ -81,17 +82,9 @@ jobs:
       - name: Run unit tests
         run: |
           ./scripts/unit-tests-verify.sh
+      
       - name: Valideer functionele specs
-        run: |
-          ./scripts/specs-verify.sh
-
-      - name: Voeg test summary toe aan Github Step Summary
-        if: always()
-        run: |
-          echo "### Cucumber Test Reports" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          cat test-reports/cucumber-js/bewoning/test-result-summary.txt >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        uses: ./.github/actions/valideer-functionele-specs
 
       - name: Stop containers
         if: always()
@@ -102,6 +95,7 @@ jobs:
         if: always()
         run: |
           node ./scripts/generate-cucumber-reports.js ${{ steps.app-version.outputs.version }} ${{ steps.build-run-id.outputs.build-run }} ${{ github.ref_name }}
+
       - name: Upload test rapportage
         if: always()
         uses: actions/upload-artifact@v4
@@ -110,6 +104,7 @@ jobs:
           path: |
             test-reports
             test-data/logs
+            
       - name: Push test rapportage naar brp-api.github.io repo
         if: false
         uses: tech-thinker/push-to-repo@main

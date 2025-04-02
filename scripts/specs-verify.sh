@@ -15,14 +15,18 @@ npx cucumber-js -f json:./test-reports/cucumber-js/step-definitions/test-result-
                 --tags "not @integratie" \
                 --tags "not @skip-verify"
 
-npx cucumber-js -f json:./test-reports/cucumber-js/bewoning/test-result.json \
-                -f summary:./test-reports/cucumber-js/bewoning/test-result-summary.txt \
-                -f summary \
-                features/raadpleeg-bewoning-met-periode \
-                features/raadpleeg-bewoning-op-peildatum \
-                features/geboortedatum \
-                features/geslacht \
-                features/naam \
-                features/protocollering \
-                --tags "not @skip-verify" \
-                --world-parameters "$PARAMS"
+verify() {
+    npx cucumber-js -f json:./test-reports/cucumber-js/bewoning/test-result-$1.json \
+                    -f summary:./test-reports/cucumber-js/bewoning/test-result-$1-summary.txt \
+                    -f summary \
+                    features/$1 \
+                    --tags "not @skip-verify" \
+                    --world-parameters "$PARAMS"
+}
+
+verify "raadpleeg-bewoning-met-periode"
+verify "raadpleeg-bewoning-op-peildatum"
+verify "geboortedatum"
+verify "geslacht"
+verify "naam"
+verify "protocollering"
