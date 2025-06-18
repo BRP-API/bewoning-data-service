@@ -1,35 +1,10 @@
-function toDay(dayText) {
-    switch(dayText) {
-        case "gisteren":
-            return -1;
-        case "morgen":
-            return 1;
-        default:
-            return 0;
-    }
-}
+const dayMapping = { gisteren: -1, morgen: 1, vandaag: 0 };
+const monthMapping = { "vorige maand": -1, "volgende maand": 1, "deze maand": 0 };
+const yearMapping = { "vorig jaar": -1, "volgend jaar": 1, "dit jaar": 0 };
 
-function toMonth(monthText) {
-    switch(monthText) {
-        case "vorige maand":
-            return -1;
-        case "volgende maand":
-            return 1;
-        default:
-            return 0;
-    }
-}
-
-function toYear(yearText) {
-    switch(yearText) {
-        case "vorig jaar":
-            return -1;
-        case "volgend jaar":
-            return 1;
-        default:
-            return 0;
-    }
-}
+const toDay = (dayText) => dayMapping[dayText] || 0;
+const toMonth = (monthText) => monthMapping[monthText] || 0;
+const toYear = (yearText) => yearMapping[yearText] || 0;
 
 const dagRegex = /^(?<dag>gisteren|vandaag|morgen)( - (?<jaarOffset>\d+) jaar)?$/;
 const maandRegex = /^(?<maand>vorige maand|deze maand|volgende maand)( - (?<jaarOffset>\d+) jaar)?$/;
@@ -100,7 +75,13 @@ function createJaarMaandDatum(result, dateAsDate) {
     const date = new Date();
 
     date.setFullYear(date.getFullYear() + result.jaar);
-    date.setMonth(date.getMonth() + result.maand);
+
+    if(result.maand === -1) { // vorige maand
+        date.setDate(0); // Zet de datum op de laatste dag van de vorige maand
+    }
+    else {
+        date.setMonth(date.getMonth() + result.maand);
+    }
 
     const jaar = date.getFullYear();
     const maand = date.getMonth() + 1;
@@ -135,6 +116,10 @@ function createJaarDatum(result, dateAsDate) {
  * @returns een datum string in BRP (YYYYMMDD) of ISO (YYYY-MM-DD) formaat
  */
 function toDateOrString(value, dateAsDate) {
+    if (/^\d+ jaar geleden$/.test(value)) {
+        const years = value.split(' ')[0];
+        value = `vandaag - ${years} jaar`;
+    }
     let result = parseDagNotatie(value);
     if(result !== null) {
         return createVolledigeDatum(result, dateAsDate);
@@ -151,4 +136,19 @@ function toDateOrString(value, dateAsDate) {
     return String(value);
 }
 
-module.exports = { toDateOrString }
+/**
+ * Functie voor het genereren van een datum zoals verwacht wordt in de BRP (integer)
+ * 
+ * @param {number} dag de dag of undefined, de waarde wordt aangepast naar twee nummers e.g.: undefined == 00, 1 == 01 
+ * @param {number} maand de maand of undefined, de waarde wordt aangepast naar twee nummers e.g.: undefined == 00, 1 == 01 
+ * @param {number} jaar het jaar
+ * @returns een datum string in BRP (YYYYMMDD)
+ */
+function toBRPDate(dag, maand, jaar) {
+    dag = (`00` + dag).slice(-2);
+    maand = (`00` + maand).slice(-2);
+
+    return `${jaar}${maand}${dag}`;
+}
+
+module.exports = { toDateOrString, toBRPDate };

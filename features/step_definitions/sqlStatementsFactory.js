@@ -1,39 +1,70 @@
 const { toDbTableName } = require('./brp');
 
-function createInsertIntoPersoonslijstStatement(inschrijving) {
-    const tableName = toDbTableName('inschrijving');
+function createAndReturnInsertedStatement(entityName, primaryKey, entity, additionalColumns = {}) {
+    const tableName = toDbTableName(entityName);
 
     let statementText = `INSERT INTO public.${tableName}(`;
     let values = [];
 
-    statementText += 'pl_id';
+    // Add primary key and additional columns
+    statementText += primaryKey;
+    Object.keys(additionalColumns).forEach(column => {
+        statementText += `,${column}`;
+    });
 
-    statementText += ',' + 'mutatie_dt';
-
-    Object.keys(inschrijving).forEach(key => {
-        statementText += ',' + key;
+    // Add entity columns
+    Object.keys(entity).forEach(key => {
+        statementText += `,${key}`;
     });
 
     statementText += ') VALUES(';
 
-    statementText += '(SELECT COALESCE(MAX(pl_id), 0)+1 FROM public.lo3_pl)';
+    // Add primary key value
+    statementText += `(SELECT COALESCE(MAX(${primaryKey}), 0)+1 FROM public.${tableName})`;
 
-    statementText += ',' + 'current_timestamp';
-
-    Object.keys(inschrijving).forEach((key,index) => {
-        values.push(inschrijving[key]);
-        statementText += ',' + `$${index+1}`;
+    // Add additional column values
+    Object.values(additionalColumns).forEach(value => {
+        statementText += `,${value}`;
     });
 
-    statementText += ')';
+    // Add entity values
+    Object.keys(entity).forEach((key, index) => {
+        values.push(entity[key]);
+        statementText += `,$${index + 1}`;
+    });
 
-    statementText += ' RETURNING *';
+    statementText += ') RETURNING *';
 
     return {
         text: statementText,
-        categorie: 'inschrijving',
+        categorie: entityName,
         values: values
     };
+}
+
+function createInsertIntoPersoonslijstStatement(inschrijving) {
+    return createAndReturnInsertedStatement(
+        'inschrijving',
+        'pl_id',
+        inschrijving,
+        { mutatie_dt: 'current_timestamp' }
+    );
+}
+
+function createInsertIntoAdresStatement(adres) {
+    return createAndReturnInsertedStatement(
+        'adres',
+        'adres_id',
+        adres
+    );
+}
+
+function createInsertAutorisatieIntoStatement(autorisatie) {
+    return createAndReturnInsertedStatement(
+        'autorisatie',
+        'autorisatie_id',
+        autorisatie
+    );
 }
 
 function createInsertIntoStatement(entityNaam, entity) {
@@ -67,6 +98,44 @@ function createInsertIntoStatement(entityNaam, entity) {
     };
 }
 
+function generateAdresSqlStatements(adressen) {
+    let sqlStatements = [];
+
+    adressen?.forEach(adres => {
+        let adresStatements = {
+            stap: adres.id,
+            statements: []
+        };
+
+        adresStatements.statements.push(createInsertIntoAdresStatement(adres.adres));
+
+        sqlStatements.push(adresStatements);
+    });
+
+    return sqlStatements;
+}
+
+function generateAutorisatieSqlStatements(autorisaties) {
+    let sqlStatements = [];
+
+    autorisaties?.forEach(autorisatie => {
+        let autorisatieStatements = {
+            stap: autorisatie.id,
+            statements: []
+        };
+
+        autorisatieStatements.statements.push(createInsertAutorisatieIntoStatement(autorisatie.autorisatie));
+
+        sqlStatements.push(autorisatieStatements);
+    });
+
+    return sqlStatements;
+}
+
+function getBsn(persoon) {
+    return persoon.persoon.at(-1).burger_service_nr;
+}
+
 function generateSqlStatementsFrom(data) {
     if(!data) {
         global.logger.warn('no data to generate sql statements');
@@ -74,36 +143,43 @@ function generateSqlStatementsFrom(data) {
     }
 
     let sqlStatements = {
-        personen: []
+        personen: [],
+        adressen: generateAdresSqlStatements(data.adressen),
+        autorisaties: generateAutorisatieSqlStatements(data.autorisaties)
     };
 
-    data.personen.forEach(persoon => {
+    data.personen?.forEach(persoon => {
         let persoonStatements = {
             stap: persoon.id,
             statements: []
         };
 
-        Object.keys(persoon).forEach(key => {
-            let statement;
-            switch(key) {
-                case 'id':
-                    break;
-                case 'inschrijving':
-                    statement = createInsertIntoPersoonslijstStatement(persoon.inschrijving);
-                    break;
-                default:
-                    persoon[key].forEach(p => {
-                        persoonStatements.statements.push(createInsertIntoStatement(key, p));
-                    });
-                    break;
-            }
+        if(getBsn(persoon) === undefined) {
+            global.logger.info('persoon zonder burgerservicenummer. Geen sql statements generatie', persoon);
+        }
+        else {
+            Object.keys(persoon).forEach(key => {
+                let statement;
+                switch(key) {
+                    case 'id':
+                        break;
+                    case 'inschrijving':
+                        statement = createInsertIntoPersoonslijstStatement(persoon.inschrijving);
+                        break;
+                    default:
+                        persoon[key].forEach(p => {
+                            persoonStatements.statements.push(createInsertIntoStatement(key, p));
+                        });
+                        break;
+                }
 
-            if(statement) {
-                persoonStatements.statements.push(statement);
-            }
-        });
+                if(statement) {
+                    persoonStatements.statements.push(statement);
+                }
+            });
 
-        sqlStatements.personen.push(persoonStatements);
+            sqlStatements.personen.push(persoonStatements);
+        }
     });
 
     return sqlStatements;

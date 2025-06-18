@@ -6,6 +6,11 @@ on:
       - src/**
       - features/**
       - .github/workflows/ci.yml
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
   workflow_dispatch:
     inputs:
       publishType:
@@ -16,6 +21,11 @@ on:
         options:
           - ci-only
           - app
+
+permissions:
+  contents: read
+  actions: write
+  packages: write
 
 env:
   NODE_VERSION: '20'
@@ -75,6 +85,7 @@ jobs:
       - name: Start containers
         run: |
           ./scripts/containers-start.sh ci
+          
       - name: Wait for DB restart
         run: sleep 5s
         shell: bash
@@ -112,7 +123,6 @@ jobs:
           path: |
             test-reports
             test-data/logs
-
       - name: Push test rapportage naar brp-api.github.io repo
         if: false
         uses: tech-thinker/push-to-repo@main

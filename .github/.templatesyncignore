@@ -6,4 +6,9 @@
 :!specificatie/*.*
 :!src/Brp.Shared.Infrastructure/*.*
 :!src/Serilog.Sinks.PersistentFile/*.*
+:!.docker/scripts/*.*
+:!.docker/db.yml
+:!.docker/db-ci.yml
+:!.docker/Dockerfile
+:!tests/*.*
 *

@@ -5,7 +5,10 @@ function setContextProperties(parameters, context) {
         if(!parameters.hasOwnProperty(key)) continue;
         if(key === "__proto__" || key === "constructor") continue;
 
-        if(typeof(parameters[key]) === 'object') {
+        if(Array.isArray(parameters[key])) {
+            context[key] = parameters[key];
+        }
+        else if(typeof(parameters[key]) === 'object') {
             if(context[key] === undefined) {
                 context[key] = {};
             }
@@ -60,6 +63,21 @@ function configureOAuthSettings(context) {
                 clientSecret: 'secret',
                 scopes: [ '000000099000000080000' ],
                 resourceServer: 'ResourceServer02'
+            },
+            {
+                afnemerID: '000009',
+                gemeenteCode: '0900',
+                clientId: 'client met gemeentecode (eigen gemeente, bestaand gezag afnemer)',
+                clientSecret: 'secret',
+                scopes: [ '000000099000000090000' ],
+                resourceServer: 'ResourceServer02'
+            },
+            {
+                afnemerID: '000009',
+                clientId: 'client zonder gemeentecode (bestaand gezag afnemer)',
+                clientSecret: 'secret',
+                scopes: [ '000000099000000090000' ],
+                resourceServer: 'ResourceServer02'
             }
         ]
     }
@@ -97,6 +115,8 @@ class World {
         this.context.gezagDataPath = './test-data/GezagMock/test-data.json';
         this.context.logFileToAssert = './test-data/logs/brp-proxy.json';
         this.context.downstreamApiDataPath = './test-data/DownstreamApi';
+
+        this.addAcceptGezagVersionHeader = false;
 
         configureSqlSettings(this.context);
         configureOAuthSettings(this.context);
