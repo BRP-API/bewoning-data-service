@@ -11,4 +11,5 @@
 :!.docker/db-ci.yml
 :!.docker/Dockerfile
 :!tests/*.*
+:!cucumber.js
 *

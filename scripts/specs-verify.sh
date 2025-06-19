@@ -12,8 +12,15 @@ npx cucumber-js -f json:./test-reports/cucumber-js/step-definitions/test-result-
                 -f summary:./test-reports/cucumber-js/step-definitions/test-result-zonder-dependency-integratie-summary.txt \
                 -f summary \
                 features/docs \
-                --tags "not @integratie" \
-                --tags "not @skip-verify"
+                -p UnitTest \
+                > /dev/null
+
+npx cucumber-js -f json:./test-reports/cucumber-js/step-definitions/test-result-integratie.json \
+                -f summary:./test-reports/cucumber-js/step-definitions/test-result-integratie-summary.txt \
+                -f summary \
+                features/docs \
+                -p Integratie \
+                > /dev/null
 
 verify() {
     npx cucumber-js -f json:./test-reports/cucumber-js/bewoning/test-result-$1.json \
