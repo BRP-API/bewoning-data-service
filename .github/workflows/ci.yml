@@ -33,6 +33,7 @@ env:
   APP_PROJECT_PATH: ./src/Bewoning.Data.Service
   APP_CSPROJ_FILE_PATH: ./src/Bewoning.Data.Service/Bewoning.Data.Service.csproj
   APP_CONTAINER_IMAGE: ghcr.io/brp-api/bewoning-data-service
+  SPEC_VERIFY_STEP_SUMMARY_FILE_PATH: ./test-reports/cucumber-js/bewoning/step-summary.txt
 
 jobs:
   continuous-integration:
@@ -92,9 +93,17 @@ jobs:
       - name: Run unit tests
         run: |
           ./scripts/unit-tests-verify.sh
-      
+          
       - name: Valideer functionele specs
-        uses: ./.github/actions/valideer-functionele-specs
+        run: |
+          ./scripts/specs-verify.sh
+
+      - name: Voeg test summary toe aan Github Step Summary
+        if: always()
+        run: |
+          node ./scripts/generate-step-summary.js
+          echo "### Cucumber Test Reports" >> $GITHUB_STEP_SUMMARY
+          cat ${{ env.SPEC_VERIFY_STEP_SUMMARY_FILE_PATH }} >> $GITHUB_STEP_SUMMARY
 
       - name: Stop containers
         if: always()
@@ -114,7 +123,6 @@ jobs:
           path: |
             test-reports
             test-data/logs
-            
       - name: Push test rapportage naar brp-api.github.io repo
         if: false
         uses: tech-thinker/push-to-repo@main
