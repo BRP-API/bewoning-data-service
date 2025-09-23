@@ -72,8 +72,8 @@ public static class AuthorisationService
         if (unAuthorizedFields.Any(searchedRubriek => searchedRubriek.field.Contains("ouderAanduiding"))
             // If there is authorisation for at least one rubriek of category 2 and one rubriek of category 3.
             // Exclude inOnderzoek rubrieken because these are available for everyone.
-            && stringifiedAuthorizedRubrieken.Any(x => Regex.IsMatch(x, "(?!028310|028320|028330|028410|028510|028610)02[0-9]{4}"))
-            && stringifiedAuthorizedRubrieken.Any(x => Regex.IsMatch(x, "(?!038310|038320|038330|038410|038510|038610)03[0-9]{4}")))
+            && stringifiedAuthorizedRubrieken.Any(x => Regex.IsMatch(x, "(?!028310|028320|028330|028410|028510|028610)02[0-9]{4}", RegexOptions.None, TimeSpan.FromMilliseconds(100)))
+            && stringifiedAuthorizedRubrieken.Any(x => Regex.IsMatch(x, "(?!038310|038320|038330|038410|038510|038610)03[0-9]{4}", RegexOptions.None, TimeSpan.FromMilliseconds(100))))
         {
             unAuthorizedFields.Remove(("ouders.ouderAanduiding", ""));
         }

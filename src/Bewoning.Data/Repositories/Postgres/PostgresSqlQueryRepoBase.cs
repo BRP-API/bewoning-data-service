@@ -91,7 +91,7 @@ public abstract class PostgresSqlQueryRepoBase<T> : PostgresRepoBase where T : c
         }
         else
         {
-            _loggingHelper.LogDebug("The query that was executed = " + Regex.Replace(Regex.Replace(Regex.Replace(command.CommandText, "\r\n", ""), "\n", ""), "\t", " "));
+            _loggingHelper.LogDebug("The query that was executed = " + Regex.Replace(Regex.Replace(Regex.Replace(command.CommandText, "\r\n", "", RegexOptions.None, TimeSpan.FromMilliseconds(100)), "\n", "", RegexOptions.None, TimeSpan.FromMilliseconds(100)), "\t", " ", RegexOptions.None, TimeSpan.FromMilliseconds(100)));
         }
 
         return records;
@@ -113,7 +113,7 @@ public abstract class PostgresSqlQueryRepoBase<T> : PostgresRepoBase where T : c
         }
         else
         {
-            _loggingHelper.LogDebug("The query that was executed = " + Regex.Replace(Regex.Replace(Regex.Replace(command.CommandText, "\r\n", ""), "\n", ""), "\t", " ") + " Number of rows affected: " + numberOfRowsAffected);
+            _loggingHelper.LogDebug("The query that was executed = " + Regex.Replace(Regex.Replace(Regex.Replace(command.CommandText, "\r\n", "", RegexOptions.None, TimeSpan.FromMilliseconds(100)), "\n", "", RegexOptions.None, TimeSpan.FromMilliseconds(100)), "\t", " ", RegexOptions.None, TimeSpan.FromMilliseconds(100)) + " Number of rows affected: " + numberOfRowsAffected);
         }
 
         return numberOfRowsAffected;

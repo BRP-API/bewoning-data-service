@@ -11,7 +11,7 @@ namespace Bewoning.Api.Util
         public override bool IsValid(object? value)
         {
             return value is IEnumerable<string> valueList
-                                                    && valueList.All(val => Regex.IsMatch(val, Pattern));
+                                                    && valueList.All(val => Regex.IsMatch(val, Pattern, RegexOptions.None, TimeSpan.FromMilliseconds(100)));
         }
     }
 }

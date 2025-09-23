@@ -725,7 +725,7 @@ public static class GbaMappingHelper
             return null;
         }
 
-        if (!Regex.IsMatch(plaats, @"^\d{1,4}$"))
+        if (!Regex.IsMatch(plaats, @"^\d{1,4}$", RegexOptions.None, TimeSpan.FromMilliseconds(100)))
         {
             return new Waardetabel
             {

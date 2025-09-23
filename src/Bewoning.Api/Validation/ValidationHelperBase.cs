@@ -59,7 +59,7 @@ public static class ValidationHelperBase
                 invalidParams.Add(CreateInvalidParam(ValidationErrorMessages.MinLength.Replace(@"\d*", "9"), searchModelParam));
             if (x.Length > 9)
                 invalidParams.Add(CreateInvalidParam(ValidationErrorMessages.MaxLength.Replace(@"\d*", "9"), searchModelParam));
-            if (!Regex.IsMatch(x, "^[0-9]*$"))
+            if (!Regex.IsMatch(x, "^[0-9]*$", RegexOptions.None, TimeSpan.FromMilliseconds(100)))
                 invalidParams.Add(CreateInvalidParam(ValidationErrorMessages.PatternBsn, searchModelParam));
         });
 

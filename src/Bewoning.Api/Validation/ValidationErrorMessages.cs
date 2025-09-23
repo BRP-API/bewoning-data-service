@@ -82,9 +82,9 @@ public static class ValidationErrorMessages
         if (_errorCodeLookup.Count == 0)
             _errorCodeLookup = CreateErrorCodeLookup();
 
-        if (_errorCodeLookup.Any(code => Regex.IsMatch(errorMessage, code.Key)))
+        if (_errorCodeLookup.Any(code => Regex.IsMatch(errorMessage, code.Key, RegexOptions.None, TimeSpan.FromMilliseconds(100))))
         {
-            return _errorCodeLookup.SingleOrDefault(code => Regex.IsMatch(errorMessage, code.Key)).Value.ToString().Replace("_", ""); //remove _ for _enum and _string
+            return _errorCodeLookup.SingleOrDefault(code => Regex.IsMatch(errorMessage, code.Key, RegexOptions.None, TimeSpan.FromMilliseconds(100))).Value.ToString().Replace("_", ""); //remove _ for _enum and _string
         }
         else if (_errorCodeLookup.ContainsKey(errorMessage))
         {
