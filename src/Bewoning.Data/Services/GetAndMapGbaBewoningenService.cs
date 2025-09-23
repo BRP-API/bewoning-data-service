@@ -248,6 +248,11 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
     private static List<GbaBewoning> MergeDuplicateBewoningenWithCoincidingPeriods(List<GbaBewoning> bewoningen)
     {
+        if (bewoningen.Count == 0)
+        {
+            return bewoningen;
+        }
+
         // Sort the list by the start date of the periods in ascending order.
         bewoningen = bewoningen.OrderBy(item => item.Periode?.DatumVan).ToList();
 
@@ -285,10 +290,7 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
             }
         });
 
-        if (current != null)
-        {
-            mergedList.Add(current);
-        }
+        mergedList.Add(current!);
         return mergedList;
     }
 
