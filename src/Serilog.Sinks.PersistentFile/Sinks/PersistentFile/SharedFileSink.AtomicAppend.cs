@@ -21,7 +21,7 @@ using System.Text;
 using Serilog.Events;
 using Serilog.Formatting;
 
-namespace Serilog.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
 {
     /// <summary>
     /// Write log events to a disk file.
@@ -70,7 +70,8 @@ namespace Serilog.Sinks.PersistentFile
             // exposed by .NET Core.
             _fileOutput = new FileStream(
                 path,
-                new FileStreamOptions{
+                new FileStreamOptions
+                {
                     Access = FileAccess.Write,
                     BufferSize = _fileStreamBufferLength,
                     Mode = FileMode.Append,
@@ -94,14 +95,15 @@ namespace Serilog.Sinks.PersistentFile
                     _textFormatter.Format(logEvent, _output);
                     _output.Flush();
                     var bytes = _writeBuffer.GetBuffer();
-                    var length = (int) _writeBuffer.Length;
+                    var length = (int)_writeBuffer.Length;
                     if (length > _fileStreamBufferLength)
                     {
                         var oldOutput = _fileOutput;
 
                         _fileOutput = new FileStream(
                             _path,
-                            new FileStreamOptions{
+                            new FileStreamOptions
+                            {
                                 Access = FileAccess.Write,
                                 Mode = FileMode.Append,
                                 Options = FileOptions.None,

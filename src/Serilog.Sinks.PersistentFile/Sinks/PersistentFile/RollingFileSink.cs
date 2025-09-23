@@ -22,7 +22,7 @@ using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Formatting;
 
-namespace Serilog.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
 {
     sealed class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
     {
@@ -163,7 +163,7 @@ namespace Serilog.Sinks.PersistentFile
                                 i, out var oldPath);
                                 try
                                 {
-                                    System.IO.File.Move(oldPath, newPath);
+                                    File.Move(oldPath, newPath);
                                 }
                                 catch (FileNotFoundException)
                                 {
@@ -187,7 +187,7 @@ namespace Serilog.Sinks.PersistentFile
                                 1, out var dateRolledFile);
                                 _roller.GetLogFilePath(_useLastWriteAsTimestamp ? fileInfo.LastWriteTime : now,
                                 latestForThisCheckpoint.SequenceNumber, out var latestForThisCheckPointFile);
-                                System.IO.File.Move(latestForThisCheckPointFile, dateRolledFile);
+                                File.Move(latestForThisCheckPointFile, dateRolledFile);
                             }
 
                             // move current file to datetime formatted file or first backup file
@@ -195,7 +195,7 @@ namespace Serilog.Sinks.PersistentFile
                                 sequence > 1 ? 1 : sequence, out var path);
                             try
                             {
-                                System.IO.File.Move(currentPath, path);
+                                File.Move(currentPath, path);
                             }
                             catch (IOException ex)
                             {
@@ -222,7 +222,7 @@ namespace Serilog.Sinks.PersistentFile
                         _currentFile = _shared
                             ?
 #pragma warning disable 618
-                            (IFileSink)new SharedFileSink(currentPath, _textFormatter, _fileSizeLimitBytes, _encoding)
+                            new SharedFileSink(currentPath, _textFormatter, _fileSizeLimitBytes, _encoding)
                             :
 #pragma warning restore 618
                             new FileSink(currentPath, _textFormatter, _fileSizeLimitBytes, _encoding, _buffered, _hooks);
@@ -259,7 +259,7 @@ namespace Serilog.Sinks.PersistentFile
                         _currentFile = _shared
                             ?
 #pragma warning disable 618
-                            (IFileSink)new SharedFileSink(path, _textFormatter, _fileSizeLimitBytes, _encoding)
+                            new SharedFileSink(path, _textFormatter, _fileSizeLimitBytes, _encoding)
                             :
 #pragma warning restore 618
                             new FileSink(path, _textFormatter, _fileSizeLimitBytes, _encoding, _buffered, _hooks);
@@ -330,7 +330,7 @@ namespace Serilog.Sinks.PersistentFile
                 var fullPath = Path.Combine(_roller.LogFileDirectory, obsolete);
                 try
                 {
-                    System.IO.File.Delete(fullPath);
+                    File.Delete(fullPath);
                 }
                 catch (Exception ex)
                 {

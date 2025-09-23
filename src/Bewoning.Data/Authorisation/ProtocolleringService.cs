@@ -1,0 +1,56 @@
+﻿using Bewoning.Api.Interfaces;
+using Bewoning.Data.Providers;
+using Bewoning.Data.DatabaseModels;
+using Bewoning.Data.Repositories.Postgres;
+
+namespace Bewoning.Data.Authorisation
+{
+    public class ProtocolleringService : IProtocolleringService
+    {
+        private readonly IProtocolleringRepo _protocolleringRepo;
+        public ICurrentDateTimeProvider _currentDateTimeProvider { get; set; }
+
+        public ProtocolleringService(IProtocolleringRepo protocolleringRepo, ICurrentDateTimeProvider currentDateTimeProvider)
+        {
+            _protocolleringRepo = protocolleringRepo;
+            _currentDateTimeProvider = currentDateTimeProvider;
+        }
+
+        public async Task Insert(int afnemerCode, long? plIdRequestedPerson, string? zoekRubrieken, string? gevraagdeRubrieken)
+        {
+            gevraagdeRubrieken = AuthorisationService.RemoveImplicitRubriekenForProtocllering(gevraagdeRubrieken);
+            var protocolleringRecord = new DbProtocollering
+            {
+                request_id = Guid.NewGuid().ToString(),
+                afnemer_code = afnemerCode,
+                pl_id = plIdRequestedPerson,
+                request_gevraagde_rubrieken = gevraagdeRubrieken,
+                request_zoek_rubrieken = zoekRubrieken,
+                verwerkt = false
+            };
+
+            await _protocolleringRepo.Insert(protocolleringRecord);
+        }
+
+        public async Task Insert(int afnemerCode, List<long> plIdRequestedPersons, string? zoekRubrieken, string? gevraagdeRubrieken)
+        {
+            gevraagdeRubrieken = AuthorisationService.RemoveImplicitRubriekenForProtocllering(gevraagdeRubrieken);
+            var protocolleringRecords = new List<DbProtocollering>();
+
+            plIdRequestedPersons.ForEach(plId =>
+            {
+                protocolleringRecords.Add(new DbProtocollering
+                {
+                    request_id = Guid.NewGuid().ToString(),
+                    afnemer_code = afnemerCode,
+                    pl_id = plId,
+                    request_gevraagde_rubrieken = gevraagdeRubrieken,
+                    request_zoek_rubrieken = zoekRubrieken,
+                    verwerkt = false
+                });
+            });
+
+            await _protocolleringRepo.Insert(protocolleringRecords);
+        }
+    }
+}
