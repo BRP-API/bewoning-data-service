@@ -91,13 +91,14 @@ module.exports = {
       apiUrl: 'http://localhost:8080/haalcentraal/api',
       api: 'autorisatie-en-protocollering',
       logger: {
-        level: 'info'
+        level: 'warn'
       },
       oAuth: {
         enable: true
       },
-      addAcceptGezagVersionHeader: true
+      addAcceptGezagVersionHeader: false,
+      logFileToAssert: './test-data/logs/brp-autorisatie-protocollering.json'
     },
-    tags: 'not @skip-verify and not @deprecated and not @gezag-api and not @data-api'
+    tags: 'not @skip-verify and not @stap-documentatie and not @deprecated and not @gezag-api and not @data-api'
   }
 }
