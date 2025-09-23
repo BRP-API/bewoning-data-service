@@ -285,8 +285,10 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
             }
         });
 
-        if (current is null) return mergedList;
-        mergedList.Add(current);
+        if (current != null)
+        {
+            mergedList.Add(current);
+        }
         return mergedList;
     }
 

@@ -566,8 +566,8 @@ public static class GbaMappingHelper
 
         if (current.IsCompleteOnvolledig())
         {
-            return (next == null || !CurrentDateOnzekerheidsPeriodeOverlapVanTotPeriode(next ?? new DatumOnvolledig(""), periodeVan, periodeTot, null, null, true, new DatumOnvolledig(DateTime.MaxValue.ToString("yyyyMMdd"))))
-                && (previous == null || !CurrentDateOnzekerheidsPeriodeOverlapVanTotPeriode(previous ?? new DatumOnvolledig(""), periodeVan, periodeTot));
+            return (next == null || !CurrentDateOnzekerheidsPeriodeOverlapVanTotPeriode(next, periodeVan, periodeTot, null, null, true, new DatumOnvolledig(DateTime.MaxValue.ToString("yyyyMMdd"))))
+                && (previous == null || !CurrentDateOnzekerheidsPeriodeOverlapVanTotPeriode(previous, periodeVan, periodeTot));
         }
 
         (DateTime? startOnzekerheidsPeriodeDateTime, DateTime? endOnzekerheidsPeriodeDateTime) = CreateOnzekerheidsPeriodeDateTimes(current);
