@@ -15,7 +15,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
 {
     /// <summary>
     /// Exists only for the convenience of <see cref="RollingFileSink"/>, which

@@ -22,11 +22,11 @@ using Serilog.Events;
 using Serilog.Formatting;
 using Serilog.Formatting.Display;
 using Serilog.Formatting.Json;
-using Serilog.Sinks.PersistentFile;
+using Serilog.Sinks.PersistentFile.Sinks.PersistentFile;
 
 // ReSharper disable RedundantArgumentDefaultValue, MethodOverloadWithOptionalParameter
 
-namespace Serilog
+namespace Serilog.Sinks.PersistentFile
 {
     /// <summary>Extends <see cref="LoggerConfiguration"/> with methods to add file sinks.</summary>
     public static class FileLoggerConfigurationExtensions
@@ -69,7 +69,7 @@ namespace Serilog
             bool shared,
             TimeSpan? flushToDiskInterval)
         {
-            return PersistentFile(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, fileSizeLimitBytes,
+            return sinkConfiguration.PersistentFile(path, restrictedToMinimumLevel, outputTemplate, formatProvider, fileSizeLimitBytes,
                 levelSwitch, buffered, shared, flushToDiskInterval, PersistentFileRollingInterval.Infinite, false, null, null, null);
         }
 
@@ -108,7 +108,7 @@ namespace Serilog
             bool shared,
             TimeSpan? flushToDiskInterval)
         {
-            return PersistentFile(sinkConfiguration, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch,
+            return sinkConfiguration.PersistentFile(formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch,
                 buffered, shared, flushToDiskInterval, PersistentFileRollingInterval.Infinite, false, null, null, null);
         }
 
@@ -156,7 +156,7 @@ namespace Serilog
             Encoding encoding
             )
         {
-            return PersistentFile(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, fileSizeLimitBytes, levelSwitch, buffered,
+            return sinkConfiguration.PersistentFile(path, restrictedToMinimumLevel, outputTemplate, formatProvider, fileSizeLimitBytes, levelSwitch, buffered,
                 shared, flushToDiskInterval, persistentFileRollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding, null);
         }
 
@@ -166,7 +166,7 @@ namespace Serilog
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
         /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="PersistentFile(Serilog.Configuration.LoggerSinkConfiguration,string,Serilog.Events.LogEventLevel,string,System.IFormatProvider,System.Nullable{long},Serilog.Core.LoggingLevelSwitch,bool,bool,System.Nullable{System.TimeSpan})"/>
+        /// overload of <see cref="PersistentFile(LoggerSinkConfiguration,string,LogEventLevel,string,IFormatProvider,long?,LoggingLevelSwitch,bool,bool,TimeSpan?)"/>
         /// and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
@@ -204,7 +204,7 @@ namespace Serilog
             int? retainedFileCountLimit,
             Encoding encoding)
         {
-            return PersistentFile(sinkConfiguration, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch, buffered,
+            return sinkConfiguration.PersistentFile(formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch, buffered,
                 shared, flushToDiskInterval, persistentFileRollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding, null);
         }
 
@@ -263,7 +263,7 @@ namespace Serilog
             if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
 
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            return PersistentFile(sinkConfiguration, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes,
+            return sinkConfiguration.PersistentFile(formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes,
                 levelSwitch, buffered, shared, flushToDiskInterval,
                 persistentFileRollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding, hooks,
                 preserveLogFilename, rollOnEachProcessRun, useLastWriteAsTimestamp);
@@ -275,7 +275,7 @@ namespace Serilog
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
         /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="PersistentFile(Serilog.Configuration.LoggerSinkConfiguration,string,Serilog.Events.LogEventLevel,string,System.IFormatProvider,System.Nullable{long},Serilog.Core.LoggingLevelSwitch,bool,bool,System.Nullable{System.TimeSpan})"/>
+        /// overload of <see cref="PersistentFile(LoggerSinkConfiguration,string,LogEventLevel,string,IFormatProvider,long?,LoggingLevelSwitch,bool,bool,TimeSpan?)"/>
         /// and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
@@ -352,7 +352,7 @@ namespace Serilog
             IFormatProvider formatProvider,
             LoggingLevelSwitch levelSwitch)
         {
-            return PersistentFile(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, levelSwitch, null, null);
+            return sinkConfiguration.PersistentFile(path, restrictedToMinimumLevel, outputTemplate, formatProvider, levelSwitch, null, null);
         }
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace Serilog
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
         /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="PersistentFile(Serilog.Configuration.LoggerAuditSinkConfiguration,string,Serilog.Events.LogEventLevel,string,System.IFormatProvider,Serilog.Core.LoggingLevelSwitch)"/>
+        /// overload of <see cref="PersistentFile(LoggerAuditSinkConfiguration,string,LogEventLevel,string,IFormatProvider,LoggingLevelSwitch)"/>
         /// and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
@@ -379,7 +379,7 @@ namespace Serilog
             LogEventLevel restrictedToMinimumLevel,
             LoggingLevelSwitch levelSwitch)
         {
-            return PersistentFile(sinkConfiguration, formatter, path, restrictedToMinimumLevel, levelSwitch, null, null);
+            return sinkConfiguration.PersistentFile(formatter, path, restrictedToMinimumLevel, levelSwitch, null, null);
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace Serilog
             if (outputTemplate == null) throw new ArgumentNullException(nameof(outputTemplate));
 
             var formatter = new MessageTemplateTextFormatter(outputTemplate, formatProvider);
-            return PersistentFile(sinkConfiguration, formatter, path, restrictedToMinimumLevel, levelSwitch, encoding, hooks);
+            return sinkConfiguration.PersistentFile(formatter, path, restrictedToMinimumLevel, levelSwitch, encoding, hooks);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace Serilog
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
         /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="PersistentFile(Serilog.Configuration.LoggerAuditSinkConfiguration,string,Serilog.Events.LogEventLevel,string,System.IFormatProvider,Serilog.Core.LoggingLevelSwitch,System.Text.Encoding,Serilog.Sinks.PersistentFile.FileLifecycleHooks)"/>
+        /// overload of <see cref="PersistentFile(LoggerAuditSinkConfiguration,string,LogEventLevel,string,IFormatProvider,LoggingLevelSwitch,Encoding,FileLifecycleHooks)"/>
         /// and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>

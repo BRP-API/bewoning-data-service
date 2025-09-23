@@ -15,7 +15,7 @@
 using System.IO;
 using System.Text;
 
-namespace Serilog.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
 {
     /// <summary>
     /// Enables hooking into log file lifecycle events.
