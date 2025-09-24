@@ -1,5 +1,4 @@
-﻿using CsvHelper.Configuration;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Primitives;
 using Moq;
@@ -7,7 +6,6 @@ using System;
 using System.IO;
 using System.Text;
 using System.Linq.Expressions;
-using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Runtime.Serialization;
 using System.Security.Principal;

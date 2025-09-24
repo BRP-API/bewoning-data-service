@@ -1,6 +1,4 @@
 ﻿using Brp.Shared.Infrastructure.Logging;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,15 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
-using FluentValidation.AspNetCore;
-using FluentValidation;
 using Serilog;
 using Brp.Shared.Infrastructure.ProblemDetails;
 using Bewoning.Data.Service.Middleware;
 using Bewoning.Data.Service.Services;
-using Bewoning.Data.Service.Authentication;
 using Bewoning.Api.Options;
-using Bewoning.Api.Exceptions;
 using Bewoning.Api;
 
 namespace Bewoning.Data.Service;
@@ -61,12 +55,6 @@ public static class RvigBaseApp
                 builder.Services.AddSingleton(servicePair.Key, servicePair.Value);
             }
 
-            // Loading validators from child app.
-            validatorsToConfigure.ForEach(validator => builder.Services.AddValidatorsFromAssemblyContaining(validator));
-
-            string[] authenticationTypes = new List<string>().ToArray();
-            builder = ConfigureAuth(builder, authenticationTypes);
-
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
@@ -76,8 +64,6 @@ public static class RvigBaseApp
                 // Removes the POST main body mentioned during required errors.
                 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
             }).AddNewtonsoftJson();
-
-            builder.Services.AddFluentValidationAutoValidation();
 
             builder.Services.Configure<MvcOptions>(options => options.Filters.Add(new ProducesAttribute(Application.Json)));
             builder.Services.Configure<ApiBehaviorOptions>(options => options.InvalidModelStateResponseFactory = context => new BadRequestObjectResult(context.HttpContext.RequestServices.GetService<IErrorResponseService>()?.CreateBadRequestFoutbericht(context)));
@@ -125,42 +111,5 @@ public static class RvigBaseApp
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IErrorResponseService, ErrorResponseService>();
         services.AddSingleton<IHealthCheckApiService, HealthCheckApiService>();
-    }
-
-    private static WebApplicationBuilder ConfigureAuth(WebApplicationBuilder builder, IEnumerable<string> authenticationTypes)
-    {
-        if (authenticationTypes?.Any() != true)
-        {
-            // no authentication required
-            return builder;
-        }
-        else if (authenticationTypes.Count() > 1)
-        {
-            throw new CustomInvalidOperationException("More than one authentication type was defined.");
-        }
-        var _currentAuthenticationType = authenticationTypes.Single().ToLower();
-
-        return _currentAuthenticationType switch
-        {
-            "basic" => ConfigureBasicAuth(builder),
-            "openidconnect" => ConfigureOpenIdConnectAuth(builder),
-            _ => throw new CustomInvalidOperationException("Unknown authentication type was defined.")
-        };
-    }
-
-    private static WebApplicationBuilder ConfigureBasicAuth(WebApplicationBuilder builder)
-    {
-        builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", _ => { });
-        builder.Services.AddAuthorization(options => options.DefaultPolicy = new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
-
-        return builder;
-    }
-
-    private static WebApplicationBuilder ConfigureOpenIdConnectAuth(WebApplicationBuilder builder)
-    {
-        builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, OpenIdConnectAuthenticationHandler>("OpenIdConnectAuthentication", _ => { });
-        builder.Services.AddAuthorization(options => options.DefaultPolicy = new AuthorizationPolicyBuilder("OpenIdConnectAuthentication").RequireAuthenticatedUser().Build());
-
-        return builder;
     }
 }
