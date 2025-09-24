@@ -1,10 +1,8 @@
 using System.Net;
-using System.Runtime.Serialization;
 using Bewoning.Api.ApiModels.Universal;
 
 namespace Bewoning.Api.Exceptions;
 
-[Serializable]
 public class InvalidParamsException : Exception, IHaalCentraalException
 {
     public HttpStatusCode HttpStatusCode { get => HttpStatusCode.BadRequest; }
@@ -51,11 +49,6 @@ public class InvalidParamsException : Exception, IHaalCentraalException
     public InvalidParamsException(string? message) : base(message)
     {
         Details = message;
-        InvalidParams = new List<InvalidParams>();
-    }
-
-    protected InvalidParamsException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
         InvalidParams = new List<InvalidParams>();
     }
 }

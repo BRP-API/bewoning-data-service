@@ -1,9 +1,7 @@
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace Bewoning.Api.Exceptions
 {
-    [Serializable]
     public class AuthorizationException : Exception, IHaalCentraalException
     {
         public HttpStatusCode HttpStatusCode { get => HttpStatusCode.Forbidden; }
@@ -32,10 +30,6 @@ namespace Bewoning.Api.Exceptions
             : base(message, innerException)
         {
             Details = message;
-        }
-
-        protected AuthorizationException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
         }
     }
 }
