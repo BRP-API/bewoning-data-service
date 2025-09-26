@@ -18,7 +18,7 @@ using System.Text;
 using Serilog.Events;
 using Serilog.Formatting;
 
-namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile
 {
     /// <summary>
     /// Write log events to a disk file.
@@ -72,7 +72,7 @@ namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
                 Directory.CreateDirectory(directory);
             }
 
-            Stream outputStream = _underlyingStream = File.Open(path, FileMode.Append, FileAccess.Write, FileShare.Read);
+            Stream outputStream = _underlyingStream = System.IO.File.Open(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             if (_fileSizeLimitBytes != null)
             {
                 outputStream = _countingStreamWrapper = new WriteCountingStream(_underlyingStream);
@@ -115,7 +115,7 @@ namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
-            ((IFileSink)this).EmitOrOverflow(logEvent);
+            ((IFileSink) this).EmitOrOverflow(logEvent);
         }
 
         /// <inheritdoc />
