@@ -14,7 +14,6 @@ using Serilog;
 using Serilog.Enrichers.Sensitive;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Serilog.Sinks.PersistentFile;
 using System.Text;
 
 namespace Brp.Shared.Infrastructure.Logging;
