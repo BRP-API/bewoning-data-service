@@ -26,7 +26,7 @@ module.exports = {
       },
       addAcceptGezagVersionHeader: true
     },
-    tags: 'not @skip-verify and not @deprecated and ((not @gezag-api and not @data-api) or @info-api)'
+    tags: 'not @skip-verify and not @stap-documentatie and not @deprecated and ((not @gezag-api and not @data-api) or @info-api)'
   },
   InfoApiDeprecated: {
     worldParameters: {
@@ -38,7 +38,7 @@ module.exports = {
       },
       addAcceptGezagVersionHeader: false
     },
-    tags: 'not @skip-verify and ((@deprecated and ((not @data-api and not @gezag-api) or @info-api)) or (not @deprecated and not @nieuw and ((not @data-api and not @gezag-api) or @info-api)))'
+    tags: 'not @skip-verify and not @stap-documentatie and ((@deprecated and ((not @data-api and not @gezag-api) or @info-api)) or (not @deprecated and not @nieuw and ((not @data-api and not @gezag-api) or @info-api)))'
   },
   DataApi: {
     worldParameters: {
