@@ -2,7 +2,7 @@
 
 MODE=$1
 
-if [ "$MODE" = "ci" ]; then
+if [[ "$MODE" = "ci" ]]; then
     docker compose -f .docker/db-ci.yml down --volumes
 else
     docker compose -f .docker/db.yml down --volumes
