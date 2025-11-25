@@ -15,7 +15,7 @@
 using System;
 using System.IO;
 
-namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile
 {
     sealed class WriteCountingStream : Stream
     {
