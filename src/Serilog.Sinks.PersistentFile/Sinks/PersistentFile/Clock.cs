@@ -14,7 +14,7 @@
 
 using System;
 
-namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile
 {
     static class Clock
     {

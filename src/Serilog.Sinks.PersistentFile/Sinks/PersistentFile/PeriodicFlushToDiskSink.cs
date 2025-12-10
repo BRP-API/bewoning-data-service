@@ -18,7 +18,7 @@ using Serilog.Core;
 using Serilog.Debugging;
 using Serilog.Events;
 
-namespace Serilog.Sinks.PersistentFile.Sinks.PersistentFile
+namespace Serilog.Sinks.PersistentFile
 {
     /// <summary>
     /// A sink wrapper that periodically flushes the wrapped sink to disk.
