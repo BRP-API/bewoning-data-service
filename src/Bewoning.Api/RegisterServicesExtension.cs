@@ -12,6 +12,6 @@ public static class RegisterServicesExtension
     {
         services.Configure<ProtocolleringAuthorizationOptions>(configuration.GetSection(ProtocolleringAuthorizationOptions.ProtocolleringAuthorization));
         services.AddSingleton<ILoggingHelper, LoggingHelper>();
-        services.AddAutoMapper(typeof(GbaBewoningMappingProfile).Assembly);
+        services.AddAutoMapper(cfg => { }, typeof(GbaBewoningMappingProfile).Assembly);
     }
 }
