@@ -1,5 +1,4 @@
-﻿using Bewoning.Api.Helpers;
-using Bewoning.Api.Options;
+﻿using Bewoning.Api.Options;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
@@ -8,7 +7,7 @@ namespace Bewoning.Data.Repositories.Postgres;
 
 public abstract class RvigRepoPostgresBase<T> : PostgresSqlQueryRepoBase<T> where T : class, new()
 {
-    protected RvigRepoPostgresBase(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper) : base(databaseOptions, loggingHelper)
+    protected RvigRepoPostgresBase(IOptions<DatabaseOptions> databaseOptions) : base(databaseOptions)
     {
         SetWhereMappings();
         SetMappings();

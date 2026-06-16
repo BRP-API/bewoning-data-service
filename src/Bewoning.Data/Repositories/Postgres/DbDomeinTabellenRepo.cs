@@ -1,5 +1,4 @@
 ﻿using Bewoning.Api.Exceptions;
-using Bewoning.Api.Helpers;
 using Bewoning.Api.Interfaces;
 using Bewoning.Api.Options;
 using Bewoning.Data.DatabaseModels;
@@ -8,12 +7,9 @@ using Microsoft.Extensions.Options;
 
 namespace Bewoning.Data.Repositories.Postgres;
 // lo3_gemeente is not correct
-public class DbDomeinTabellenRepo : PostgresRepoBase, IDomeinTabellenRepo
+public class DbDomeinTabellenRepo(IOptions<DatabaseOptions> databaseOptions)
+    : PostgresRepoBase(databaseOptions), IDomeinTabellenRepo
 {
-    public DbDomeinTabellenRepo(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper) : base(databaseOptions, loggingHelper)
-    {
-    }
-
     public async Task<IEnumerable<(string? code, string? omschrijving, string? soort)>> GetAllAdellijkeTitelsPredikaten()
     {
         string query = "select titel_predicaat, titel_predicaat_oms, titel_predicaat_soort from lo3_titel_predicaat";

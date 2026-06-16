@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.Options;
-using Bewoning.Api.Helpers;
-using Bewoning.Api.RequestModels.Bewoning;
-using Bewoning.Api.Options;
+﻿using Bewoning.Api.RequestModels.Bewoning;
 using Bewoning.Api.Interfaces;
 using Bewoning.Api.ApiModels.Bewoning;
-using Bewoning.Api.Fields;
 using Bewoning.Api.ResponseModels.Bewoning;
 using AutoMapper;
 
@@ -14,28 +10,12 @@ public interface IGbaBewoningenApiService
     Task<(GbaBewoningenQueryResponse bewoningenResponse, List<long>? plIds)> GetBewoningen(BewoningenQuery model);
 }
 
-public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthorization, IGbaBewoningenApiService
+public class GbaBewoningenApiService(
+    IGetAndMapGbaBewoningenService bewoningenService,
+    IFilterService filterService,
+    IMapper mapper) : IGbaBewoningenApiService
 {
-    protected IGetAndMapGbaBewoningenService _bewoningenService;
-    private readonly IFilterService _filterService;
-    private readonly IMapper _mapper;
-
-    protected override BewoningenFieldsSettings _fieldsSettings => new();
-
-    public GbaBewoningenApiService(
-        IGetAndMapGbaBewoningenService bewoningenService,
-        IDomeinTabellenRepo domeinTabellenRepo,
-        IProtocolleringService protocolleringService,
-        ILoggingHelper loggingHelper,
-        IOptions<ProtocolleringAuthorizationOptions> protocolleringAuthorizationOptions,
-        IFilterService filterService,
-        IMapper mapper)
-        : base(domeinTabellenRepo, protocolleringService, loggingHelper, protocolleringAuthorizationOptions)
-    {
-        _bewoningenService = bewoningenService;
-        _filterService = filterService;
-        _mapper = mapper;
-    }
+    protected IGetAndMapGbaBewoningenService _bewoningenService = bewoningenService;
 
     /// <summary>
     /// Get Bewoning (GBA) 2.0.0 bewoningen via child of BewoningenQuery.
@@ -49,7 +29,7 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 
         var response = new GbaBewoningenQueryResponse { Bewoningen = bewoningen.ToList() };
 
-        _filterService.FilterResponse(model, response);
+        filterService.FilterResponse(model, response);
 
         IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(response);
         var plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
@@ -71,6 +51,6 @@ public class GbaBewoningenApiService : BaseApiServiceWithProtocolleringAuthoriza
 
     private Generated.GbaBewoning MapGbaBewoning(GbaBewoning bewoning)
     {
-        return _mapper.Map<Generated.GbaBewoning>(bewoning);
+        return mapper.Map<Generated.GbaBewoning>(bewoning);
     }
 }

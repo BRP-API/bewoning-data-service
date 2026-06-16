@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Npgsql;
-using Bewoning.Api.Helpers;
 using Bewoning.Api.Options;
 using Bewoning.Data.DatabaseModels;
 using Bewoning.Data.Repositories.Queries.Helper;
@@ -14,12 +13,9 @@ public interface IRvigBewoningenBewonerRepo
 }
 
 // DbBewoningWrapper is not correct.
-public class RvigBewoningenBewonerRepo : RvigRepoPostgresBase<bewoning_bewoner>, IRvigBewoningenBewonerRepo
+public class RvigBewoningenBewonerRepo(IOptions<DatabaseOptions> databaseOptions) :
+    RvigRepoPostgresBase<bewoning_bewoner>(databaseOptions), IRvigBewoningenBewonerRepo
 {
-    public RvigBewoningenBewonerRepo(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper) : base(databaseOptions, loggingHelper)
-    {
-    }
-
     protected override void SetMappings() => CreateMappingsFromWhereMappings();
     protected override void SetWhereMappings() => WhereMappings = RvIGBewoningenWhereMappingsHelper.GetBewoningenBewonerMappings();
 
