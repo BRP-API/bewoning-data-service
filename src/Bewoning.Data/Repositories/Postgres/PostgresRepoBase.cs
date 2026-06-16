@@ -40,7 +40,7 @@ public abstract class PostgresRepoBase(IOptions<DatabaseOptions> databaseOptions
         return DapperQueryAsync(GetConnection(), query, types, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
     }
 
-    private Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, Type[] types, Func<object[], TDataObject> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+    private static Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, Type[] types, Func<object[], TDataObject> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
     {
         try
         {
@@ -52,7 +52,7 @@ public abstract class PostgresRepoBase(IOptions<DatabaseOptions> databaseOptions
         }
     }
 
-    private Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, DynamicParameters? dynamicParameters = null)
+    private static Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, DynamicParameters? dynamicParameters = null)
     {
         try
         {
@@ -69,7 +69,7 @@ public abstract class PostgresRepoBase(IOptions<DatabaseOptions> databaseOptions
         }
     }
 
-    protected async Task OpenConnectionAndLog(NpgsqlConnection connection)
+    protected static async Task OpenConnectionAndLog(NpgsqlConnection connection)
     {
         try
         {

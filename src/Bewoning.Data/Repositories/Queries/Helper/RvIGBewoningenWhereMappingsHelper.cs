@@ -2,7 +2,7 @@
 
 namespace Bewoning.Data.Repositories.Queries.Helper;
 
-public class RvIGBewoningenWhereMappingsHelper
+public static class RvIGBewoningenWhereMappingsHelper
 {
     public static IDictionary<string, string> GetBewoningenBewonerMappings() => new Dictionary<string, string>()
     {
