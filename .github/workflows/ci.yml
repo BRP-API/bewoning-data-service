@@ -30,6 +30,7 @@ permissions:
 env:
   NODE_VERSION: '20'
   DOTNET_SOLUTION_FILE_PATH: src/BewoningDataService.sln
+  INFRA_PROJECT_PATH: ./src/Brp.Shared.Infrastructure
   APP_PROJECT_PATH: ./src/Bewoning.Data.Service
   APP_CSPROJ_FILE_PATH: ./src/Bewoning.Data.Service/Bewoning.Data.Service.csproj
   APP_CONTAINER_IMAGE: ghcr.io/brp-api/bewoning-data-service
@@ -60,6 +61,7 @@ jobs:
           filters: |
             app:
               - '${{ env.APP_PROJECT_PATH }}/**'
+              - '${{ env.INFRA_PROJECT_PATH }}/**'
 
       - name: Valideer .NET solution
         uses: ./.github/actions/valideer-dotnet-solution
@@ -98,17 +100,17 @@ jobs:
         run: |
           ./scripts/specs-verify.sh
 
+      - name: Stop containers
+        if: always()
+        run: |
+          ./scripts/containers-stop.sh ci
+
       - name: Voeg test summary toe aan Github Step Summary
         if: always()
         run: |
           node ./scripts/generate-step-summary.js
           echo "### Cucumber Test Reports" >> $GITHUB_STEP_SUMMARY
           cat ${{ env.SPEC_VERIFY_STEP_SUMMARY_FILE_PATH }} >> $GITHUB_STEP_SUMMARY
-
-      - name: Stop containers
-        if: always()
-        run: |
-          ./scripts/containers-stop.sh ci
 
       - name: Genereer test rapportage
         if: always()
@@ -151,7 +153,8 @@ jobs:
           driver: docker-container
 
       - name: Build & push bewoning data service container images naar registry
-        if: always() && (steps.changed-project.outputs.app == 'true' || inputs.publishType == 'app')
+        id: build-and-push-app-container
+        if: always() && (steps.changed-project.outputs.app == 'true' || inputs.publishType == 'app' || github.ref == 'refs/heads/main')
         uses: docker/build-push-action@v6
         with:
           file: ${{ env.APP_PROJECT_PATH }}/Dockerfile
@@ -163,3 +166,10 @@ jobs:
             ${{ env.APP_CONTAINER_IMAGE }}:${{ steps.app-version.outputs.version }}-latest
             ${{ env.APP_CONTAINER_IMAGE }}:${{ steps.app-version.outputs.version }}-${{ steps.build-run-id.outputs.build-run }}
             ${{ env.APP_CONTAINER_IMAGE }}:${{ github.sha }}
+
+      - name: Scan ${{ env.APP_CONTAINER_IMAGE }} container image for CVEs
+        if: steps.build-and-push-app-container.outcome == 'success'
+        uses: ./.github/actions/scan-container-image-for-cves
+        with:
+          image: ${{ env.APP_CONTAINER_IMAGE }}:${{ steps.app-version.outputs.version }}-${{ steps.build-run-id.outputs.build-run }}
+          artifact-name: bewoning-data-service-${{ steps.app-version.outputs.version }}-cve-scan-report
