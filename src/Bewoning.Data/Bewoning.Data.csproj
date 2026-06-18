@@ -16,16 +16,22 @@
 
   <ItemGroup>
     <Compile Remove="Interfaces\**" />
+    <Compile Remove="Options\**" />
     <Compile Remove="Postgres\**" />
+    <Compile Remove="Repositories\WebApi\**" />
     <EmbeddedResource Remove="Interfaces\**" />
+    <EmbeddedResource Remove="Options\**" />
     <EmbeddedResource Remove="Postgres\**" />
+    <EmbeddedResource Remove="Repositories\WebApi\**" />
     <None Remove="Interfaces\**" />
+    <None Remove="Options\**" />
     <None Remove="Postgres\**" />
+    <None Remove="Repositories\WebApi\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.151" />
-    <PackageReference Include="Npgsql" Version="10.0.2" />
+    <PackageReference Include="Npgsql" Version="10.0.3" />
   </ItemGroup>
 
   <ItemGroup>

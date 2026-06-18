@@ -2,20 +2,13 @@
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Primitives;
 using Moq;
-using System;
 using System.IO;
 using System.Text;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Runtime.Serialization;
 using System.Security.Principal;
-using Microsoft.AspNetCore.Builder;
 using Newtonsoft.Json;
-using Bewoning.Data.Service.Util;
-using Bewoning.Api.Helpers;
 using Bewoning.Api.Util;
-using Bewoning.Api.Options;
-using Bewoning.Data.Repositories.Postgres;
 
 namespace Bewoning.Data.Service.Tests.Util;
 
@@ -135,43 +128,5 @@ public static class MockHelper
             fields = new List<string> { "burgerservicenummer" },
             type = nameof(TestRaadpleegMetBurgerservicenummer)
         };
-    }
-
-    /// <summary>
-    /// Makes it possible to create a mock of a repository to fake data to use during unit testing of helpers and services.
-    /// </summary>
-    /// <typeparam name="T">Type of repo instance. For example DbDomeinTabellenRepo.</typeparam>
-    /// <param name="setupActions">
-    ///		List of actions that require mocked results in the repo mock.
-    ///		For example a valid value would be:
-    ///		var setupActions = new List<(Expression<Func<DbDomeinTabellenRepo, object?>> expression, object? something)>
-    /// 	{
-    /// 		// Here _ is the repo instance and GetGemeenteNaam is the method that must be run whilst null is the expected mocked result.
-    /// 		(_ => _.GetGemeenteNaam(gemeenteVanInschrijving), null)
-    ///
-    ///			The GetGemeenteNaam method must be a virtual (overridable) method for this to work..
-    /// 	};
-    /// </param>
-    /// <returns></returns>
-    public static T GetRepoMock<T>(List<(Expression<Func<T, object?>> expression, object? expectedResult)>? setupActions = null) where T : PostgresRepoBase
-    {
-        var repository = new Mock<T>(Microsoft.Extensions.Options.Options.Create(new DatabaseOptions()), new LoggingHelper(MockIHttpContextAccessor()));
-        setupActions?.ForEach(action => repository.Setup(action.expression).Returns(action.expectedResult));
-        return repository.Object;
-    }
-
-    public static LoggingHelper ArrangeLogger(string logNameAccessLog, string logNameApplicationLog, string logNameTraceLog, string logFolderName, int statusCode = 200, string? logLevel = "Debug", IHttpContextAccessor? httpContextAccessor = null)
-    {
-        var loggingHelper = new LoggingHelper(httpContextAccessor ?? MockIHttpContextAccessor(statusCode));
-        var builder = WebApplication.CreateBuilder();
-        builder.Configuration["Serilog:LogFilePath"] = logFolderName;
-        builder.Configuration["Serilog:MinimumLevel:Default"] = logLevel;
-        if (Directory.Exists($"./{logFolderName}"))
-        {
-            Directory.Delete($"./{logFolderName}", true);
-        }
-        LoggingInitializer.SetupLogging("2.0.0", builder, logNameAccessLog, logNameApplicationLog, logNameTraceLog);
-
-        return loggingHelper;
     }
 }

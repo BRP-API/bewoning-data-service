@@ -1,5 +1,4 @@
 ﻿using Bewoning.Api.Exceptions;
-using Bewoning.Api.Helpers;
 using Bewoning.Api.Options;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -8,16 +7,9 @@ using System.Data;
 using static Dapper.SqlMapper;
 
 namespace Bewoning.Data.Repositories.Postgres;
-public abstract class PostgresRepoBase
+public abstract class PostgresRepoBase(IOptions<DatabaseOptions> databaseOptions)
 {
-    protected readonly IOptions<DatabaseOptions> _databaseOptions;
-    protected readonly ILoggingHelper _loggingHelper;
-
-    protected PostgresRepoBase(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper)
-    {
-        _databaseOptions = databaseOptions;
-        _loggingHelper = loggingHelper;
-    }
+    protected readonly IOptions<DatabaseOptions> _databaseOptions = databaseOptions;
 
     public NpgsqlConnection GetConnection()
     {
@@ -48,7 +40,7 @@ public abstract class PostgresRepoBase
         return DapperQueryAsync(GetConnection(), query, types, map, param, transaction, buffered, splitOn, commandTimeout, commandType);
     }
 
-    private Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, Type[] types, Func<object[], TDataObject> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
+    private static Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, Type[] types, Func<object[], TDataObject> map, object? param = null, IDbTransaction? transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
     {
         try
         {
@@ -56,17 +48,11 @@ public abstract class PostgresRepoBase
         }
         catch (NpgsqlException npgEx)
         {
-            _loggingHelper.LogError("Connectivity issue database: " + npgEx.Message + ".");
             throw new ServiceUnavailableException(npgEx.Message, npgEx);
-        }
-        catch (Exception ex)
-        {
-            _loggingHelper.LogError("Unexpected exception during database call. Error is: " + ex.Message + ".");
-            throw;
         }
     }
 
-    private Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, DynamicParameters? dynamicParameters = null)
+    private static Task<IEnumerable<TDataObject>> DapperQueryAsync<TDataObject>(NpgsqlConnection connection, string? query, DynamicParameters? dynamicParameters = null)
     {
         try
         {
@@ -79,32 +65,19 @@ public abstract class PostgresRepoBase
         }
         catch (NpgsqlException npgEx)
         {
-            _loggingHelper.LogError("Connectivity issue database: " + npgEx.Message + ".");
             throw new ServiceUnavailableException(npgEx.Message, npgEx);
-        }
-        catch (Exception ex)
-        {
-            _loggingHelper.LogError("Unexpected exception during database call. Error is: " + ex.Message + ".");
-            throw;
         }
     }
 
-    protected async Task OpenConnectionAndLog(NpgsqlConnection connection)
+    protected static async Task OpenConnectionAndLog(NpgsqlConnection connection)
     {
         try
         {
             await connection.OpenAsync();
-            _loggingHelper.LogDebug("Connection opened processId: " + connection.ProcessID);
         }
         catch (NpgsqlException npgEx)
         {
-            _loggingHelper.LogError("Connectivity issue database: " + npgEx.Message + ".");
             throw new ServiceUnavailableException(npgEx.Message, npgEx);
-        }
-        catch (Exception ex)
-        {
-            _loggingHelper.LogError("Unexpected exception during database call. Error is: " + ex.Message + ".");
-            throw;
         }
     }
 }

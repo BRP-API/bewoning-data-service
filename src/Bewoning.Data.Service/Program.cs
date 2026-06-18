@@ -18,6 +18,4 @@ var servicesDictionary = new Dictionary<Type, Type>
 	{ typeof(IFilterService), typeof(FilterService) }
 };
 
-var validatorList = new List<Type>();
-
-RvigBaseApp.Init(servicesDictionary, validatorList, "BRP Bewoning API");
+RvigBaseApp.Init(servicesDictionary, "BRP Bewoning API");

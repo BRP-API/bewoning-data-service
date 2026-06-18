@@ -1,5 +1,4 @@
-﻿using Bewoning.Api.Helpers;
-using Bewoning.Api.Options;
+﻿using Bewoning.Api.Options;
 using Bewoning.Data.DatabaseModels;
 using Microsoft.Extensions.Options;
 
@@ -11,7 +10,7 @@ public interface IRvigDbHealthCheckRepo
 }
 public class RvigDbHealthCheckRepo : PostgresSqlQueryRepoBase<DbHealthCheckResult>, IRvigDbHealthCheckRepo
 {
-    public RvigDbHealthCheckRepo(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper) : base(databaseOptions, loggingHelper)
+    public RvigDbHealthCheckRepo(IOptions<DatabaseOptions> databaseOptions) : base(databaseOptions)
     {
         SetWhereMappings();
         SetMappings();

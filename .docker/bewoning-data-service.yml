@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   bewoning-data-service:
     container_name: bewoning-data-service

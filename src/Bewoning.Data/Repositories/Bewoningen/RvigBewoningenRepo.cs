@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
-using Bewoning.Api.Helpers;
 using Bewoning.Api.Options;
 using Bewoning.Data.DatabaseModels;
 using Bewoning.Data.Repositories.Queries.Helper;
@@ -14,15 +13,12 @@ public interface IRvigBewoningenRepo
     Task<IEnumerable<(BewoningOnBsnWrapper bewoningOnBsnWrapper, IEnumerable<(lo3_adres, lo3_pl_verblijfplaats)> adressenVerblijfplaatsen, IEnumerable<lo3_pl_persoon> medebewoners)>> GetMedebewoners(string bsn);
 }
 
-public class RvigBewoningenRepo : RvigRepoPostgresBase<bewoning_bewoner>, IRvigBewoningenRepo
+public class RvigBewoningenRepo(IOptions<DatabaseOptions> databaseOptions)
+    : RvigRepoPostgresBase<bewoning_bewoner>(databaseOptions), IRvigBewoningenRepo
 {
     internal class AdresseerbaarObjectExists
     {
         public bool Exists { get; set; }
-    }
-
-    public RvigBewoningenRepo(IOptions<DatabaseOptions> databaseOptions, ILoggingHelper loggingHelper) : base(databaseOptions, loggingHelper)
-    {
     }
 
     protected override void SetMappings() => CreateMappingsFromWhereMappings();

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Microsoft.AspNetCore.Http;
 using Bewoning.Api.ApiModels.Bewoning;
 using Bewoning.Api.RequestModels.Bewoning;
 using Bewoning.Api.Interfaces;
@@ -9,33 +8,20 @@ using Bewoning.Api.ResponseModels.Bewoning;
 using Bewoning.Api.Exceptions;
 using Bewoning.Data.DatabaseModels;
 using Bewoning.Data.Mappers;
-using Bewoning.Data.Repositories.Postgres;
 using Bewoning.Data.Repositories.Bewoningen;
 
 namespace Bewoning.Data.Services;
-public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMapGbaBewoningenService
+public class GetAndMapGbaBewoningenService(
+    IRvigBewoningenRepo dbPersoonRepo,
+    IRvIGDataBewoningenMapper bewoningenMapper) : IGetAndMapGbaBewoningenService
 {
-    private readonly IRvigBewoningenRepo _dbBewoningenRepo;
-    private readonly IRvIGDataBewoningenMapper _bewoningenMapper;
-
-    public GetAndMapGbaBewoningenService(
-        IAutorisationRepo autorisationRepo,
-        IRvigBewoningenRepo dbPersoonRepo,
-        IRvIGDataBewoningenMapper bewoningenMapper,
-        IHttpContextAccessor httpContextAccessor,
-        IProtocolleringService protocolleringService)
-        : base(httpContextAccessor, autorisationRepo, protocolleringService)
-    {
-        _dbBewoningenRepo = dbPersoonRepo;
-        _bewoningenMapper = bewoningenMapper;
-    }
 
     /// <summary>
     /// This method is a base class for both GetBewoningen and GetMedebewoners.
     /// </summary>
-	/// <param name="query"></param>
-	/// <param name="checkAuthorization"></param>
-	/// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
+    /// <param name="query"></param>
+    /// <param name="checkAuthorization"></param>
+    /// <returns>Combination of mapped history objects and geheimhoudingpersoonsgegevens value.</returns>
     public async Task<IEnumerable<GbaBewoning>> GetBewoningen(BewoningenQuery query)
     {
         string identificatie;
@@ -50,13 +36,13 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
             case BewoningMetPeildatum peildatumModel:
                 identificatie = peildatumModel.adresseerbaarObjectIdentificatie!;
                 peildatum = DatumValidator.ValidateAndParseDate(peildatumModel.peildatum, nameof(peildatumModel.peildatum));
-                mappedBewoningen = await GetMappedBewoningen(identificatie, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, peildatum, null, null);
+                mappedBewoningen = await GetMappedBewoningen(identificatie, dbPersoonRepo.GetBewoningen, bewoningenMapper.MapBewoning, peildatum, null, null);
                 break;
             case BewoningMetPeriode periodeModel:
                 identificatie = periodeModel.adresseerbaarObjectIdentificatie!;
                 van = DatumValidator.ValidateAndParseDate(periodeModel.datumVan, nameof(periodeModel.datumVan));
                 tot = DatumValidator.ValidateAndParseDate(periodeModel.datumTot, nameof(periodeModel.datumTot));
-                mappedBewoningen = await GetMappedBewoningen(identificatie, _dbBewoningenRepo.GetBewoningen, _bewoningenMapper.MapBewoning, null, van, tot);
+                mappedBewoningen = await GetMappedBewoningen(identificatie, dbPersoonRepo.GetBewoningen, bewoningenMapper.MapBewoning, null, van, tot);
                 break;
             default:
                 throw new ArgumentException("Onbekend type query.");
@@ -68,7 +54,7 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
 
     public async Task<GbaBewoningenQueryResponse> GetMedebewoners(string burgerservicenummer, DateTime? peildatum = null, DateTime? van = null, DateTime? tot = null)
     {
-        var mappedObjects = await GetMappedBewoningenWithMedeBewoners(burgerservicenummer, _dbBewoningenRepo.GetMedebewoners, _bewoningenMapper.MapMedebewoner);
+        var mappedObjects = await GetMappedBewoningenWithMedeBewoners(burgerservicenummer, dbPersoonRepo.GetMedebewoners, bewoningenMapper.MapMedebewoner);
 
         return new GbaBewoningenQueryResponse { Bewoningen = mappedObjects.ToList() };
     }
@@ -339,11 +325,11 @@ public class GetAndMapGbaBewoningenService : GetAndMapGbaServiceBase, IGetAndMap
         List<(bewoning_bewoner dbBewoner, long plId)> dbMogelijkeBewonersPlIds;
         if (peildatum.HasValue)
         {
-            (dbBewonersPlIds, dbMogelijkeBewonersPlIds) = _bewoningenMapper.FilterBewonersByPeildatum(bewonersPlIds, peildatum);
+            (dbBewonersPlIds, dbMogelijkeBewonersPlIds) = bewoningenMapper.FilterBewonersByPeildatum(bewonersPlIds, peildatum);
         }
         else if (van.HasValue && tot.HasValue)
         {
-            (dbBewonersPlIds, dbMogelijkeBewonersPlIds) = _bewoningenMapper.FilterBewonersByDatumVanDatumTot(bewonersPlIds, van, tot);
+            (dbBewonersPlIds, dbMogelijkeBewonersPlIds) = bewoningenMapper.FilterBewonersByDatumVanDatumTot(bewonersPlIds, van, tot);
         }
         else
         {

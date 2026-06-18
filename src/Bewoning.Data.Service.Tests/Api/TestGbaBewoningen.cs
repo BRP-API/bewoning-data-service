@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.Options;
-using Moq;
+﻿using Moq;
 using System.Threading.Tasks;
 using Xunit;
 using Bewoning.Data.Service.Tests.Util;
-using Bewoning.Api.Helpers;
 using Bewoning.Api.Services;
 using Bewoning.Api.ApiModels.Bewoning;
 using Bewoning.Api.RequestModels.Bewoning;
-using Bewoning.Api.Options;
 using Bewoning.Api.Interfaces;
 using AutoMapper;
 
@@ -20,19 +17,11 @@ public class TestGbaBewoningen
     {
         // Mock the dependencies for GetAndMapGbaBewoningenService
         getAndMapBewoningenMock = new Mock<IGetAndMapGbaBewoningenService>();
-        var domeinTabellenRepoMock = new Mock<IDomeinTabellenRepo>();
-        var protocolleringServiceMock = new Mock<IProtocolleringService>();
-        var loggingHelperMock = new Mock<ILoggingHelper>();
         var filterServiceMock = new Mock<IFilterService>();
-        var protocolleringAuthorizationOptionsMock = new Mock<IOptions<ProtocolleringAuthorizationOptions>>();
         var mapper = new Mock<IMapper>();
 
         return new GbaBewoningenApiService(
             getAndMapBewoningenMock.Object,
-            domeinTabellenRepoMock.Object,
-            protocolleringServiceMock.Object,
-            loggingHelperMock.Object,
-            protocolleringAuthorizationOptionsMock.Object,
             filterServiceMock.Object,
             mapper.Object
         );
