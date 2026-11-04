@@ -18,12 +18,12 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Sync met '${{ env.SOURCE_REPO_PATH }}' repo
-        uses: AndreasAugustin/actions-template-sync@v1
+        uses: AndreasAugustin/actions-template-sync@v2.6.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_gh_token: ${{ secrets.GITHUB_TOKEN }}
           source_repo_path: ${{ env.SOURCE_REPO_PATH }}
           pr_branch_name_prefix: chore/sync-met-source-repo
           pr_title: "sync met '${{ env.SOURCE_REPO_PATH }}' repo"
