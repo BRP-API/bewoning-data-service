@@ -4,6 +4,7 @@
 :!features/docs/*.*
 :!features/step_definitions/*.*
 :!specificatie/*.*
+:!src/Brp.Shared.DtoMappers/*.*
 :!src/Brp.Shared.Infrastructure/*.*
 :!src/Serilog.Sinks.PersistentFile/*.*
 :!.docker/scripts/*.*
