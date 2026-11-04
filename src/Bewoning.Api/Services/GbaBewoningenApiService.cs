@@ -32,8 +32,6 @@ public class GbaBewoningenApiService(
         IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(response);
         var plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
 
-        //response.Bewoningen.ConvertAll(MapGbaBewoning);
-
         return (response, plIds);
     }
 
@@ -46,9 +44,4 @@ public class GbaBewoningenApiService(
             .Where(bewoning => bewoning?.MogelijkeBewonersPlIds?.Any() == true)
             .SelectMany(bewoning => bewoning.MogelijkeBewonersPlIds!));
     }
-
-    // private Generated.GbaBewoning MapGbaBewoning(GbaBewoning bewoning)
-    // {
-    //     return mapper.Map<Generated.GbaBewoning>(bewoning);
-    // }
 }
