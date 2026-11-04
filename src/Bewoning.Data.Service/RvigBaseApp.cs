@@ -10,7 +10,6 @@ using Brp.Shared.Infrastructure.ProblemDetails;
 using Bewoning.Data.Service.Middleware;
 using Bewoning.Data.Service.Services;
 using Bewoning.Api.Options;
-using Bewoning.Api;
 
 namespace Bewoning.Data.Service;
 
