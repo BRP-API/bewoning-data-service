@@ -40,7 +40,6 @@ public static class RvigBaseApp
 
             builder.Services.ConfigureRvigRepoDataBaseServices(builder.Configuration);
             builder.Services.ConfigureRvigDataBasePostgresServices(builder.Configuration);
-            builder.Services.ConfigureRvigApiSharedServices(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
 
             ConfigureServices(builder.Services, builder.Configuration);
