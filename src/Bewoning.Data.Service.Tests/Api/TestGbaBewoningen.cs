@@ -6,7 +6,6 @@ using Bewoning.Api.Services;
 using Bewoning.Api.ApiModels.Bewoning;
 using Bewoning.Api.RequestModels.Bewoning;
 using Bewoning.Api.Interfaces;
-using AutoMapper;
 
 namespace Bewoning.Data.Service.Tests.Api;
 
@@ -18,13 +17,10 @@ public class TestGbaBewoningen
         // Mock the dependencies for GetAndMapGbaBewoningenService
         getAndMapBewoningenMock = new Mock<IGetAndMapGbaBewoningenService>();
         var filterServiceMock = new Mock<IFilterService>();
-        var mapper = new Mock<IMapper>();
-
+        
         return new GbaBewoningenApiService(
             getAndMapBewoningenMock.Object,
-            filterServiceMock.Object,
-            mapper.Object
-        );
+            filterServiceMock.Object);
     }
 
     [Fact]

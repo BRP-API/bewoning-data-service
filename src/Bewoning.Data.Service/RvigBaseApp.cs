@@ -10,7 +10,6 @@ using Brp.Shared.Infrastructure.ProblemDetails;
 using Bewoning.Data.Service.Middleware;
 using Bewoning.Data.Service.Services;
 using Bewoning.Api.Options;
-using Bewoning.Api;
 
 namespace Bewoning.Data.Service;
 
@@ -40,7 +39,6 @@ public static class RvigBaseApp
 
             builder.Services.ConfigureRvigRepoDataBaseServices(builder.Configuration);
             builder.Services.ConfigureRvigDataBasePostgresServices(builder.Configuration);
-            builder.Services.ConfigureRvigApiSharedServices(builder.Configuration);
             builder.Services.AddHttpContextAccessor();
 
             ConfigureServices(builder.Services, builder.Configuration);
