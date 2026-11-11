@@ -7,7 +7,6 @@ using Bewoning.Api.Exceptions;
 
 namespace Bewoning.Data.Service.Tests.Api;
 
-[TestClass]
 public class TestApiCallValidator
 {
     [TestMethod]
