@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Bewoning.Data.Service.Tests.Util;
 using Bewoning.Api.Validation;
 using Bewoning.Api.Exceptions;
+using Xunit;
 
 namespace Bewoning.Data.Service.Tests.Api;
 
-[TestClass]
 public class TestApiCallValidator
 {
-    [TestMethod]
+    [Fact]
     public async Task TestInvalidRequestBody()
     {
         // Arrange
@@ -19,10 +19,10 @@ public class TestApiCallValidator
         httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes("this is not a valid json object."));
 
         // Act/Assert
-        await Assert.ThrowsExceptionAsync<InvalidRequestBodyException>(() => ApiCallValidator.ValidateUnusableQueryParams(request, httpContext));
+        await Assert.ThrowsAsync<InvalidRequestBodyException>(() => ApiCallValidator.ValidateUnusableQueryParams(request, httpContext));
     }
 
-    [TestMethod]
+    [Fact]
     public async Task TestParamUnknownToTestType()
     {
         // Arrange
@@ -31,6 +31,6 @@ public class TestApiCallValidator
         httpContext.Request.Body = new MemoryStream(Encoding.ASCII.GetBytes("{ \"fields\": [\"burgerservicenummer\"], \"type\": \"RaadpleegMetBurgerservicenummer\", \"burgerservicenummer\": [\"999994669\"], \"testje\": \"test\" }"));
 
         // Act/Assert
-        await Assert.ThrowsExceptionAsync<InvalidParamsException>(() => ApiCallValidator.ValidateUnusableQueryParams(request, httpContext));
+        await Assert.ThrowsAsync<InvalidParamsException>(() => ApiCallValidator.ValidateUnusableQueryParams(request, httpContext));
     }
 }

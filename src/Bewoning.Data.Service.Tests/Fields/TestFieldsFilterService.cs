@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using Bewoning.Api.Fields;
 using Bewoning.Api.Exceptions;
+using Xunit;
 
 namespace Bewoning.Data.Service.Tests.Fields;
 
@@ -83,8 +84,7 @@ public class TestPet
     public string? Breed { get; set; }
 }
 
-[TestClass]
-[TestCategory("Fields")]
+[Trait("Category", "Fields")]
 public class TestFieldsFilterService
 {
     protected readonly FieldsSettingsModel _fieldsSettingsModel =
@@ -102,25 +102,25 @@ public class TestFieldsFilterService
     /// <summary>
     /// burgerserviceletter is an unknown scope and must throw an exception.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestValidateScopeWithIncorrectScope()
     {
-        Assert.ThrowsException<InvalidParamsException>(() => _fieldsExpandFilterService.ValidateScope<TestHuman>("burgerserviceletter", _fieldsSettingsModel));
+        Assert.Throws<InvalidParamsException>(() => _fieldsExpandFilterService.ValidateScope<TestHuman>("burgerserviceletter", _fieldsSettingsModel));
     }
 
     /// <summary>
     /// kinderen.naampje.voornamen is an unknown scope which contains multiple levels of objects but still must throw an exception
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestValidateScopeWithIncorrectScopeWithChildProperties()
     {
-        Assert.ThrowsException<InvalidParamsException>(() => _fieldsExpandFilterService.ValidateScope<TestHuman>("kinderen.name.firstName", _fieldsSettingsModel));
+        Assert.Throws<InvalidParamsException>(() => _fieldsExpandFilterService.ValidateScope<TestHuman>("kinderen.name.firstName", _fieldsSettingsModel));
     }
 
     /// <summary>
     /// Identification is a valid scope and the object must return with only identification while other properties are default.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeIdentification()
     {
         var source = new TestHuman
@@ -144,7 +144,7 @@ public class TestFieldsFilterService
     /// Name is a valid scope and the object must return with only name while other properties are default.
     /// The properties within name however must be filled as name is the parent and therefore all children with value should be shown.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeName()
     {
         var source = new TestHuman
@@ -172,7 +172,7 @@ public class TestFieldsFilterService
     /// Name is a valid scope and the object must return with only name while other properties are default.
     /// As name.lastName is requested, firstName must be null as it was not requested.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeLastName()
     {
         var source = new TestHuman
@@ -202,7 +202,7 @@ public class TestFieldsFilterService
     /// As name.lastName is requested, firstName must be null as it was not requested.
     /// name.LastName however does not have a value so it is expected to receive a result where name is not null but the value of lastName is null.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeEmptyLastName()
     {
         var source = new TestHuman
@@ -228,7 +228,7 @@ public class TestFieldsFilterService
     /// <summary>
     /// Pets is a valid scope but given TestHuman does not own pets. Therefore this will filter all results away leaving an empty TestHuman object.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeWithScopeThatResultsInEmptyObject()
     {
         var source = new TestHuman
@@ -251,7 +251,7 @@ public class TestFieldsFilterService
     /// <summary>
     /// Pets is a valid scope and given TestHuman does own pets. Therefore this will filter all results away leaving a TestHuman object with pets.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeLists()
     {
         var source = new TestHuman
@@ -286,7 +286,7 @@ public class TestFieldsFilterService
     /// <summary>
     /// pets.name.firstName is a valid scope but pets in given TestName do not have names. Therefore this will filter all results away leaving a TestHuman object with an array of one empty pet object.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeListsNameScopeWithoutNameValues()
     {
         var source = new TestHuman
@@ -318,7 +318,7 @@ public class TestFieldsFilterService
     /// <summary>
     /// pets.name.firstName is a valid scope but pets in given TestName do not have names. Therefore this will filter all results away leaving a TestHuman object with an array of one empty pet object.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeListsWithoutValues()
     {
         var source = new TestHuman
@@ -354,7 +354,7 @@ public class TestFieldsFilterService
     /// <summary>
     /// pets.name.firstName is a valid scope but pets in given TestName do not have names. Therefore this will filter all results away leaving a TestHuman object with an array of one empty pet object.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeWithMultipleFieldsOfSameObjectWhereOneIsNull()
     {
         var source = new TestHuman
@@ -394,7 +394,7 @@ public class TestFieldsFilterService
     /// An empty object must be revealed if an item has other values other than the requested. By doing this, a user can understand that there is actually
     /// an item available but the fields must be less specific.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void TestApplyScopeWithListRelationWhereOneItemHasNoValueForMentionedField()
     {
         var source = new TestHuman

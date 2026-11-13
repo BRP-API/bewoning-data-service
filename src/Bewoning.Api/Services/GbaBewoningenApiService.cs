@@ -2,7 +2,6 @@
 using Bewoning.Api.Interfaces;
 using Bewoning.Api.ApiModels.Bewoning;
 using Bewoning.Api.ResponseModels.Bewoning;
-using AutoMapper;
 
 namespace Bewoning.Api.Services;
 public interface IGbaBewoningenApiService
@@ -12,8 +11,7 @@ public interface IGbaBewoningenApiService
 
 public class GbaBewoningenApiService(
     IGetAndMapGbaBewoningenService bewoningenService,
-    IFilterService filterService,
-    IMapper mapper) : IGbaBewoningenApiService
+    IFilterService filterService) : IGbaBewoningenApiService
 {
     protected IGetAndMapGbaBewoningenService _bewoningenService = bewoningenService;
 
@@ -33,9 +31,6 @@ public class GbaBewoningenApiService(
 
         IEnumerable<(GbaBewoner gbaBewoner, long plId)>? allBewonersForProtocollering = GetAllBewonersForProtocollering(response);
         var plIds = allBewonersForProtocollering?.Select(x => x.plId).Distinct().ToList();
-
-        response.Bewoningen.ConvertAll(MapGbaBewoning);
-
         return (response, plIds);
     }
 
@@ -47,10 +42,5 @@ public class GbaBewoningenApiService(
             .Concat(bewoningenResponse.Bewoningen
             .Where(bewoning => bewoning?.MogelijkeBewonersPlIds?.Any() == true)
             .SelectMany(bewoning => bewoning.MogelijkeBewonersPlIds!));
-    }
-
-    private Generated.GbaBewoning MapGbaBewoning(GbaBewoning bewoning)
-    {
-        return mapper.Map<Generated.GbaBewoning>(bewoning);
     }
 }
